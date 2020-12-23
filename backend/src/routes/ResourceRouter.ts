@@ -1,18 +1,13 @@
-import { triggerAsyncId } from "async_hooks";
 import express, { Request, Response } from "express";
-import { body, param, validationResult } from "express-validator";
+import { body, param } from "express-validator";
 import { ObjectId } from "mongodb";
-import { userInfo } from "os";
-import { uptime } from "process";
-import { stringify } from "querystring";
 import { RESOURCES_COLLECTION } from "../constants";
 import { atleastRole, Authorize } from "../middleware/Authenticate";
-import { existsInBody, isValidBody } from "../middleware/BodyValidate";
+import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase } from "../server";
 import { Role } from "../struct/Role";
 import { Category } from "../types/Category";
-import { Rating, Resource, Version } from "../types/Resource";
-import { User } from "../types/User";
+import { Version } from "../types/Version";
 
 const resourceRouter = express.Router()
 

@@ -15,7 +15,6 @@ export interface Resource {
     thread: string,
     owner: User["_id"],
     ratings: Rating[],
-    versions: Version[],
     updated: Date,
     type: ResourceType
 }
@@ -26,9 +25,3 @@ export interface Rating {
     rating: number
 }
 
-export interface Version {
-    version: string,
-    title: string,
-    description: string,
-    timestamp: Date
-}

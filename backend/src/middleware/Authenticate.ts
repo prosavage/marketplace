@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
 import { USERS_COLLECTION } from "../constants";
 import { getDatabase, tokenMap } from "../server";
 import { Role } from "../struct/Role";

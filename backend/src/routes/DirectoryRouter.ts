@@ -4,7 +4,6 @@ import { CATEGORIES_COLLECTION, RESOURCES_COLLECTION } from "../constants";
 import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase } from "../server";
 import { ResourceType } from "../types/Resource";
-import categoryRouter from "./CategoryRouter";
 
 const directoryRouter = express.Router();
 
