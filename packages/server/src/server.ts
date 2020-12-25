@@ -1,14 +1,18 @@
 import express, { Request, Response } from "express";
 import morgan from "morgan";
-import mongodb from "mongodb";
+import mongodb, { ObjectId } from "mongodb";
 import dotenv from "dotenv"
 import { User } from "./types/User";
 import authRouter from "./routes/AuthRouter";
 import resourceRouter from "./routes/ResourceRouter";
 import categoryRouter from "./routes/CategoryRouter";
-import directoryRouter from "./routes/DirectoryRouter";
 import versionRouter from "./routes/VersionRouter";
 import betterResponse from "./middleware/ResponseFunctions";
+import directoryRouter from "./routes/directory/DirectoryRouter";
+import { rword } from "rword";
+import { ResourceType } from "./types/Resource";
+import { RESOURCES_COLLECTION } from "./constants";
+import ensureIndexes from "./database";
 dotenv.config();
 
 const mongoClient = new mongodb.MongoClient(process.env.MONGODB_URL || "mongodb://localhost:27017", { useUnifiedTopology: true });
@@ -31,7 +35,9 @@ app.get("/", (_req: Request, res: Response) => {
     res.success({ dab: "dab" })
 });
 
-mongoClient.connect(() => {
+mongoClient.connect(async () => {
     console.log("connected to database.")
+    await ensureIndexes()
     app.listen(5000, () => console.log("started marketplace backend."))
 })
+

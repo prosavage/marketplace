@@ -5,8 +5,8 @@ const betterResponse = (_req: Request, res: Response, next: NextFunction) => {
         res.json({success: true, payload})
     }
 
-    res.failure = (error) => {
-        res.json({success: false, error})
+    res.failure = (error, code = 400) => {
+        res.status(code).json({success: false, error})
     }
     next();
 }

@@ -26,7 +26,7 @@ resourceRouter.get("/:id", [
 ], async (req: Request, res: Response) => {
     const id = req.params.id;
     const resource = await getDatabase().collection(RESOURCES_COLLECTION).findOne({ _id: id });
-    res.json({ success: true, resource })
+    res.success({ resource })
 })
 
 resourceRouter.put("/", [
@@ -51,7 +51,7 @@ resourceRouter.put("/", [
         updated: resource.updated
     }
     database.collection(RESOURCES_COLLECTION).insertOne(resourceToAdd);
-    res.json({ success: true, resouce: resourceToAdd })
+    res.success({resouce: resourceToAdd })
 })
 
 resourceRouter.delete("/", [
@@ -61,7 +61,7 @@ resourceRouter.delete("/", [
     isValidBody
 ], async (req: Request, res: Response) => {
     const result = await getDatabase().collection(RESOURCES_COLLECTION).deleteOne({ _id: req.body.id })
-    res.json({ success: true, result: { deletedCount: result.deletedCount } })
+    res.success({ result: { deletedCount: result.deletedCount } })
 })
 
 

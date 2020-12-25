@@ -11,7 +11,7 @@ declare global {
       }
     interface Response {
       success: (payload: object) => void;
-      failure: (error: string) => void;
+      failure: (error: string, code: number = 400) => void;
     }
   }
 }

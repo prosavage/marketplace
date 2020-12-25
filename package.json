@@ -1,0 +1,7 @@
+{
+    "name": "marketplace",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ]
+}

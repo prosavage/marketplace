@@ -6,7 +6,7 @@ export function existsInBody(properties: string[]) {
         for (const property of properties) {
             if (typeof req.body[property]) {
                 // not existing
-                res.status(400).json({error: "Invalid body."})
+                res.failure("Invalid body.")
                 return;
             }
         }
@@ -17,7 +17,7 @@ export function existsInBody(properties: string[]) {
 export const isValidBody = (req: Request, res: Response, next: NextFunction) => {
     const valid = validationResult(req);
     if (!valid.isEmpty()) {
-        res.status(400).json({errors: valid.array()})
+        res.status(400).json({success: false, errors: valid.array()})
         return;
     }
     next();

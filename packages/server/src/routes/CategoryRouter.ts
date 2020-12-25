@@ -22,7 +22,7 @@ const categoryRouter = express.Router();
     async (req: Request, res: Response) => {
         const category = { name: req.body.name, type: req.body.type }
         await getDatabase().collection(CATEGORIES_COLLECTION).insertOne(category)
-        res.json({message: "Added to database.", category})
+        res.success({category})
     })
 
 
