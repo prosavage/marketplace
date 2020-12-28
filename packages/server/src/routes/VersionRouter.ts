@@ -1,11 +1,12 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import { ObjectId } from "mongodb";
-import { VERSIONS_COLLECTION } from "../constants";
-import { Authorize, hasPermissionForResource } from "../middleware/Authenticate";
+import { REVIEWS_COLLECTION, VERSIONS_COLLECTION } from "../constants";
+import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase } from "../server";
 import { Role } from "../struct/Role";
+import { Review } from "../types/Review";
 import { Version } from "../types/Version";
 
 const versionRouter = express.Router();
@@ -44,18 +45,20 @@ versionRouter.delete("/", [
 ], async (req: Request, res: Response) => {
     const user = req.user!!;
     const versionId = req.body.id
-
-    // permission check logic.
-    if (user.role < Role.ADMIN) {
-        const version = await getDatabase().collection<Version>(VERSIONS_COLLECTION).findOne({ _id: versionId });
-        if (!version?.author.equals(user._id)) {
-            res.failure("You do not have permission to delete this review.");
-            return;
-        }
+    const version = await getDatabase().collection<Version>(VERSIONS_COLLECTION).findOne({ _id: versionId });
+    if (!version) {
+        res.failure("This version does not exist.");
+        return;
     }
-    
-    const result = await getDatabase().collection(VERSIONS_COLLECTION).deleteOne({ _id: versionId });
-    res.success({ result: { deletedCount: result.deletedCount } });
+    // permission check logic.
+    if (user.role < Role.ADMIN && !version?.author.equals(user._id)) {
+        res.failure("You do not have permission to delete this version.");
+        return;
+    }
+    const results = await getDatabase().collection<Version>(VERSIONS_COLLECTION).deleteOne({ _id: versionId });
+    // if we find one, then delete reviews for that version.
+    const reviews = await getDatabase().collection<Review>(REVIEWS_COLLECTION).deleteMany({ version: versionId })
+    res.success({ result: { deletedVersion: results?.deletedCount, reviewsDeleted: reviews?.deletedCount } });
 })
 
 

@@ -18,21 +18,17 @@ authRouter.post("/login", [
 ], async (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
-
     let user: User | null = await getDatabase().collection(USERS_COLLECTION).findOne({ email });
     if (!user) {
         res.failure("Invalid email or password.")
         return
     }
-
     // if comparison fails, we deny.
     if (!bcrypt.compareSync(password, user.password)) {
         res.failure("Invalid email or password.")
         return
     }
-
     const token = await generateToken(user);
-
     res.success({ token })
 })
 
@@ -44,7 +40,6 @@ authRouter.post("/signup", [
     isValidBody
 ], async (req: Request, res: Response) => {
     const user: User = req.body;
-    console.log(user)
     user.role = Role.USER;
 
     let usersWithEmail = await getDatabase().collection(USERS_COLLECTION).find({ email: user.email }).toArray();
@@ -52,19 +47,15 @@ authRouter.post("/signup", [
         res.failure("This email is already taken.")
         return
     }
-
     let usersWithUsername = await getDatabase().collection(USERS_COLLECTION).find({ username: user.username }).toArray();
     if (usersWithUsername.length != 0) {
         res.failure("This username is already taken.");
         return
     }
-
     // hash the password, so its not plaintext.
     user.password = bcrypt.hashSync(user.password, 10)
     await getDatabase().collection(USERS_COLLECTION).insertOne(user)
-    console.log("user", user)
     const token = await generateToken(user);
-
     res.success({ token: token })
 })
 

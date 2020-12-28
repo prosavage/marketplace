@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { getDatabase } from "../server";
 import { Resource } from "./Resource";
+import { User } from "./User";
 
 export interface Version {
     _id: ObjectId
@@ -9,5 +9,5 @@ export interface Version {
     description: string,
     timestamp: Date,
     resource: Resource["_id"],
-    author: ObjectId
+    author: User["_id"]
 }

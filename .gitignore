@@ -1,3 +1,4 @@
 /packages/*/node_modules
 *.env
 /packages/*/dist/
+/node_modules

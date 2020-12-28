@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { ObjectId } from "mongodb";
 import { RESOURCES_COLLECTION, USERS_COLLECTION } from "../constants";
-import resourceRouter from "../routes/ResourceRouter";
+import resourceRouter from "../routes/resources/ResourceRouter";
 import { getDatabase, tokenMap } from "../server";
 import { Role } from "../struct/Role";
 import { Resource } from "../types/Resource";
@@ -45,8 +45,11 @@ export function atleastRole(role: Role) {
 
 export function hasPermissionForResource(pathToResourceId: string, bypassRole: Role) {
     return async function (req: Request, res: Response, next: NextFunction) {
-        const resourceId = req.body[pathToResourceId]
-        if (resourceId) {
+        let resourceId = req.body[pathToResourceId]
+        if (!resourceId) {
+            resourceId = req.params[pathToResourceId]
+        }
+        if (!resourceId) {
             res.failure("Resource ID path does not exist, hence, permission access cannot be checked");
             return;
         }
@@ -74,7 +77,7 @@ export function hasPermissionForResource(pathToResourceId: string, bypassRole: R
             return;
         }
 
-        if (req.user._id !== resource.owner) {
+        if (!req.user._id.equals(resource.owner)) {
             res.failure("You do not have permission to access this resource.");
             return;
         }

@@ -14,14 +14,7 @@ export interface Resource {
     category: Category["_id"],
     thread: string,
     owner: User["_id"],
-    ratings: Rating[],
     updated: Date,
     type: ResourceType
-}
-
-export interface Rating {
-    user: User["_id"],
-    message: string,
-    rating: number
 }
 
