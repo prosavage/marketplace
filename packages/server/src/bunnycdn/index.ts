@@ -2,7 +2,8 @@ import Axios, { AxiosInstance } from "axios";
 import { UploadedFile } from "express-fileupload";
 import { createReadStream, ReadStream } from "fs";
 import { ObjectId } from "mongodb";
-import { Resource } from "../types/Resource";
+import { Resource, ResourceType } from "../types/Resource";
+import { Version } from "../types/Version";
 
 
 export class BunnyCDNStorage {
@@ -52,7 +53,24 @@ export class BunnyCDNStorage {
         return this.deleteResourceIconById(resource._id)
     }
 
-    putResourceIconByResource = (resourceId: ObjectId, fileStream: ReadStream) => {
-        return this.putFile(this.getResourcePath(resourceId), "icon.png", fileStream);
+    getVersionPath = (resourceId: ObjectId, versionId: ObjectId) => {
+        return `resources/${resourceId}/${versionId}`
     }
+
+    getVersionFileName = (resource: Resource, version: Version) => {
+        return `${resource.name}-${version.version}-${version._id}`
+    }
+
+    putVersionFile = (resource: Resource, version: Version, file: UploadedFile) => {
+        return this.putFile(this.getVersionPath(resource._id, version._id), this.getVersionFileName(resource, version), file)
+    }
+
+    deleteVersionFile = (resource: Resource, version: Version) => {
+        return this.deleteFile(this.getVersionPath(resource._id, version._id), this.getVersionFileName(resource, version))
+    }
+
+    getVersionFile = (resource: Resource, version: Version) => {
+        return this.getFile(this.getVersionPath(resource._id, version._id), this.getVersionFileName(resource, version))
+    }
+
 }

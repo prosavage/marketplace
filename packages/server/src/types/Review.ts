@@ -10,5 +10,5 @@ export interface Review {
     rating: number,
     timestamp: Date,
     version: Version["_id"],
-    resource: Resource["_id"]
+    resource: Resource["_id"]   
 }

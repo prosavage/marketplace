@@ -1,6 +1,4 @@
-import { ObjectId } from "mongodb";
 import { RESOURCES_COLLECTION, REVIEWS_COLLECTION, VERSIONS_COLLECTION } from "./constants";
-import authRouter from "./routes/AuthRouter";
 import { getDatabase } from "./server";
 import { Resource } from "./types/Resource";
 import { Review } from "./types/Review";

@@ -1,11 +1,12 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import { ObjectId } from "mongodb";
-import { REVIEWS_COLLECTION, VERSIONS_COLLECTION } from "../constants";
+import { RESOURCES_COLLECTION, REVIEWS_COLLECTION, VERSIONS_COLLECTION } from "../constants";
 import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
-import { getDatabase } from "../server";
+import { bunny, getDatabase } from "../server";
 import { Role } from "../struct/Role";
+import { Resource } from "../types/Resource";
 import { Review } from "../types/Review";
 import { Version } from "../types/Version";
 
@@ -27,6 +28,54 @@ versionRouter.put("/", [
     };
     await getDatabase().collection(VERSIONS_COLLECTION).insertOne(version);
     res.success({ version })
+})
+
+versionRouter.put("/:id", [
+    param("id").isMongoId().bail().customSanitizer(v => new ObjectId(v)),
+    Authorize,
+    isValidBody
+], async (req: Request, res: Response) => {
+    const id = req.params.id as unknown as ObjectId;
+
+    const version = await getDatabase().collection<Version>(VERSIONS_COLLECTION).findOne({ _id: id });
+    if (!version) {
+        res.failure("version not found.")
+        return;
+    }
+
+    const resource = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).findOne({ _id: version.resource });
+    if (!resource) {
+        res.failure("resource not found");
+        return;
+    }
+
+    try {
+        const versionFile = await bunny.getVersionFile(resource, version);
+        if (versionFile.data) {
+            res.failure("already uploaded.")
+            return;
+        }
+    } catch (err) {
+        if (err.response.status !== 404) {
+            res.failure("something went wrong" + err.response.statusText);
+            return;
+        }
+    }
+    
+
+    if (req.user!!.role < Role.ADMIN && !req.user!!._id.equals(resource.owner)) {
+        res.failure("You do not have permission to access this resource or version.");
+        return;
+    }
+
+    if (!req.files || !req.files!!.resource) {
+        res.failure("invalid body was sent.");
+        return;
+    }
+
+    const file = req.files!!.resource as any;
+    const result = await bunny.putVersionFile(resource, version, file.data)
+    res.success({ result: result.data });
 })
 
 versionRouter.get("/:id", [
