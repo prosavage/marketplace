@@ -1,19 +1,12 @@
-import { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import LightTheme from "../styles/theme/LightTheme";
 import Navbar from "./../components/ui/Navbar";
 import GlobalStyle from "../styles/GlobalStyle";
-import { Sun, Moon } from "react-feather";
-import DarkTheme from "../styles/theme/DarkTheme";
 import { RecoilRoot } from "recoil";
 import { useRecoilValue } from "recoil";
 import { themeState } from "../styles/atoms/theme";
 import Footer from "../components/ui/Footer";
 
 function MyApp({ Component, pageProps }) {
-
-
-
   return (
     <Wrapper>
      <RecoilRoot>
@@ -27,7 +20,6 @@ function MyApp({ Component, pageProps }) {
 function WrappedApp({ Component, pageProps }) {
 
   const theme = useRecoilValue(themeState)
-
 
   return (
         <ThemeProvider theme={theme}>

@@ -56,7 +56,7 @@ export default function Navbar(props) {
     });
 
     const getLinks = () => {
-        return links.map(entry => <LinkWrapper>
+        return links.map(entry => <LinkWrapper key={entry.link}>
             <ActiveLink href={entry.link}>
                 <LinkText>{entry.text}</LinkText>
             </ActiveLink>
@@ -100,7 +100,7 @@ const Wrapper = styled.div`
     align-items: center;
 
     /* Want a line instead of shadow in dark mode. */
-    background: ${(props: PropsTheme) => props.theme.background};
+    background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
     border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
     /* Box shadow for light mode. */
 `
@@ -175,7 +175,7 @@ const LinksWrapper = styled.div`
     }
 `
 
-const LinkText = styled.a`
+const LinkText = styled.p`
     font-size: 1rem;
     cursor: pointer;
 

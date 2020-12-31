@@ -1,9 +1,10 @@
 import ITheme from "./ITheme";
 
 const LightTheme: ITheme = {
-    background: "#FFFFFF",
+    backgroundPrimary: "#FFFFFF",
+    backgroundSecondary: "white",
     color: "black",
-    accentColor: "#C679E3",
+    accentColor: "#0EFFB7",
     borderColor: "#eaeaea"
 }
 

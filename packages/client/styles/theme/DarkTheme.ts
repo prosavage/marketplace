@@ -1,11 +1,11 @@
 import ITheme from "./ITheme";
 
 const DarkTheme: ITheme = {
-    background: "#111",
+    backgroundPrimary: "#111",
+    backgroundSecondary: "black",
     color: "white",
-    accentColor: "#C679E3",
+    accentColor: "#0EFFB7",
     borderColor: "#333"
-
 }
 
 export default DarkTheme;

@@ -1,4 +1,4 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import PropsTheme from "./theme/PropsTheme";
 
 const GlobalStyle = createGlobalStyle`
@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         transition: 250ms all;
         color: ${(props: PropsTheme) => props.theme.color};
-        background: ${(props: PropsTheme) => props.theme.background};
+        background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
         padding: 0;
         margin: 0;
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -29,10 +29,13 @@ const GlobalStyle = createGlobalStyle`
     }
 
     h1 {
-        font-size: 70px;
+        font-size: 30px;
     }
 
-
+    h2 {
+        font-size: 24px;
+        font-weight: 600;
+    }
 `
 
 export default GlobalStyle;

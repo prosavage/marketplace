@@ -1,17 +1,13 @@
 import Head from 'next/head'
 import styled from "styled-components";
+import FeaturedPlugins from '../components/pages/home/FeaturedPlugins';
 import PropsTheme from '../styles/theme/PropsTheme';
 export default function Home() {
   return (
     <>
-      <Header>
-        <Content>
-          <h1>SPIGOT MARKETPLACE</h1>
-          <p>because spigot can't decide.</p>
-        </Content>
-      </Header>
       <Wrapper>
-        <p>Css is gay</p>
+        <FeaturedPlugins/>
+        
       </Wrapper>
     </>
   )
@@ -23,18 +19,5 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-`
-
-const Header = styled.div`
-  height: 500px;
-  width: 100vw;
-  background: ${(props: PropsTheme) => props.theme.borderColor};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-
-const Content = styled.div`
-  padding-left: 20%;
-  width: 100%;
+  padding: 2em;
 `

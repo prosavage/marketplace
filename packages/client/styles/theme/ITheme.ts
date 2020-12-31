@@ -1,5 +1,6 @@
 interface ITheme {
-    background: string,
+    backgroundPrimary: string,
+    backgroundSecondary: string,
     color: string;
     accentColor: string
     borderColor: string;

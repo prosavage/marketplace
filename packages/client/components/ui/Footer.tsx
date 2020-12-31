@@ -19,12 +19,11 @@ const Wrapper = styled.div`
     z-index: 1;
     position: fixed;
     bottom: 0;
-    background-color: green;
 
     padding: 5px;
 
     /* Want a line instead of shadow in dark mode. */
-    background: ${(props: PropsTheme) => props.theme.background};
+    background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
     border-top: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 
     display: flex;
