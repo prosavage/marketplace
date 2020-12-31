@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
         background: ${(props: PropsTheme) => props.theme.background};
         padding: 0;
         margin: 0;
-        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
             Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     }
 
