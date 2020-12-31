@@ -1,12 +1,10 @@
-import styled, { css } from 'styled-components';
-import DarkTheme from '../../styles/theme/DarkTheme';
-import LightTheme from '../../styles/theme/LightTheme';
+import styled from 'styled-components';
 import PropsTheme from '../../styles/theme/PropsTheme';
 import Link from "next/link";
 
 function Footer() {
     return <Wrapper>
-        <Text>{process.env.NEXT_PUBLIC_GIT_BRANCH}-{process.env.NEXT_PUBLIC_GIT_SHA}</Text>
+        <Code>{process.env.NEXT_PUBLIC_GIT_BRANCH}-{process.env.NEXT_PUBLIC_GIT_SHA.substring(0, 3)}</Code>
         <LinkWrapper>
             <Link href={"https://prosavage.net"}>By ProSavage</Link>
         </LinkWrapper>
@@ -28,10 +26,6 @@ const Wrapper = styled.div`
     /* Want a line instead of shadow in dark mode. */
     background: ${(props: PropsTheme) => props.theme.background};
     border-top: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
-    /* Box shadow for light mode. */
-    /* ${(props: PropsTheme) => props.theme === LightTheme && css`
-        box-shadow: 0px -18px 35px ${props => props.theme.boxShadowColor};
-    `} */
 
     display: flex;
     flex-direction: row;
@@ -39,7 +33,7 @@ const Wrapper = styled.div`
     align-items: center;
 `
 
-const Text = styled.p`
+const Code = styled.p`
     padding-left: 10px;
     font-size: 14px;
 `

@@ -13,11 +13,11 @@ const links = [
         text: "HOME"
     },
     {
-        link: "/faq",
+        link: "/resources",
         text: "RESOURCES"
     },
     {
-        link: "/contact",
+        link: "/authors",
         text: "AUTHORS"
     }
 ]
@@ -44,6 +44,7 @@ export default function Navbar(props) {
     useEffect(() => {
         // function defined to update our width
         function updateWidth() {
+            if (isDesktop()) setToggled(false)
             setWidth(window.innerWidth);
         }
 
@@ -68,7 +69,7 @@ export default function Navbar(props) {
         <Wrapper>
             <Content>
                 <LogoSection>
-                    <strong>Marketplace</strong>
+                    <LogoText>Marketplace</LogoText>
                     {(!toggled && isDesktop()) && <LinksWrapper>
                         {getLinks()}
                     </LinksWrapper>}
@@ -102,6 +103,11 @@ const Wrapper = styled.div`
     background: ${(props: PropsTheme) => props.theme.background};
     border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
     /* Box shadow for light mode. */
+`
+
+const LogoText = styled.p`
+    font-size: 20px;
+    font-weight: bold;
 `
 
 const Content = styled.div`
