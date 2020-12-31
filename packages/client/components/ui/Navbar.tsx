@@ -100,14 +100,8 @@ const Wrapper = styled.div`
 
     /* Want a line instead of shadow in dark mode. */
     background: ${(props: PropsTheme) => props.theme.background};
-    ${props => props.theme === DarkTheme && css`
-        border-bottom: 1px solid #333;
-        background: black;
-    `}
+    border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
     /* Box shadow for light mode. */
-    ${(props: PropsTheme) => props.theme === LightTheme && css`
-        box-shadow: 0px 18px 35px ${props => props.theme.boxShadowColor};
-    `}
 `
 
 const Content = styled.div`
