@@ -2,3 +2,4 @@
 *.env
 /packages/*/dist/
 /node_modules
+.vercel
