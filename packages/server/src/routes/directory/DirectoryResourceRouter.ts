@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { body, param } from "express-validator";
+import { param } from "express-validator";
 import { ObjectId } from "mongodb";
 import { CATEGORIES_COLLECTION, RESOURCES_COLLECTION } from "../../constants";
 import { pageSearchCollectionWithFilter } from "../../database";

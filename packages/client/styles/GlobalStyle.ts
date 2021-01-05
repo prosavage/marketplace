@@ -36,6 +36,13 @@ const GlobalStyle = createGlobalStyle`
         font-size: 24px;
         font-weight: 600;
     }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+
+       
+    }
 `
 
 export default GlobalStyle;

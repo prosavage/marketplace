@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import styled from "styled-components";
-import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource, ResourceType } from "../../../types/Resource";
+import PropsTheme from "../../../../styles/theme/PropsTheme";
+import { Resource, ResourceType } from "../../../../types/Resource";
 import FeaturedPluginEntry from "./FeaturedPluginEntry";
 
 export default function FeaturedPlugins() {
@@ -12,7 +12,7 @@ export default function FeaturedPlugins() {
   const response: Resource[] = [
     {
       "_id": "5fe543e4617b45c9499e40d1",
-      "name": "lapsed",
+      "name": "FactionsX",
       "price": 0,
       "category": "5fe282e1af561421eec33fd6",
       "thread": "lolxd",
@@ -22,7 +22,7 @@ export default function FeaturedPlugins() {
     },
     {
       "_id": "5fe543e4617b45c9499e40d3",
-      "name": "roading",
+      "name": "WildStacker",
       "price": 0,
       "category": "5fe282e1af561421eec33fd6",
       "thread": "lolxd",
@@ -32,7 +32,7 @@ export default function FeaturedPlugins() {
     },
     {
       "_id": "5fe543e4617b45c9499e40d4",
-      "name": "ghauts",
+      "name": "VillageDefense",
       "price": 0,
       "category": "5fe282e1af561421eec33fd6",
       "thread": "lolxd",
@@ -49,7 +49,7 @@ export default function FeaturedPlugins() {
         <h2>Featured Plugins</h2>
       </Header>
       <ContentWrapper>
-        {response.map(entry => <FeaturedPluginEntry key={entry._id} resource={entry}/>)}
+        {response.map(entry => <FeaturedPluginEntry key={entry._id} resource={entry} />)}
       </ContentWrapper>
     </Wrapper>
   );
@@ -64,6 +64,7 @@ const Wrapper = styled.div`
     border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 `
 
+
 const Header = styled.div`
   padding: 1em 1.5em;
   background: ${(props: PropsTheme) => props.theme.accentColor};
@@ -76,9 +77,13 @@ const ContentWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-evenly;
   background: ${(props: PropsTheme) => props.theme.backgroundSecondary};
   border-radius: 0 0 4px 4px;
+
+  @media(max-width: 800px) {
+    flex-direction: column;
+  }
 `
 
 
