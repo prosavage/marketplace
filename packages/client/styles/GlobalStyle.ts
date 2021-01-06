@@ -5,6 +5,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         transition: 250ms all;
+        overflow-x: hidden;
         color: ${(props: PropsTheme) => props.theme.color};
         background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
         padding: 0;
@@ -24,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     p {
-        font-size: 20px;
+        font-size: 15px;
         line-height: 29px;
     }
 

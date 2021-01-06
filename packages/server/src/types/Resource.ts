@@ -11,10 +11,12 @@ export interface Resource {
     _id: ObjectId,
     name: string,
     price: number,
+    rating: number,
     category: Category["_id"],
     thread: string,
     owner: User["_id"],
     updated: Date,
-    type: ResourceType
+    type: ResourceType,
+    downloads: number
 }
 

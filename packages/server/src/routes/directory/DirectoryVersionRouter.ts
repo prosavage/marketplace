@@ -13,7 +13,7 @@ const directoryVersionRouter = express.Router();
 
 directoryVersionRouter.get("/resource/:resource/:page", [
     param("resource").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
-    param("page").isInt().bail().toInt(),
+    param("page").isInt().bail().toInt().custom(v => v > 0).bail(),
     isValidBody
 ],
     async (req: Request, res: Response) => {

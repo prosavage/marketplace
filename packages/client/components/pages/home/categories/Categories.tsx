@@ -44,7 +44,7 @@ export default Categories;
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    flex-basis: 25%;
+    width: 100%;
     border-radius: 4px;
     overflow: hidden;
     border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     background: ${(props: PropsTheme) => props.theme.accentColor};
     padding: 0.5em;
+    color: black;
 `
 
 const Content = styled.div`

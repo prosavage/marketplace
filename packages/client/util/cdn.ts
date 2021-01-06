@@ -6,5 +6,5 @@ export const getResourceIconURL = (resourceId: string) => {
 }
 
 export const getCategoryIconURL = (categoryId: string) => {
-    return `${cdnBaseURL}/categories/${categoryId}/icon.png`
+    return `${cdnBaseURL}/categories/${categoryId}/icon.svg`
 }

@@ -36,7 +36,6 @@ function WrappedApp({ Component, pageProps }) {
 
 const PageContainer = styled.div`
   height: 100%;
-  width: 100%;
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
@@ -45,7 +44,6 @@ const PageContainer = styled.div`
 `;
 
 const Wrapper = styled.div`
-  height: 100vh;
   width: 100vw;
 
   display: flex;

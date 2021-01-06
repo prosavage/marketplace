@@ -38,5 +38,5 @@ const Code = styled.p`
 `
 
 const LinkWrapper = styled.div`
-    padding-right: 10px;
+    padding-right: 2em;
 `
