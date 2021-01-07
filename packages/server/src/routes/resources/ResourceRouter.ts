@@ -76,6 +76,7 @@ resourceRouter.put(
       name: resource.name,
       category: resource.category,
       rating: 0,
+      hasIcon: false,
       price: resource.price,
       thread: resource.thread,
       owner: req.user!!._id,

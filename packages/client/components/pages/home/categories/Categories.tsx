@@ -1,64 +1,65 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { Category } from "../../../../types/Category";
 import { ResourceType } from "../../../../types/Resource";
+import getAxios from "../../../../util/AxiosInstance";
 import CategoryEntry from "./CategoryEntry";
 
-function Categories() {
+function Categories(props: {
+  type: ResourceType;
+  category: string | undefined;
+}) {
+  const [categories, setCategories] = useState([]);
 
-    const response: Category[] = [
-        {
-          "_id": "5fe282e1af561421eec33fd6",
-          "name": "Gamemode",
-          "type": ResourceType.PLUGIN
-        },
-        {
-          "_id": "5feec160ae6dd59db8fd9908",
-          "name": "Addons",
-          "type": ResourceType.PLUGIN
-        },
-        {
-          "_id": "5feec167ae6dd59db8fd9909",
-          "name": "Tweaks",
-          "type": ResourceType.PLUGIN
-        },
-        {
-          "_id": "5feec16bae6dd59db8fd990a",
-          "name": "Anticheat",
-          "type": ResourceType.PLUGIN
-        }
-      ]
+  useEffect(() => {
+    let fetchURL = "/directory/categories/" + props.type;
+    if (props.category) {
+    }
 
-    return <Wrapper>
-        <Header>
-            <p>Categories</p>
-        </Header>
-        <Content>
-                {response.map(entry => <CategoryEntry key={entry._id} category={entry}/>)}
-        </Content>
+    getAxios()
+      .get(fetchURL)
+      .then((res) => setCategories(res.data.payload.categories));
+  }, [props.type]);
+
+  return (
+    <Wrapper>
+      <Header>
+        <p>Categories</p>
+      </Header>
+      <Content>
+        {categories.map((entry) => (
+          <CategoryEntry
+            key={entry._id}
+            type={props.type}
+            category={entry}
+            selected={props.category === entry.name}
+          />
+        ))}
+      </Content>
     </Wrapper>
+  );
 }
 
 export default Categories;
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
-`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+`;
 
 const Header = styled.div`
-    background: ${(props: PropsTheme) => props.theme.accentColor};
-    padding: 0.5em;
-    color: black;
-`
+  background: ${(props: PropsTheme) => props.theme.accentColor};
+  padding: 0.5em;
+  color: black;
+`;
 
 const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 1em;
-`
-
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+`;

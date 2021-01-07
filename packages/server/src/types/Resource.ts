@@ -11,6 +11,7 @@ export interface Resource {
     _id: ObjectId,
     name: string,
     price: number,
+    hasIcon: boolean,
     rating: number,
     category: Category["_id"],
     thread: string,

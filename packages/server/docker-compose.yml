@@ -1,0 +1,14 @@
+version: "2"
+services:
+  backend:
+    image: prosavage/marketplace-server
+    ports:
+      - "3001:5000"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    volumes:
+      - "~/Data/store-db:/data/db"
+    ports:
+      - "27018:27017"

@@ -1,8 +1,7 @@
 import Axios, { AxiosInstance } from "axios";
 import { UploadedFile } from "express-fileupload";
-import { createReadStream, ReadStream } from "fs";
 import { ObjectId } from "mongodb";
-import { Resource, ResourceType } from "../types/Resource";
+import { Resource } from "../types/Resource";
 import { Version } from "../types/Version";
 
 

@@ -1,12 +1,19 @@
-import styled from "styled-components";
+import Link from "next/link";
+import styled, { css } from "styled-components";
+import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { Category } from "../../../../types/Category";
+import { ResourceType } from "../../../../types/Resource";
 import { getCategoryIconURL } from "../../../../util/cdn";
 import useFallbackImageInSSR from "../../../../util/UseFallbackImageInSRR";
 
-function CategoryEntry(props: { category: Category }) {
+function CategoryEntry(props: { type: ResourceType; category: Category, selected: boolean }) {
   return (
-    <Wrapper>
-      <Text>{props.category.name}</Text>
+    <Wrapper selected={props.selected}>
+      <Link
+        href={"/directory/resources/" + props.type + "/" + props.category.name}
+      >
+        <Text>{props.category.name}</Text>
+      </Link>
     </Wrapper>
   );
 }
@@ -17,12 +24,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  cursor: pointer;
+
+  ${(props: any) => props.selected && css`
+    color: ${(props: PropsTheme) => props.theme.accentColor}
+  `}
 `;
 
 const Text = styled.p`
   margin-left: 0.5em;
-`;
-
-const Icon = styled.object`
-  color: red;
 `;

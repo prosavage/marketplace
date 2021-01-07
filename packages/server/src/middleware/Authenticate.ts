@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { ObjectId } from "mongodb";
 import { RESOURCES_COLLECTION, USERS_COLLECTION } from "../constants";
-import resourceRouter from "../routes/resources/ResourceRouter";
 import { getDatabase, tokenMap } from "../server";
 import { Role } from "../struct/Role";
 import { Resource } from "../types/Resource";

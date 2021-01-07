@@ -13,7 +13,7 @@ const links = [
         text: "HOME"
     },
     {
-        link: "/resources",
+        link: "/directory/resources/plugin",
         text: "RESOURCES"
     },
     {
@@ -25,11 +25,6 @@ const links = [
 export default function Navbar(props) {
 
     const [theme, setTheme] = useRecoilState(themeState);
-
-    const getLogoPath = () => {
-        return theme === DarkTheme ? "logo-dark.svg" : "logo-light.svg"
-    }
-
     const [toggled, setToggled] = useState(false);
     const [width, setWidth] = useState(0);
 
@@ -194,6 +189,5 @@ const AccountSection = styled.div`
 
 const AccountText = styled.p`
     font-size: 1.1em;
-
 `
 
