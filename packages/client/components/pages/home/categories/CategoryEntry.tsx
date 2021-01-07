@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   width: 100%;
   cursor: pointer;
 
-  ${(props: any) => props.selected && css`
+  ${(props: {selected: boolean}) => props.selected && css`
     color: ${(props: PropsTheme) => props.theme.accentColor}
   `}
 `;
