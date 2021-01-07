@@ -13,7 +13,7 @@ export default function Home() {
       <SubNavbar />
       <Wrapper>
         <FeaturedPlugins />
-        <ResourcesView type={ResourceType.PLUGIN}/>
+        <ResourcesView type={ResourceType.PLUGIN} category={undefined}/>
       </Wrapper>
     </>
   );
