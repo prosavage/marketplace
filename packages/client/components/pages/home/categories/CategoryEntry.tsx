@@ -25,10 +25,15 @@ const Wrapper = styled.div`
   flex-direction: row;
   width: 100%;
   cursor: pointer;
+  transition: 250ms ease-in-out;
 
   ${(props: {selected: boolean}) => props.selected && css`
-    color: ${(props: PropsTheme) => props.theme.accentColor}
+    color: ${(props: PropsTheme) => props.theme.accentColor};
   `}
+
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.accentColor};
+  }
 `;
 
 const Text = styled.p`

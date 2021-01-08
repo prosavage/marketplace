@@ -51,22 +51,60 @@ app.get("/", (_req: Request, res: Response) => {
 mongoClient.connect(async () => {
   console.log("connected to database.");
   await ensureIndexes();
+  // await addDummyData();
   app.listen(5000, () => console.log("started marketplace backend."));
 });
 
+// const generateAndPutResource = async (
+//   file: any,
+//   resourceType: ResourceType,
+//   randomCategory: Category
+// ) => {
+//   const resource = {
+//     name: (rword.generate(1) + "-" + resourceType.substring(0, 1)) as string,
+//     price: 0,
+//     rating: 0,
+//     category: randomCategory!!._id,
+//     thread: "lol xd",
+//     owner: new ObjectId("5ff5018f90a7f7554427af6d"),
+//     updated: new Date(),
+//     downloads: Math.floor(Math.random() * 100000),
+//     type: resourceType,
+//   };
+//   const result = await getDatabase()
+//     .collection(RESOURCES_COLLECTION)
+//     .insertOne(resource);
+//   const resourceResult = result.ops[0];
+//   const version = {
+//     version: (Math.random() * 10).toString(),
+//     title: rword.generate(1) as string,
+//     description: (rword.generate(5) as string[]).join(" "),
+//     timestamp: new Date(
+//       new Date().getTime() - Math.floor(Math.random() * 1000)
+//     ),
+//     resource: resourceResult._id,
+//     author: new ObjectId("5ff5018f90a7f7554427af6d"),
+//   };
+//   await getDatabase().collection(VERSIONS_COLLECTION).insertOne(version);
+// };
+
 // const addDummyData = async () => {
-//   for (let i = 0; i < 10000; i++) {
-//     const resource = {
-//       name: ("software-" + rword.generate(1)) as string,
-//       price: 0,
-//       rating: 0,
-//       category: new ObjectId("5ff5ec3126a59d56d809e6c4"),
-//       thread: "lol xd",
-//       owner: new ObjectId("5ff5018f90a7f7554427af6d"),
-//       updated: new Date(),
-//       downloads: Math.floor(Math.random() * 100000),
-//       type: ResourceType.SOFTWARE,
-//     };
-//     getDatabase().collection(RESOURCES_COLLECTION).insertOne(resource);
+//   const file = readFileSync(
+//     "C:\\Users\\prosavage\\Documents\\Projects\\marketplace\\packages\\server\\FactionsX-lib.jar"
+//   );
+//   for (const resourceType of [
+//     ResourceType.MOD,
+//     ResourceType.PLUGIN,
+//     ResourceType.SOFTWARE,
+//   ]) {
+//     const categories: Category[] = await getDatabase()
+//       .collection(CATEGORIES_COLLECTION)
+//       .find({ type: resourceType })
+//       .toArray();
+//     for (let i = 0; i < 10000; i++) {
+//       const randomCategory =
+//         categories[Math.floor(Math.random() * categories.length)];
+//       generateAndPutResource(file, resourceType, randomCategory!!);
+//     }
 //   }
 // };

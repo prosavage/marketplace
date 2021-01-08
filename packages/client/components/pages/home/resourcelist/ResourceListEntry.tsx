@@ -28,11 +28,15 @@ function ResourceListEntry(props: { resource: Resource }) {
     const remain = 5 - rating;
     const color = theme.accentColor;
     for (let i = 0; i < rating; i++) {
-      drops.push(<Droplet key={counter} size={18} color={color} fill={color} />);
+      drops.push(
+        <Droplet key={counter} size={18} color={color} fill={color} />
+      );
       counter++;
     }
     for (let i = 0; i < remain; i++) {
-      drops.push(<Droplet key={counter} size={18} color={color} fill={"none"}/>);
+      drops.push(
+        <Droplet key={counter} size={18} color={color} fill={"none"} />
+      );
       counter++;
     }
     return drops;
@@ -44,7 +48,9 @@ function ResourceListEntry(props: { resource: Resource }) {
       <Metadata>
         <ResourceInfo>
           <TitleArea>
-            <h2>{props.resource.name}</h2>
+            <Link href={`/resources/${props.resource._id}`}>
+              <h2>{props.resource.name}</h2>
+            </Link>
             <Link href={`/users/${props.resource.owner}`}>
               <AuthorLink>{user}</AuthorLink>
             </Link>
@@ -55,12 +61,16 @@ function ResourceListEntry(props: { resource: Resource }) {
         <ResourceStats>
           <Review>
             <ReviewDropsContainer>{getReviewDrops()}</ReviewDropsContainer>
-            <ReviewCount>{reviewCount} ratings</ReviewCount>
+            <ReviewCount>
+              {new Intl.NumberFormat().format(reviewCount)} ratings
+            </ReviewCount>
           </Review>
           <DataEntryBottom>
             <DataEntry>
               <Label>Downloads:</Label>
-              <Label>{props.resource.downloads}</Label>
+              <Label>
+                {new Intl.NumberFormat().format(props.resource.downloads)}
+              </Label>
             </DataEntry>
             <DataEntry>
               <Label>Updated:</Label>
@@ -103,7 +113,6 @@ const AuthorLink = styled.p`
   color: #2fb38b;
   font-size: 10px;
   line-height: 13px;
-  cursor: pointer;
 `;
 
 const Description = styled.p`
@@ -113,6 +122,8 @@ const Description = styled.p`
 const TitleArea = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+
 `;
 
 const ResourceStats = styled.div`
@@ -132,7 +143,6 @@ const Review = styled.div`
   align-items: center;
   width: 100%;
   justify-content: space-between;
-
 `;
 
 const ReviewDropsContainer = styled.div`

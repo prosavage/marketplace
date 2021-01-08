@@ -13,12 +13,21 @@ function ResourceList(props: {
   const [resources, setResources] = useState<Resource[]>([]);
   const [page, setPage] = useState(1);
 
+  // component stays mounted... 
+  // so we need to change page back to 1 if a category/type is changed
+  useEffect(() => {setPage(1)}, [props.category, props.type])
+
   useEffect(() => {
     let url = "/directory/resources/type/" + props.type + "/" + page;
     if (props.category) {
-      url = "/directory/resources/category/" + props.type + "/" + props.category + "/" + page
+      url =
+        "/directory/resources/category/" +
+        props.type +
+        "/" +
+        props.category +
+        "/" +
+        page;
     }
-
     getAxios()
       .get(url)
       .then((res) => {
@@ -26,18 +35,20 @@ function ResourceList(props: {
       });
   }, [props.type, props.category, page]);
 
-  const renderPageContros = () => {
+  const renderPageControls = () => {
     return (
       <PageControlsWrapper>
-        <Button onClick={() => {
-          if (page <= 1) {
-            return;
-          } 
-          setPage(page - 1)
-        }}>&larr;</Button>
-        <CenterContainer>
-          <p>{page}</p>
-        </CenterContainer>
+        <Button
+          onClick={() => {
+            if (page <= 1) {
+              return;
+            }
+            setPage(page - 1);
+          }}
+        >
+          &larr;
+        </Button>
+        <CenterContainer>{page}</CenterContainer>
         <Button onClick={() => setPage(page + 1)}>&rarr;</Button>
       </PageControlsWrapper>
     );
@@ -46,11 +57,14 @@ function ResourceList(props: {
   return (
     <>
       <Wrapper>
+        <TitleContainer>
+          <h2>{props.category} Resources</h2>
+          {renderPageControls()}
+          </TitleContainer>
         {resources.map((entry) => (
           <ResourceListEntry key={entry._id} resource={entry} />
         ))}
       </Wrapper>
-      {renderPageContros()}
     </>
   );
 }
@@ -67,7 +81,6 @@ const Wrapper = styled.div`
 
 const PageControlsWrapper = styled.div`
   display: flex;
-  width: 100%;
   justify-content: center;
   align-items: center;
   margin: 1em 0;
@@ -75,4 +88,18 @@ const PageControlsWrapper = styled.div`
 
 const CenterContainer = styled.div`
   margin: 0 1em;
+  display: flex;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  width: 100%;
+  border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+  background: ${(props: PropsTheme) => props.theme.accentColor};
+  color: black;
+  border-radius: 4px 4px 0 0;
 `;

@@ -14,8 +14,6 @@ function Categories(props: {
 
   useEffect(() => {
     let fetchURL = "/directory/categories/" + props.type;
-    if (props.category) {
-    }
 
     getAxios()
       .get(fetchURL)

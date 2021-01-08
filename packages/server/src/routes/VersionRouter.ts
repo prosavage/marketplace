@@ -21,6 +21,7 @@ versionRouter.put("/", [
     const body = req.body;
     const version = {
         title: body.title,
+        description: body.description,
         version: body.version,
         timestamp: new Date(),
         resource: body.resource,

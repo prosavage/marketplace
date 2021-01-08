@@ -49,7 +49,12 @@ directoryVersionRouter.get("/resource/:version", [
 })
 
 const pageSearchVersionsWithFilter = async (filter: object, page: number) => {
-    return pageSearchCollectionWithFilter(VERSIONS_COLLECTION, filter, page)
+    const limit = 10
+    return await getDatabase().collection(VERSIONS_COLLECTION).find(filter)
+    .sort({ timestamp: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .toArray();
 }
 
 export default directoryVersionRouter;
