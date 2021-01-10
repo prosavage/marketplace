@@ -11,6 +11,7 @@ export default function DiscordInfo(props: { discordServerId: number | undefined
     <ResourceWidget header={"PLUGIN SUPPORT"}>
       <p>Join this author's Discord for support with their plugin(s).</p>
       <iframe
+        key={props.discordServerId}
         style={{margin: "0.5em 0"}}
         src={`https://discord.com/widget?id=${props.discordServerId}&theme=${theme === DarkTheme ? "dark" : "light"}`}
         width="100%"
