@@ -13,7 +13,6 @@ export default function Resource(props: {
     <>
       <SubNavbar />
       <Wrapper>
-          {console.log(props)}
         <ResourcesView type={props.type} category={props.category} />
       </Wrapper>
     </>

@@ -41,6 +41,7 @@ authRouter.post("/signup", [
 ], async (req: Request, res: Response) => {
     const user: User = req.body;
     user.role = Role.USER;
+    user.discordServerId = undefined;
 
     let usersWithEmail = await getDatabase().collection(USERS_COLLECTION).find({ email: user.email }).toArray();
     if (usersWithEmail.length != 0) {

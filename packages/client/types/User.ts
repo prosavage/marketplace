@@ -1,10 +1,11 @@
 export interface User {
-    _id: string,
+    // _id: string,
     username: string,
-    role: Role,
-    email: string,
+    discordServerId: number | undefined
+    // role: Role,
+    // email: string,
     // this is a hash, not the actual password.
-    password: string
+    // password: string
 }
 
 export enum Role {

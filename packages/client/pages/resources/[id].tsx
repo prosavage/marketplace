@@ -1,18 +1,22 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ArrowLeft } from "react-feather";
+import { ArrowLeft, TrendingUp } from "react-feather";
 import styled from "styled-components";
 import ResourceHeader from "../../components/pages/resource/ResourceHeader";
 import Button from "../../components/ui/Button";
-import ResourceIcon from "../../components/ui/ResourceIcon";
 import PropsTheme from "../../styles/theme/PropsTheme";
 import { Resource } from "../../types/Resource";
+import { User } from "../../types/User";
 import { Version } from "../../types/Version";
 import getAxios from "../../util/AxiosInstance";
+import PluginInfo from "../../components/pages/resource/PluginInfo";
+import ResourceThread from "../../components/pages/resource/ResourceThread";
+import DiscordInfo from "../../components/pages/resource/DiscordInfo";
 
 export default function ResourceId(props: { id: string }) {
   const [resource, setResource] = useState<Resource>();
   const [versions, setVersions] = useState<Version[]>([]);
+  const [author, setAuthor] = useState<User>();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,6 +31,17 @@ export default function ResourceId(props: { id: string }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (!resource) return;
+    getAxios()
+      .get(`/directory/user/${resource.owner}`)
+      .then((res) => setAuthor(res.data.payload.user));
+  }, [resource]);
+
+  const getFirstVersion = () => {
+    return versions[versions.length - 1];
+  };
+
   return (
     <Wrapper>
       <div>
@@ -37,11 +52,15 @@ export default function ResourceId(props: { id: string }) {
       <ResourceContentContainer>
         <ResourceBody>
           <ResourceHeader resource={resource} version={versions[0]} />
+          <ResourceThread resource={resource}/>
         </ResourceBody>
         <MetadataContainer>
-          <PluginInfo>
-            <p>yeah</p>
-          </PluginInfo>
+          <PluginInfo
+            author={author?.username}
+            resource={resource}
+            firstVersion={getFirstVersion()}
+          />
+          <DiscordInfo discordServerId={author?.discordServerId}/>
         </MetadataContainer>
       </ResourceContentContainer>
     </Wrapper>
@@ -82,6 +101,8 @@ const ResourceContentContainer = styled.div`
   flex-direction: row;
   width: 100%;
   margin: 2em 0;
+
+  @media(max0width)
 `;
 
 const ResourceBody = styled.div`
@@ -95,9 +116,4 @@ const MetadataContainer = styled.div`
   flex-direction: column;
   flex-basis: 25%;
   margin: 0 1em;
-`;
-
-const PluginInfo = styled.div`
-  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
-  border-radius: 4px;
 `;

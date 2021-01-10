@@ -1,17 +1,16 @@
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import { Resource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Droplet } from "react-feather";
-import { useRecoilState } from "recoil";
 import { themeState } from "../../../../styles/atoms/theme";
 import timeago from "time-ago";
-import { count } from "console";
+import { useRecoilValue } from "recoil";
+import renderReviewDroplets from "../../../../util/Review";
 
 function ResourceListEntry(props: { resource: Resource }) {
   const [user, setUser] = useState("Loading...");
-  const [theme, setTheme] = useRecoilState(themeState);
+  const theme = useRecoilValue(themeState);
 
   const [reviewCount, setReviewCount] = useState(0);
 
@@ -20,27 +19,7 @@ function ResourceListEntry(props: { resource: Resource }) {
     setReviewCount(Math.floor(Math.random() * 1000));
   }, []);
 
-  const getReviewDrops = () => {
-    const drops = [];
-    // const rating = props.resource.rating;
-    const rating = Math.floor(Math.random() * 5);
-    let counter = 0;
-    const remain = 5 - rating;
-    const color = theme.accentColor;
-    for (let i = 0; i < rating; i++) {
-      drops.push(
-        <Droplet key={counter} size={18} color={color} fill={color} />
-      );
-      counter++;
-    }
-    for (let i = 0; i < remain; i++) {
-      drops.push(
-        <Droplet key={counter} size={18} color={color} fill={"none"} />
-      );
-      counter++;
-    }
-    return drops;
-  };
+  
 
   return (
     <Wrapper>
@@ -60,7 +39,7 @@ function ResourceListEntry(props: { resource: Resource }) {
 
         <ResourceStats>
           <Review>
-            <ReviewDropsContainer>{getReviewDrops()}</ReviewDropsContainer>
+            <ReviewDropsContainer>{renderReviewDroplets(theme)}</ReviewDropsContainer>
             <ReviewCount>
               {new Intl.NumberFormat().format(reviewCount)} ratings
             </ReviewCount>

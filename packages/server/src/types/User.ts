@@ -4,6 +4,7 @@ import { Role } from "../struct/Role";
 export interface User {
     _id: ObjectId,
     username: string,
+    discordServerId: number | undefined,
     role: Role,
     email: string,
     // this is a hash, not the actual password.
