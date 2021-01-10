@@ -1,5 +1,5 @@
 export interface User {
-    // _id: string,
+    _id: string,
     username: string,
     discordServerId: number | undefined
     // role: Role,
