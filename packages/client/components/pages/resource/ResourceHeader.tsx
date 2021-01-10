@@ -42,6 +42,9 @@ const ContentContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 0 1em;
+  @media(max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 const TextContainer = styled.div`
   display: flex;
@@ -58,13 +61,27 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+
+  @media(max-width: 550px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `;
 
 const VersionText = styled.p`
   margin: 0 1em;
+
+  @media(max-width: 550px) {
+    margin: 0;
+  }
 `;
 const DownloadButton = styled(Button)`
   background: black !important;
   padding: 10px 25px !important;
   color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+
+  @media(max-width: 600px) {
+    margin: 1em 0;
+    width: 100%;
+  }
 `;

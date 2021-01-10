@@ -44,7 +44,7 @@ export default function ResourceId(props: { id: string }) {
 
   return (
     <Wrapper>
-      <div>
+      <div> 
         <BackButton onClick={() => router.back()}>
           <ArrowLeft size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
@@ -102,18 +102,20 @@ const ResourceContentContainer = styled.div`
   width: 100%;
   margin: 2em 0;
 
-  @media(max0width)
+  @media(max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const ResourceBody = styled.div`
   display: flex;
   flex-direction: column;
-  flex-basis: 75%;
+  flex-basis: 70%;
 `;
 
 const MetadataContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-basis: 25%;
+  flex-basis: 30%;
   margin: 0 1em;
 `;

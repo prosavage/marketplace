@@ -13,9 +13,9 @@ export default function DiscordInfo(props: { discordServerId: number | undefined
       <iframe
         style={{margin: "0.5em 0"}}
         src={`https://discord.com/widget?id=${props.discordServerId}&theme=${theme === DarkTheme ? "dark" : "light"}`}
-        width="350"
+        width="100%"
         height="500"
-        allowTransparency={true}
+        // allowTransparency={true}
         frameBorder={0}
         sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
       />

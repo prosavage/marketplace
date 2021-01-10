@@ -42,7 +42,6 @@ directoryVersionRouter.get("/resource/:version", [
         res.failure("resource not found.")
         return;
     }
-    console.log('here')
     const file = await bunny.getVersionFile(resource, version)
     res.send(file.data)
 })
