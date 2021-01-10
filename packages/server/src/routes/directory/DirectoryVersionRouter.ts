@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import { param } from "express-validator";
 import { ObjectId } from "mongodb";
 import { RESOURCES_COLLECTION, VERSIONS_COLLECTION } from "../../constants";
-import { pageSearchCollectionWithFilter } from "../../database";
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
