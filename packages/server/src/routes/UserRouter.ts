@@ -1,12 +1,10 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
 import { ObjectId } from "mongodb";
-import { RESOURCES_COLLECTION, USERS_COLLECTION } from "../constants";
-import { Authorize, hasPermissionForResource } from "../middleware/Authenticate";
+import { USERS_COLLECTION } from "../constants";
+import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { bunny, getDatabase } from "../server";
-import { Role } from "../struct/Role";
-
 
 const userIconRouter = express.Router();
 
