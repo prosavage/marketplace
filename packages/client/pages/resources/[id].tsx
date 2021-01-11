@@ -56,7 +56,7 @@ export default function ResourceId(props: { id: string }) {
         </ResourceBody>
         <MetadataContainer>
           <PluginInfo
-            author={author?.username}
+            author={author}
             resource={resource}
             firstVersion={getFirstVersion()}
           />

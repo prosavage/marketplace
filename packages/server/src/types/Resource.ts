@@ -15,6 +15,7 @@ export interface Resource {
     rating: number,
     category: Category["_id"],
     thread: string,
+    darkThread: string,
     owner: User["_id"],
     updated: Date,
     type: ResourceType,

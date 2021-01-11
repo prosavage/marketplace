@@ -164,7 +164,7 @@ const LinkText = styled.p`
   ${(props: { selected: boolean }) =>
     props.selected &&
     css`
-      background: #0EEEAB;
+      background: #00B2FF;
       border-radius: 5px;
     `};
   @media (min-width: 700px) {

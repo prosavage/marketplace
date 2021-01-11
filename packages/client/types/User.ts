@@ -1,7 +1,8 @@
 export interface User {
     _id: string,
     username: string,
-    discordServerId: number | undefined
+    discordServerId: number | undefined,
+    hasIcon: boolean
     // role: Role,
     // email: string,
     // this is a hash, not the actual password.

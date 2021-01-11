@@ -14,6 +14,8 @@ import reviewRouter from "./routes/ReviewRouter";
 import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
+import { RESOURCES_COLLECTION } from "./constants";
+import userIconRouter from "./routes/UserRouter";
 
 dotenv.config();
 
@@ -38,6 +40,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(betterResponse);
 app.use("/auth", authRouter);
+app.use("/users/icon", userIconRouter)
 app.use("/resources", resourceRouter);
 app.use("/categories", categoryRouter);
 app.use("/directory", directoryRouter);

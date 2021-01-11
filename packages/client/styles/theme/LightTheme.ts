@@ -4,7 +4,7 @@ const LightTheme: ITheme = {
     backgroundPrimary: "#FFFFFF",
     backgroundSecondary: "white",
     color: "black",
-    accentColor: "#0EFFB7",
+    accentColor: "#00C0FF",
     buttonAccent: "#0EFFB7",
     borderColor: "#eaeaea"
 }

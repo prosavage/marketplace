@@ -10,15 +10,12 @@ export default function DiscordInfo(props: { discordServerId: number | undefined
   return (
     <ResourceWidget header={"PLUGIN SUPPORT"}>
       <p>Join this author's Discord for support with their plugin(s).</p>
-      <iframe
+      <object
         key={props.discordServerId}
-        style={{margin: "0.5em 0"}}
-        src={`https://discord.com/widget?id=${props.discordServerId}&theme=${theme === DarkTheme ? "dark" : "light"}`}
+        style={{marginTop: "1em"}}
+        data={`https://discord.com/widget?id=${props.discordServerId}&theme=${theme === DarkTheme ? "dark" : "light"}`}
         width="100%"
         height="500"
-        // allowTransparency={true}
-        frameBorder={0}
-        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
       />
     </ResourceWidget>
   );

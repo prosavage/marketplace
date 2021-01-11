@@ -5,10 +5,12 @@ import { Resource, ResourceType } from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
 import Button from "./../../../ui/Button";
+import { User } from "../../../../types/User";
 
 function ResourceList(props: {
   type: ResourceType;
   category: string | undefined;
+  author: User | undefined;
 }) {
   const [resources, setResources] = useState<Resource[]>([]);
   const [page, setPage] = useState(1);
@@ -19,6 +21,7 @@ function ResourceList(props: {
 
   useEffect(() => {
     let url = "/directory/resources/type/" + props.type + "/" + page;
+    
     if (props.category) {
       url =
         "/directory/resources/category/" +
@@ -28,6 +31,11 @@ function ResourceList(props: {
         "/" +
         page;
     }
+
+    if (props.author) {
+      url = "/directory/resources/author/" + props.author?._id + "/" + page;
+    }
+
     getAxios()
       .get(url)
       .then((res) => {
@@ -38,7 +46,7 @@ function ResourceList(props: {
   const renderPageControls = () => {
     return (
       <PageControlsWrapper>
-        <Button
+        <PageButton
           onClick={() => {
             if (page <= 1) {
               return;
@@ -47,9 +55,9 @@ function ResourceList(props: {
           }}
         >
           &larr;
-        </Button>
+        </PageButton>
         <CenterContainer>{page}</CenterContainer>
-        <Button onClick={() => setPage(page + 1)}>&rarr;</Button>
+        <PageButton onClick={() => setPage(page + 1)}>&rarr;</PageButton>
       </PageControlsWrapper>
     );
   };
@@ -103,3 +111,10 @@ const TitleContainer = styled.div`
   color: black;
   border-radius: 4px 4px 0 0;
 `;
+
+const PageButton = styled(Button)`
+  &:hover {
+    border: 1px solid ${(props: PropsTheme) => props.theme.borderColor} !important;
+    color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  }
+`

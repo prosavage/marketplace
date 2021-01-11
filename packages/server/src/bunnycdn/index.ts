@@ -32,6 +32,10 @@ export class BunnyCDNStorage {
         return `resources/${resourceId}`
     }
 
+    getUserPath = (userId: ObjectId) => {
+        return `users/${userId}`
+    }
+
     getResourceIconById = (resourceId: ObjectId) => {
         return this.getFile(this.getResourcePath(resourceId), "icon.png")
     }
@@ -50,6 +54,26 @@ export class BunnyCDNStorage {
 
     deleteResourceIconByResource = (resource: Resource) => {
         return this.deleteResourceIconById(resource._id)
+    }
+
+    getUserIconById = (resourceId: ObjectId) => {
+        return this.getFile(this.getUserPath(resourceId), "icon.png")
+    }
+
+    putUserIconById = (resourceId: ObjectId, file: any) => {
+        return this.putFile(this.getUserPath(resourceId), "icon.png", file);
+    }
+
+    deleteUserIconById = (resourceId: ObjectId) => {
+        return this.deleteFile(this.getUserPath(resourceId), "icon.png")
+    }
+
+    getUserIconByResource = (resource: Resource) => {
+        return this.getUserIconById(resource._id)
+    }
+
+    deleteUserIconByResource = (resource: Resource) => {
+        return this.deleteUserIconById(resource._id)
     }
 
     getVersionPath = (resourceId: ObjectId, versionId: ObjectId) => {

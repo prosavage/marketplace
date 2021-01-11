@@ -39,7 +39,7 @@ resourceRouter.get(
 resourceRouter.put(
   "/",
   [
-    body(["name", "thread", "category"]).isString(),
+    body(["name", "thread", "darkThread", "category"]).isString(),
     body("price").isInt(),
     body("type")
       .custom((v) => (v as ResourceType) !== undefined)
@@ -79,6 +79,7 @@ resourceRouter.put(
       hasIcon: false,
       price: resource.price,
       thread: resource.thread,
+      darkThread: resource.darkThread,
       owner: req.user!!._id,
       updated: resource.updated,
       type: resource.type as ResourceType,

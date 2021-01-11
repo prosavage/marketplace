@@ -1,10 +1,15 @@
 import styled from "styled-components"
 import { User } from "../../types/User"
+import { getAuthorIconURL, getResourceIconURL } from "../../util/cdn"
+import useFallbackImageInSSR from "../../util/UseFallbackImageInSRR"
 
-export default function AuthorIcon(props: {author: User, size: string}) {
-  return <Image src={"getAuthorIconURL(props.author._id)"} alt="" height={props.size}/>
+export default function AuthorIcon(props: { user: User, size: string }) {
+  // https://marketplace-savagelabs.b-cdn.net/resources/5fe543e4617b45c9499e40d1/icon.png
+  const fallback = "https://marketplace-savagelabs.b-cdn.net/defaults/default-user.svg"
+  const fallbackImageProps = useFallbackImageInSSR(fallback)
+  return <img style={{borderRadius: "50%"}} src={props.user?.hasIcon ? getAuthorIconURL(props.user._id) : fallback} alt="" width={props.size}
+  {...fallbackImageProps}
+  />
 }
 
-const Image = styled.img`
-  border-radius: 50%;
-`
+

@@ -89,7 +89,7 @@ const ResourceInfo = styled.div`
 `;
 
 const AuthorLink = styled.p`
-  color: #2fb38b;
+  color: #00B2FF;
   font-size: 10px;
   line-height: 13px;
 `;

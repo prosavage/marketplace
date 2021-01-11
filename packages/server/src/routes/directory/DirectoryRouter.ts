@@ -54,8 +54,10 @@ directoryRouter.get(
 
     res.success({
       user: {
+        _id: user?._id.toHexString(),
         username: user?.username,
         discordServerId: user?.discordServerId,
+        hasIcon: user?.hasIcon
       },
     });
   }

@@ -9,9 +9,11 @@ import { useRecoilValue } from "recoil";
 import { themeState } from "../../../styles/atoms/theme";
 import ResourceWidget, { PluginInfoRow } from "./ResourceWidget";
 import timeago from "time-ago";
+import { User } from "../../../types/User";
+import Link from "next/link";
 
 export default function PluginInfo(props: {
-  author: string | undefined;
+  author: User | undefined;
   resource: Resource | undefined;
   firstVersion: Version | undefined;
 }) {
@@ -20,7 +22,10 @@ export default function PluginInfo(props: {
   return (
     <ResourceWidget header={"PLUGIN INFO"}>
       <PluginInfoRow>
-        <p>Author:</p> <p>{props.author}</p>
+        <p>Author:</p>{" "}
+        <Link href={`/users/${props.author?._id}`}>
+          <AuthorLink>{props.author?.username}</AuthorLink>
+        </Link>
       </PluginInfoRow>
       <PluginInfoRow>
         <p>Downloads:</p>
@@ -42,8 +47,12 @@ export default function PluginInfo(props: {
   );
 }
 
-
 const DropletsContainer = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const AuthorLink = styled.p`
+  color: #00b2ff;
+  cursor: pointer;
 `;
