@@ -3,25 +3,29 @@ import styled from "styled-components";
 import ResourceList from "../../components/pages/home/resourcelist/ResourceList";
 import UserHeader from "../../components/pages/users/UserHeader";
 import { ResourceType } from "../../types/Resource";
-import { User } from "../../types/User";
+import { User, UserStats } from "../../types/User";
 import getAxios from "../../util/AxiosInstance";
 
 export default function UserById(props: { id: string }) {
   const [user, setUser] = useState<User>();
+  const [stats, setStats] = useState<UserStats>();
 
   useEffect(() => {
     getAxios()
       .get(`/directory/user/${props.id}`)
       .then((res) => {
-        console.log(res.data);
         setUser(res.data.payload.user);
       });
+
+    getAxios()
+      .get(`/directory/user-stats/${props.id}`)
+      .then((res) => setStats(res.data.payload.stats));
   }, []);
 
   return (
     <Wrapper>
       <h1>Author Profile</h1>
-      <UserHeader user={user} />
+      <UserHeader user={user} stats={stats}/>
       <ResourcesContainer>
         <ResourceList
           type={ResourceType.PLUGIN}
@@ -50,5 +54,4 @@ const Wrapper = styled.div`
 const ResourcesContainer = styled.div`
   width: 100%;
   margin: 1em 0;
-  
 `;

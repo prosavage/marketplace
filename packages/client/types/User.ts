@@ -12,3 +12,9 @@ export interface User {
 export enum Role {
     USER, MODERATOR, ADMIN
 }
+
+export interface UserStats {
+    downloads: number,
+    resourceCount: number,
+    avgReviewScore: number
+}

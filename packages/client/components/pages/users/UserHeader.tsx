@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { User } from "../../../types/User";
+import { User, UserStats } from "../../../types/User";
+import { formatNumber } from "../../../util/Format";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
-export default function UserHeader(props: { user: User | undefined }) {
+
+
+
+export default function UserHeader(props: { user: User | undefined, stats: UserStats | undefined }) {
+
   return (
     <Wrapper>
       <ImgContainer>
@@ -18,15 +23,15 @@ export default function UserHeader(props: { user: User | undefined }) {
           </MetaSubContainer>
           <StatsContainer>
             <Stat>
-              <h2>14</h2>
+              <h2>{formatNumber(props.stats?.resourceCount)}</h2>
               <StatText>RESOURCES</StatText>
             </Stat>
             <Stat>
-              <h2>690,420</h2>
+              <h2>{formatNumber(props.stats?.downloads)}</h2>
               <StatText>DOWNLOADS</StatText>
             </Stat>
             <Stat>
-              <h2>4.6</h2>
+              <h2>{props.stats?.avgReviewScore}</h2>
               <StatText>RATING</StatText>
             </Stat>
           </StatsContainer>
