@@ -1,4 +1,6 @@
+import React from "react";
 import styled from "styled-components";
+import SecondaryButton from "../components/ui/Secondarybutton";
 import PropsTheme from "../styles/theme/PropsTheme";
 
 export default function Login() {
@@ -11,7 +13,17 @@ export default function Login() {
           <CreateAccountLink>Create an account</CreateAccountLink>
         </p>
         <InputContainer>
-
+          <InputDivider>
+            <label>USERNAME OR EMAIL ADDRESS</label>
+            <input type="text" placeholder={"Enter an email address"} />
+          </InputDivider>
+          <InputDivider>
+            <label>PASSWORD</label>
+            <input type="password" placeholder={"Enter an email address"} />
+          </InputDivider>
+          <InputDivider>
+            <SecondaryButton>Log in</SecondaryButton>
+          </InputDivider>
         </InputContainer>
       </LoginContainer>
     </Wrapper>
@@ -21,23 +33,33 @@ export default function Login() {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
   justify-content: center;
   width: 100%;
+  margin: 1em;
 `;
 
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1em;
+  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+  margin: 1em;
 `;
 
 const CreateAccountLink = styled.span`
   color: ${(props: PropsTheme) => props.theme.accentColor};
+  padding: 0 5px;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1em 0;
+`;
+
+const InputDivider = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 0;
 `;

@@ -70,11 +70,11 @@ export default function Navbar(props) {
         </LogoSection>
         <AccountSection>
           <AccountLoginSignUp>
-            <LinkWrapper>
+            {/* <LinkWrapper>
               <ActiveLink href={"/login"}>
                 <AccountText>Log In</AccountText>
               </ActiveLink>
-            </LinkWrapper>
+            </LinkWrapper> */}
             <LinkWrapper>
               <ActiveLink href={"/signup"}>
                 <SignUpButton>Sign Up</SignUpButton>

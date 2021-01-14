@@ -43,9 +43,22 @@ const GlobalStyle = createGlobalStyle`
     h3 {
         font-size: 20px;
         font-weight: 600;
-
-       
     }
-`
+
+
+    input {
+        padding: 10px 15px;
+        outline: none;
+        border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+        border-bottom: 4px solid ${(props: PropsTheme) =>
+          props.theme.accentColor};
+        border-radius: 4px;    
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+            Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+         background-color: ${(props: PropsTheme) =>
+           props.theme.backgroundPrimary};  
+           color: ${(props: PropsTheme) => props.theme.color}; 
+    }
+`;
 
 export default GlobalStyle;
