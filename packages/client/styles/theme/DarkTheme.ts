@@ -4,7 +4,7 @@ const DarkTheme: ITheme = {
     backgroundPrimary: "#111",
     backgroundSecondary: "black",
     color: "white",
-    accentColor: "#00C0FF",
+    accentColor: "#0EFFB7",
     buttonAccent: "#2FB38B",
     borderColor: "#333"
 }

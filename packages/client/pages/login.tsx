@@ -32,8 +32,9 @@ export default function Login() {
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  /* max-width: 400px; */
   width: 100%;
   margin: 1em;
 `;
@@ -42,7 +43,6 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1em;
-  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   margin: 1em;
 `;
 
