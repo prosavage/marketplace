@@ -3,7 +3,7 @@ import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
 import parser from "bbcode-to-react";
 import { useRecoilValue } from "recoil";
-import { themeState } from "../../../styles/atoms/theme";
+import { themeState } from "../../../atoms/theme";
 import DarkTheme from "../../../styles/theme/DarkTheme";
 
 export default function ResourceThread(props: {

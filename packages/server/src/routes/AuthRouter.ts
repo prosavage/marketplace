@@ -8,6 +8,7 @@ import { User } from "../types/User";
 import { Role } from "../struct/Role";
 import { isValidBody } from "../middleware/BodyValidate";
 import { body } from "express-validator";
+import { Authorize } from "../middleware/Authenticate";
 
 const authRouter = express.Router();
 
@@ -77,6 +78,35 @@ authRouter.post(
     const token = await generateToken(user);
     res.success({
       token: token,
+      user: {
+        _id: user._id,
+        username: user.username,
+        discordServerId: user.discordServerId,
+        hasIcon: user.hasIcon,
+      },
+    });
+  }
+);
+
+authRouter.post(
+  "/validate",
+  [body("token").isString().bail().isLength({ min: 96, max: 96 }), isValidBody],
+  async (req: Request, res: Response) => {
+    const token = req.body.token;
+    const userId = tokenMap.get(token);
+    if (!userId) {
+      res.failure("token is invalid");
+      return;
+    }
+    const user = await getDatabase()
+      .collection(USERS_COLLECTION)
+      .findOne({ _id: userId });
+    if (!user || user === null) {
+      res.failure("user is invalid");
+      return;
+    }
+
+    res.success({
       user: {
         _id: user._id,
         username: user.username,

@@ -91,24 +91,29 @@ directoryRouter.get(
       .find({ owner: user._id })
       .toArray();
 
-    const downloads = resources.length > 0 ? resources
-      .map((it) => it.downloads)
-      .reduce(
-        (accumulatedDownloads, current) => accumulatedDownloads + current
-      ) : 0;
+    const downloads =
+      resources.length > 0
+        ? resources
+            .map((it) => it.downloads)
+            .reduce(
+              (accumulatedDownloads, current) => accumulatedDownloads + current
+            )
+        : 0;
 
     const resourceCount = resources.length;
 
-    const avgReview = resources.length > 0 ?
-      resources
-        .map((it) => it.rating)
-        .reduce((total, current) => total + current) / resourceCount : 0
+    const avgReview =
+      resources.length > 0
+        ? resources
+            .map((it) => it.rating)
+            .reduce((total, current) => total + current) / resourceCount
+        : 0;
 
     res.success({
       stats: {
         downloads,
         resourceCount,
-        avgReviewScore: avgReview
+        avgReviewScore: avgReview,
       },
     });
   }

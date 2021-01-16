@@ -3,7 +3,7 @@ import { Resource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { themeState } from "../../../../styles/atoms/theme";
+import { themeState } from "../../../../atoms/theme";
 import timeago from "time-ago";
 import { useRecoilValue } from "recoil";
 import renderReviewDroplets from "../../../../util/Review";

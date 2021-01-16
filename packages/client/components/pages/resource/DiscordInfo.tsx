@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { themeState } from "../../../styles/atoms/theme";
+import { themeState } from "../../../atoms/theme";
 import DarkTheme from "../../../styles/theme/DarkTheme";
 import ResourceWidget from "./ResourceWidget";
 

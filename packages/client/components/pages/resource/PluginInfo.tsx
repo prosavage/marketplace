@@ -6,7 +6,7 @@ import { Resource } from "../../../types/Resource";
 import { Version } from "../../../types/Version";
 import renderReviewDroplets from "../../../util/Review";
 import { useRecoilValue } from "recoil";
-import { themeState } from "../../../styles/atoms/theme";
+import { themeState } from "../../../atoms/theme";
 import ResourceWidget, { PluginInfoRow } from "./ResourceWidget";
 import timeago from "time-ago";
 import { User } from "../../../types/User";

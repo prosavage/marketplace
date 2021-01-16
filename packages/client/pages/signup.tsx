@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Check, X } from "react-feather";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Input from "../components/ui/Input";
-import { themeState } from "../styles/atoms/theme";
+import { themeState } from "../atoms/theme";
 import PropsTheme from "../styles/theme/PropsTheme";
 import {
   containsNumbers,
@@ -15,9 +15,17 @@ import {
 } from "../util/Validation";
 import Link from "next/link";
 import SecondaryButton from "../components/ui/Secondarybutton";
+import getAxios from "../util/AxiosInstance";
+import { setToken } from "../util/TokenManager";
+import { userState } from "../atoms/user";
+import { useRouter } from "next/router";
 
 export default function Signup(props) {
   const theme = useRecoilValue(themeState);
+
+  const [user, setUser] = useRecoilState(userState);
+
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -25,14 +33,25 @@ export default function Signup(props) {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const renderStatus = (state: boolean) => {
-    return state ? (
-      <Check
-        color={theme.accentColor}
-        style={{ transition: "fill .4s ease" }}
-      />
-    ) : (
-      <X color={"red"} />
-    );
+    return state ? <Check color={theme.accentColor} /> : <X color={"red"} />;
+  };
+
+  const signup = () => {
+    
+    if (!validateUsername(username)) {
+    }
+    getAxios()
+      .post("/auth/signup", {
+        email,
+        username,
+        password,
+      })
+      .then((res) => {
+        setToken(res.data.payload.token)
+        setUser(res.data.payload.user)
+        router.push("/")
+      })
+      .catch((err) => console.log(err.response));
   };
 
   return (
@@ -88,24 +107,34 @@ export default function Signup(props) {
         </VerticalMarginContainer>
         <VerticalMarginContainer>
           <RequirementsContainer>
-            <label>PASSWORD REQUIREMENTS:</label>
+            <label>SIGNUP REQUIREMENTS:</label>
             <VerticalMarginContainer style={{ marginTop: "1em" }}>
+              <RequirementEntry>
+                {renderStatus(validateEmail(email))}
+                <RequirementText>Email must be valid.</RequirementText>
+              </RequirementEntry>
+              <RequirementEntry>
+                {renderStatus(validateUsername(username))}
+                <RequirementText>
+                  Username must be between 8 - 20 characters long.
+                </RequirementText>
+              </RequirementEntry>
               <RequirementEntry>
                 {renderStatus(hasPasswordLength(password))}
                 <RequirementText>
-                  Must be at least 8 characters long
+                  Password must be at least 8 characters long
                 </RequirementText>
               </RequirementEntry>
               <RequirementEntry>
                 {renderStatus(containsSpecialCharacters(password))}
                 <RequirementText>
-                  Must contain atleast one special character
+                  Password must contain atleast one special character
                 </RequirementText>
               </RequirementEntry>
               <RequirementEntry>
                 {renderStatus(containsNumbers(password))}
                 <RequirementText>
-                  Must contain atleast one number
+                  Password must contain atleast one number
                 </RequirementText>
               </RequirementEntry>
               <RequirementEntry>
@@ -125,7 +154,15 @@ export default function Signup(props) {
           </label>
         </VerticalMarginContainer>
         <VerticalMarginContainer>
-          <SecondaryButton>Create my account</SecondaryButton>
+          <SecondaryButton
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              signup();
+            }}
+          >
+            Create my account
+          </SecondaryButton>
         </VerticalMarginContainer>
       </SignupContainer>
     </Wrapper>
@@ -142,7 +179,7 @@ const Header = styled.h1`
   font-size: 56px;
 `;
 
-const SignupContainer = styled.div`
+const SignupContainer = styled.form`
   display: flex;
   flex-direction: column;
   margin: 2em;

@@ -4,10 +4,12 @@ import DarkTheme from "../../styles/theme/DarkTheme";
 import LightTheme from "../../styles/theme/LightTheme";
 import PropsTheme from "../../styles/theme/PropsTheme";
 import ActiveLink from "./../ActiveLink";
-import { Moon, Sun } from "react-feather";
+import { Moon, Sun, User } from "react-feather";
 import { useRecoilState } from "recoil";
-import { themeState } from "../../styles/atoms/theme";
+import { themeState } from "../../atoms/theme";
 import Button from "./Button";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../atoms/user";
 
 const links = [
   {
@@ -39,6 +41,8 @@ const links = [
 
 export default function Navbar(props) {
   const [theme, setTheme] = useRecoilState(themeState);
+  const user = useRecoilValue(userState);
+
   const [toggled, setToggled] = useState(false);
   const [width, setWidth] = useState(0);
 
@@ -66,7 +70,7 @@ export default function Navbar(props) {
 
   const getLinks = () => {
     return links.map((entry) => {
-      if (entry.mobileOnly && width > 500) return
+      if (entry.mobileOnly && width > 500) return;
       return (
         <LinkWrapper key={entry.link}>
           <ActiveLink href={entry.link}>
@@ -85,21 +89,27 @@ export default function Navbar(props) {
           {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
         </LogoSection>
         <AccountSection>
-          <AccountLoginSignUp>
+          {user ? (
             <LinkWrapper>
-              <ActiveLink href={"/login"}>
-                <AccountText>Log In</AccountText>
+              <ActiveLink href={"/account"}>
+                <AccountText>{user.username}</AccountText>
               </ActiveLink>
             </LinkWrapper>
-            <LinkWrapper>
-              <ActiveLink href={"/signup"}>
-                <SignUpButton>Sign Up</SignUpButton>
-              </ActiveLink>
-            </LinkWrapper>
-          </AccountLoginSignUp>
-          {/* <LinkWrapper>
-            <AccountText>ProSavage</AccountText>
-          </LinkWrapper> */}
+          ) : (
+            <AccountLoginSignUp>
+              <LinkWrapper>
+                <ActiveLink href={"/login"}>
+                  <AccountText>Log In</AccountText>
+                </ActiveLink>
+              </LinkWrapper>
+              <LinkWrapper>
+                <ActiveLink href={"/signup"}>
+                  <SignUpButton>Sign Up</SignUpButton>
+                </ActiveLink>
+              </LinkWrapper>
+            </AccountLoginSignUp>
+          )}
+
           <LinkWrapper
             style={{ paddingRight: "1em" }}
             onClick={() =>
@@ -214,6 +224,8 @@ const AccountSection = styled.div`
 
 const AccountText = styled.p`
   font-size: 1.1em;
+  display: flex;
+  justify-content: center;
 `;
 
 const SignUpButton = styled(Button)`

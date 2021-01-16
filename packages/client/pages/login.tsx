@@ -1,14 +1,46 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { userState } from "../atoms/user";
 import Input from "../components/ui/Input";
 import SecondaryButton from "../components/ui/Secondarybutton";
 import PropsTheme from "../styles/theme/PropsTheme";
+import getAxios from "../util/AxiosInstance";
+import { setToken } from "../util/TokenManager";
 import { validatePassword, validateUsername } from "../util/Validation";
 
 export default function Login() {
+  
+  const [user, setUser] = useRecoilState(userState);
+
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const login = () => {
+    if (!validateUsername(username)) {
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      return;
+    }
+
+    getAxios()
+      .post("/auth/login", {
+        email: username,
+        password,
+      })
+      .then((res) => {
+        setToken(res.data.payload.token)
+        setUser(res.data.payload.user)
+        router.push("/")
+      })
+      .catch((err) => console.log(err.response));
+  };
 
   return (
     <Wrapper>
@@ -42,7 +74,15 @@ export default function Login() {
             />
           </InputDivider>
           <InputDivider>
-            <SecondaryButton>Log in</SecondaryButton>
+            <SecondaryButton
+              type={"submit"}
+              onClick={(e) => {
+                e.preventDefault();
+                login();
+              }}
+            >
+              Log in
+            </SecondaryButton>
           </InputDivider>
         </InputContainer>
       </LoginContainer>
@@ -58,17 +98,11 @@ const Wrapper = styled.div`
   margin: 1em;
 `;
 
-const Grid = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`;
-
 const Header = styled.h1`
   font-size: 56px;
 `;
 
-const LoginContainer = styled.div`
+const LoginContainer = styled.form`
   display: flex;
   flex-direction: column;
   padding: 2em;
