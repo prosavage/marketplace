@@ -8,7 +8,6 @@ import { User } from "../types/User";
 import { Role } from "../struct/Role";
 import { isValidBody } from "../middleware/BodyValidate";
 import { body } from "express-validator";
-import { Authorize } from "../middleware/Authenticate";
 
 const authRouter = express.Router();
 
