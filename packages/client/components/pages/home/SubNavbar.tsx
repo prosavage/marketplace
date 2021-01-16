@@ -52,7 +52,9 @@ export default function SubNavbar(props) {
     return links.map((entry) => (
       <LinkWrapper key={entry.link}>
         <ActiveLink href={entry.link}>
-          <LinkText selected={window.location.pathname.startsWith(entry.link)}>{entry.text}</LinkText>
+          <LinkText selected={window.location.pathname.startsWith(entry.link)}>
+            {entry.text}
+          </LinkText>
         </ActiveLink>
       </LinkWrapper>
     ));
@@ -66,13 +68,13 @@ export default function SubNavbar(props) {
           {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
         </LogoSection>
         <AccountSection>
-          <LinkWrapper>
+          <LinkWrapper style={{paddingRight: "1em"}}>
             <CreateButton>CREATE +</CreateButton>
           </LinkWrapper>
+          {!isDesktop() && (
+            <HamburgerButton onClick={() => setToggled(!toggled)} />
+          )}
         </AccountSection>
-        {!isDesktop() && (
-          <HamburgerButton onClick={() => setToggled(!toggled)} />
-        )}
       </Content>
       {toggled && isMobile() && <div>{getLinks()}</div>}
     </Wrapper>
@@ -115,7 +117,6 @@ const LogoSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
   padding: 0 15px;
 
   @media (min-width: 700px) {
@@ -164,7 +165,7 @@ const LinkText = styled.p`
   ${(props: { selected: boolean }) =>
     props.selected &&
     css`
-      background: #00B2FF;
+      background: #00b2ff;
       border-radius: 5px;
     `};
   @media (min-width: 700px) {
@@ -181,10 +182,10 @@ const AccountSection = styled.div`
 `;
 
 const CreateButton = styled(Button)`
-    background: black !important;
-    color: ${(props: PropsTheme) => props.theme.accentColor} !important;
-    border: none !important;
-    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28);
-    padding: 15px 14px !important;
-    cursor: pointer;
-`
+  background: black !important;
+  color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  border: none !important;
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28);
+  padding: 15px 14px !important;
+  cursor: pointer;
+`;

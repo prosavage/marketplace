@@ -13,14 +13,27 @@ const links = [
   {
     link: "/",
     text: "HOME",
+    mobileOnly: false,
   },
   {
     link: "/directory/resources/plugin",
     text: "RESOURCES",
+    mobileOnly: false,
   },
   {
     link: "/authors",
     text: "AUTHORS",
+    mobileOnly: false,
+  },
+  {
+    link: "/login",
+    text: "LOG IN",
+    mobileOnly: true,
+  },
+  {
+    link: "/signup",
+    text: "SIGN UP",
+    mobileOnly: true,
   },
 ];
 
@@ -30,7 +43,7 @@ export default function Navbar(props) {
   const [width, setWidth] = useState(0);
 
   const isDesktop = () => {
-    return width > 700;
+    return width > 800;
   };
 
   const isMobile = () => {
@@ -52,13 +65,16 @@ export default function Navbar(props) {
   });
 
   const getLinks = () => {
-    return links.map((entry) => (
-      <LinkWrapper key={entry.link}>
-        <ActiveLink href={entry.link}>
-          <LinkText>{entry.text}</LinkText>
-        </ActiveLink>
-      </LinkWrapper>
-    ));
+    return links.map((entry) => {
+      if (entry.mobileOnly && width > 500) return
+      return (
+        <LinkWrapper key={entry.link}>
+          <ActiveLink href={entry.link}>
+            <LinkText>{entry.text}</LinkText>
+          </ActiveLink>
+        </LinkWrapper>
+      );
+    });
   };
 
   return (
@@ -70,11 +86,11 @@ export default function Navbar(props) {
         </LogoSection>
         <AccountSection>
           <AccountLoginSignUp>
-            {/* <LinkWrapper>
+            <LinkWrapper>
               <ActiveLink href={"/login"}>
                 <AccountText>Log In</AccountText>
               </ActiveLink>
-            </LinkWrapper> */}
+            </LinkWrapper>
             <LinkWrapper>
               <ActiveLink href={"/signup"}>
                 <SignUpButton>Sign Up</SignUpButton>
@@ -82,19 +98,20 @@ export default function Navbar(props) {
             </LinkWrapper>
           </AccountLoginSignUp>
           {/* <LinkWrapper>
-                        <AccountText>ProSavage</AccountText>
-                    </LinkWrapper> */}
+            <AccountText>ProSavage</AccountText>
+          </LinkWrapper> */}
           <LinkWrapper
+            style={{ paddingRight: "1em" }}
             onClick={() =>
               setTheme(theme === DarkTheme ? LightTheme : DarkTheme)
             }
           >
             {theme === DarkTheme ? <Moon /> : <Sun />}
           </LinkWrapper>
+          {!isDesktop() && (
+            <HamburgerButton onClick={() => setToggled(!toggled)} />
+          )}
         </AccountSection>
-        {!isDesktop() && (
-          <HamburgerButton onClick={() => setToggled(!toggled)} />
-        )}
       </Content>
       {toggled && isMobile() && <div>{getLinks()}</div>}
     </Wrapper>
@@ -128,7 +145,7 @@ const Content = styled.div`
   padding: 0.5em 0.5em;
   justify-content: space-between;
 
-  @media (min-width: 700px) {
+  @media (min-width: 800px) {
     justify-content: space-between;
     flex-direction: row;
   }
@@ -138,10 +155,9 @@ const LogoSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
   padding: 0 15px;
 
-  @media (min-width: 700px) {
+  @media (min-width: 800px) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -157,11 +173,6 @@ const HamburgerButton = styled.div`
   padding: 5px;
 `;
 
-const Logo = styled.img`
-  width: auto;
-  height: 3em;
-  padding: 10px;
-`;
 const LinkWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -176,7 +187,7 @@ const LinksWrapper = styled.div`
   width: 100%;
   padding: 0 15px;
 
-  @media (min-width: 700px) {
+  @media (min-width: 800px) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -188,7 +199,7 @@ const LinkText = styled.p`
   font-size: 1rem;
   cursor: pointer;
 
-  @media (min-width: 700px) {
+  @media (min-width: 800px) {
     padding: 0 15px;
   }
 `;
@@ -219,4 +230,8 @@ const AccountLoginSignUp = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 10px;
+
+  @media (max-width: 500px) {
+    display: none;
+  }
 `;

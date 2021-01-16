@@ -10,7 +10,7 @@ import { ResourceType } from "../types/Resource";
 export default function Home() {
   return (
     <>
-      <SubNavbar />
+    <SubNavbar />
       <Wrapper>
         <FeaturedPlugins />
         <ResourcesView type={ResourceType.PLUGIN} category={undefined}/>
