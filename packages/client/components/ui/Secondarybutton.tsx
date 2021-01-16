@@ -8,7 +8,6 @@ const SecondaryButton = styled(Button)`
   /* box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28); */
   padding: 15px 20px !important;
   cursor: pointer;
-  max-width: 10em;
 `;
 
 export default SecondaryButton;
