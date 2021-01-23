@@ -31,6 +31,7 @@ export default function Signup(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [err, setErr] = useState("");
 
   const renderStatus = (state: boolean) => {
     return state ? <Check color={theme.accentColor} /> : <X color={"red"} />;
@@ -54,10 +55,10 @@ export default function Signup(props) {
       .then((res) => {
         setToken(res.data.payload.token);
         setUser(res.data.payload.user);
-        buildAxios()
+        buildAxios();
         router.push("/");
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => setErr(err.response.data.error));
   };
 
   return (
@@ -69,6 +70,7 @@ export default function Signup(props) {
             Already have an account? <SignIn>Log in</SignIn>
           </p>
         </Link>
+        <Error>{err}</Error>
         <VerticalMarginContainer>
           <label>EMAIL ADDRESS</label>
           <Input
@@ -218,4 +220,8 @@ const RequirementEntry = styled.div`
 
 const RequirementText = styled.p`
   padding: 0 0.5em;
+`;
+
+const Error = styled.p`
+  color: ${(props: PropsTheme) => props.theme.errorColor};
 `;

@@ -5,6 +5,7 @@ interface ITheme {
     accentColor: string;
     buttonAccent: string;
     borderColor: string;
+    errorColor: string;
 }
 
 export default ITheme;

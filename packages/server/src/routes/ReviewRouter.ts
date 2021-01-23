@@ -16,7 +16,6 @@ reviewRouter.put("/", [
     body("message").isString(),
     body("rating").isInt().bail().toInt(),
     body(["resource"]).isMongoId().bail().customSanitizer(value => new ObjectId(value)),
-    body(["icon"]).isURL(),
     Authorize,
     isValidBody
 ], async (req: Request, res: Response) => {
@@ -35,8 +34,8 @@ reviewRouter.put("/", [
         .find({ resource: body.resource, author: req.user!!._id, version: latestVersion._id })
         .toArray();
 
-
-    if (reviews.length != 0) {
+    console.log(reviews)
+    if (reviews != null && reviews.length != 0) {
         res.failure("You have already reviewed this version");
         return;
     }
@@ -61,8 +60,8 @@ reviewRouter.get("/:id", [
     isValidBody
 ], async (req: Request, res: Response) => {
     const id = req.params.id;
-    const review = await getDatabase().collection(REVIEWS_COLLECTION).findOne({ _id: id });
-    res.success(review)
+    const reviews = await getDatabase().collection(REVIEWS_COLLECTION).find({ resource: id }).toArray();
+    res.success(reviews)
 })
 
 reviewRouter.delete("/", [

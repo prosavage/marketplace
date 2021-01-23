@@ -15,13 +15,15 @@ function ResourceList(props: {
   const [resources, setResources] = useState<Resource[]>([]);
   const [page, setPage] = useState(1);
 
-  // component stays mounted... 
+  // component stays mounted...
   // so we need to change page back to 1 if a category/type is changed
-  useEffect(() => {setPage(1)}, [props.category, props.type])
+  useEffect(() => {
+    setPage(1);
+  }, [props.category, props.type]);
 
   useEffect(() => {
     let url = "/directory/resources/type/" + props.type + "/" + page;
-    
+
     if (props.category) {
       url =
         "/directory/resources/category/" +
@@ -33,6 +35,7 @@ function ResourceList(props: {
     }
 
     if (props.author) {
+      console.log(props.author);
       url = "/directory/resources/author/" + props.author?._id + "/" + page;
     }
 
@@ -41,7 +44,7 @@ function ResourceList(props: {
       .then((res) => {
         setResources(res.data.payload.resources);
       });
-  }, [props.type, props.category, page]);
+  }, [props.type, props.category, page, props.author]);
 
   const renderPageControls = () => {
     return (
@@ -68,10 +71,16 @@ function ResourceList(props: {
         <TitleContainer>
           <h2>{props.category} Resources</h2>
           {renderPageControls()}
-          </TitleContainer>
-        {resources.map((entry) => (
-          <ResourceListEntry key={entry._id} resource={entry} />
-        ))}
+        </TitleContainer>
+        {resources.length > 0 ? (
+          resources.map((entry) => (
+            <ResourceListEntry key={entry._id} resource={entry} />
+          ))
+        ) : (
+          <NoResourcesFoundContainer>
+            <p>No resources found.</p>
+          </NoResourcesFoundContainer>
+        )}
       </Wrapper>
     </>
   );
@@ -117,4 +126,12 @@ const PageButton = styled(Button)`
     border: 1px solid ${(props: PropsTheme) => props.theme.borderColor} !important;
     color: ${(props: PropsTheme) => props.theme.accentColor} !important;
   }
-`
+`;
+
+const NoResourcesFoundContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+`;

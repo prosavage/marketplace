@@ -55,7 +55,7 @@ export default function ResourceId(props: { id: string }) {
         <ResourceBody>
           <ResourceHeader resource={resource} version={versions[0]} />
           <ResourceThread resource={resource}/>
-          <ResourceRating/>
+          <ResourceRating resource={resource}/>
         </ResourceBody>
         <MetadataContainer>
           <PluginInfo

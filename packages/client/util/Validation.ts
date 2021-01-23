@@ -33,7 +33,7 @@ export const containsUppercaseChar = (str: string) => {
 };
 
 export const validateUsername = (username: string) => {
-  return username.length > 4 && username.length < 20;
+  return username.length >= 4 && username.length <= 20;
 };
 
 export const validateResourceTitle = (title: string) => {

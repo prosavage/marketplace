@@ -1,17 +1,60 @@
 import { count } from "console";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Droplet } from "react-feather";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { resourceLimits } from "worker_threads";
 import { themeState } from "../../../atoms/theme";
 import PropsTheme from "../../../styles/theme/PropsTheme";
+import { Resource } from "../../../types/Resource";
+import { Review } from "../../../types/Review";
+import getAxios from "../../../util/AxiosInstance";
 import Button from "../../ui/Button";
+import ReviewEntry from "./ReviewEntry";
 
-export default function ResourceReview() {
+export default function ResourceReview({ resource }: { resource: Resource }) {
   const theme = useRecoilValue(themeState);
 
   const [rating, setRating] = useState(0);
   const [preview, setPreview] = useState(true);
+  const [message, setMessage] = useState("");
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    // while loading...
+    if (!resource) return;
+    fetchReviews();
+  }, [resource]);
+
+  const fetchReviews = () => {
+    getAxios()
+      .get(`/review/${resource?._id}`)
+      .then((res) => setReviews(res.data.payload))
+      .catch((err) => console.log(err.response.data));
+  };
+
+  const postRating = () => {
+    if (message.length <= 50) {
+      setStatus("Review is not comprehensive enough, please add more info.");
+      return;
+    }
+    if (preview) {
+      setStatus(
+        "Resource rating not set, click the droplets for your desired rating."
+      );
+      return;
+    }
+    getAxios()
+      .put("/review", {
+        message,
+        rating,
+        resource: resource._id,
+      })
+      .then(() => fetchReviews())
+      .catch((err) => setStatus(err.response.data.error));
+  };
 
   const getRatingDrops = () => {
     const drops = [];
@@ -27,17 +70,17 @@ export default function ResourceReview() {
           color={color}
           fill={i + 1 > rating ? "none" : color}
           onClick={() => {
-            setPreview(false)
+            setPreview(false);
             setRating(i + 1);
           }}
           onMouseEnter={() => {
             if (preview) {
-              setRating(i + 1)
+              setRating(i + 1);
             }
           }}
           onMouseLeave={() => {
             if (preview) {
-              setRating(0)
+              setRating(0);
             }
           }}
         />
@@ -52,12 +95,20 @@ export default function ResourceReview() {
       <Title>
         <h1>Ratings</h1>
       </Title>
-      <ReviewArea placeholder={"Review goes here..."} />
+      <Status>{status}</Status>
+      <ReviewArea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder={"Review goes here..."}
+      />
       <RatingSelect>
         <RatingDrops>{getRatingDrops()}</RatingDrops>
         <p>Selected Rating: {rating}/5</p>
-        <Button>Post Review</Button>
+        <Button onClick={() => postRating()}>Post Review</Button>
       </RatingSelect>
+      {reviews.map((review) => (
+        <ReviewEntry review={review} />
+      ))}
     </Wrapper>
   );
 }
@@ -91,5 +142,9 @@ const RatingSelect = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: .5em;
+  margin-top: 0.5em;
+`;
+
+const Status = styled.p`
+  color: ${(props: PropsTheme) => props.theme.errorColor};
 `;

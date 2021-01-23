@@ -1,8 +1,4 @@
-const DefaultThread = `[center][size="40"]Plugin Title[/size][/center]
-[hr]
-[br]
-This plugin thread is an example of how to use BBCode on marketplace.
-[br]
+const DefaultThread = `[center][size="40"]Plugin Title[/size][/center][hr][br]This plugin thread is an example of how to use BBCode on marketplace.[br]
 [center][size="20"]Features[/size]
 [hr][br]
 [list]

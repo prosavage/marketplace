@@ -135,5 +135,5 @@ const InputDivider = styled.div`
 
 
 const ErrorText = styled.p`
-  color: #e25c5c;
+  color: ${(props: PropsTheme) => props.theme.errorColor};
 `

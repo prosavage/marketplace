@@ -18,16 +18,16 @@ export default function UserHeader(props: { user: User | undefined, stats: UserS
       <TextContainer>
         <MetaContainer>
           <MetaSubContainer>
-            <Header>ProSavage</Header>
+            <Header>{props.user?.username}</Header>
             <Date>Member since April 1, 2020</Date>
           </MetaSubContainer>
           <StatsContainer>
             <Stat>
-              <h2>{formatNumber(props.stats?.resourceCount)}</h2>
+              <h2>{props.stats?.resourceCount ? formatNumber(props.stats?.resourceCount) : "0"}</h2>
               <StatText>RESOURCES</StatText>
             </Stat>
             <Stat>
-              <h2>{formatNumber(props.stats?.downloads)}</h2>
+              <h2>{props.stats?.downloads ? formatNumber(props.stats?.downloads) : "0"}</h2>
               <StatText>DOWNLOADS</StatText>
             </Stat>
             <Stat>

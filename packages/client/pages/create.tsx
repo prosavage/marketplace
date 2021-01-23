@@ -83,6 +83,8 @@ export default function Create() {
 
   useEffect(() => {
     fetchOptions();
+    console.log(thread)
+
   }, []);
 
   return (
