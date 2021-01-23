@@ -7,9 +7,9 @@ import { userState } from "../atoms/user";
 import Input from "../components/ui/Input";
 import SecondaryButton from "../components/ui/Secondarybutton";
 import PropsTheme from "../styles/theme/PropsTheme";
-import getAxios from "../util/AxiosInstance";
+import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
-import { validatePassword, validateUsername } from "../util/Validation";
+import { validateEmail, validatePassword, validateUsername } from "../util/Validation";
 
 export default function Login() {
   
@@ -17,29 +17,32 @@ export default function Login() {
 
   const router = useRouter();
 
-  const [username, setUsername] = useState("");
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [err, setErr] = useState("");
+
   const login = () => {
-    if (!validateUsername(username)) {
+    if (!validateEmail(email) || !validatePassword(password)) {
+      setErr("invalid email or password.")
       return;
     }
 
-    if (!validatePassword(password)) {
-      return;
-    }
 
     getAxios()
       .post("/auth/login", {
-        email: username,
+        email: email,
         password,
       })
       .then((res) => {
+        console.log(res.data)
         setToken(res.data.payload.token)
         setUser(res.data.payload.user)
+        buildAxios()
         router.push("/")
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => setErr(err.response.data.error));
   };
 
   return (
@@ -52,15 +55,16 @@ export default function Login() {
             <CreateAccountLink>Create an account</CreateAccountLink>
           </p>
         </Link>
+        <ErrorText>{err}</ErrorText>
         <InputContainer>
           <InputDivider>
-            <label>USERNAME OR EMAIL ADDRESS</label>
+            <label>EMAIL ADDRESS</label>
             <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="text"
               placeholder={"Enter an email address"}
-              invalid={!validateUsername(username)}
+              invalid={!validateEmail(email)}
             />
           </InputDivider>
           <InputDivider>
@@ -128,3 +132,8 @@ const InputDivider = styled.div`
   flex-direction: column;
   padding: 0.5em 0;
 `;
+
+
+const ErrorText = styled.p`
+  color: #e25c5c;
+`

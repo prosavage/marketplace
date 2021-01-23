@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../atoms/user";
 import { useEffect } from "react";
 import getToken, { setToken } from "../util/TokenManager";
-import getAxios from "../util/AxiosInstance";
+import getAxios, { buildAxios } from "../util/AxiosInstance";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,6 +19,10 @@ function MyApp({ Component, pageProps }) {
       </RecoilRoot>
     </Wrapper>
   );
+}
+
+export function reportWebVitals(metric) {
+  console.log(metric)
 }
 
 function WrappedApp({ Component, pageProps }) {
@@ -42,6 +46,7 @@ function WrappedApp({ Component, pageProps }) {
       })
       .then((res) => {
         setUser(res.data.payload.user);
+        buildAxios();
         console.log("successfully logged in using localstorage token.");
       })
       .catch((err) => {

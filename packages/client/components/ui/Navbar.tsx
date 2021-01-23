@@ -18,7 +18,7 @@ const links = [
     mobileOnly: false,
   },
   {
-    link: "/directory/resources/plugin",
+    link: "/directory/resources",
     text: "RESOURCES",
     mobileOnly: false,
   },

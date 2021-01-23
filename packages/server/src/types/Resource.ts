@@ -10,12 +10,12 @@ export enum ResourceType {
 export interface Resource {
     _id: ObjectId,
     name: string,
+    description: string,
     price: number,
     hasIcon: boolean,
     rating: number,
     category: Category["_id"],
     thread: string,
-    darkThread: string,
     owner: User["_id"],
     updated: Date,
     type: ResourceType,

@@ -12,6 +12,8 @@ import getAxios from "../../util/AxiosInstance";
 import PluginInfo from "../../components/pages/resource/PluginInfo";
 import ResourceThread from "../../components/pages/resource/ResourceThread";
 import DiscordInfo from "../../components/pages/resource/DiscordInfo";
+import ResourceEdit from "../../components/pages/resource/ResourceEdit";
+import ResourceRating from "../../components/pages/resource/ResourceRating";
 
 export default function ResourceId(props: { id: string }) {
   const [resource, setResource] = useState<Resource>();
@@ -53,12 +55,16 @@ export default function ResourceId(props: { id: string }) {
         <ResourceBody>
           <ResourceHeader resource={resource} version={versions[0]} />
           <ResourceThread resource={resource}/>
+          <ResourceRating/>
         </ResourceBody>
         <MetadataContainer>
           <PluginInfo
             author={author}
             resource={resource}
             firstVersion={getFirstVersion()}
+          />
+          <ResourceEdit
+          resource={resource}
           />
           <DiscordInfo discordServerId={author?.discordServerId}/>
         </MetadataContainer>

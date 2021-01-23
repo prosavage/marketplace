@@ -46,7 +46,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
 
-    input {
+    input, textarea {
         padding: 10px 15px;
         outline: none;
         border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
@@ -60,6 +60,16 @@ const GlobalStyle = createGlobalStyle`
            color: ${(props: PropsTheme) => props.theme.color}; 
     }
 
+    table {
+      text-align: left;
+  border-collapse: collapse;
+  border-radius: 4px;
+  overflow: hidden;
+}
+td, th {
+  border: 2px solid  ${(props: PropsTheme) => props.theme.borderColor};
+  padding: 0.3em;
+}
 
 
 

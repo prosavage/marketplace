@@ -6,6 +6,8 @@ import ActiveLink from "./../../ActiveLink";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { useRouter } from "next/router";
 import Button from "../../ui/Button";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../atoms/user";
 const links = [
   {
     link: "/directory/resources/plugin",
@@ -24,8 +26,11 @@ const links = [
 export default function SubNavbar(props) {
   const [toggled, setToggled] = useState(false);
   const [width, setWidth] = useState(0);
+
   const router = useRouter();
 
+  const user = useRecoilValue(userState);
+  
   const isDesktop = () => {
     return width > 700;
   };
@@ -69,7 +74,13 @@ export default function SubNavbar(props) {
         </LogoSection>
         <AccountSection>
           <LinkWrapper style={{paddingRight: "1em"}}>
-            <CreateButton>CREATE +</CreateButton>
+            <CreateButton onClick={() => {
+              if (user) {
+                router.push("/create")
+              } else {
+                router.push("/login")
+              }
+            }}>CREATE +</CreateButton>
           </LinkWrapper>
           {!isDesktop() && (
             <HamburgerButton onClick={() => setToggled(!toggled)} />

@@ -34,7 +34,7 @@ function ResourceListEntry(props: { resource: Resource }) {
               <AuthorLink>{user}</AuthorLink>
             </Link>
           </TitleArea>
-          <Description>Pls add descriptions to API.</Description>
+          <Description>{props.resource.description}</Description>
         </ResourceInfo>
 
         <ResourceStats>

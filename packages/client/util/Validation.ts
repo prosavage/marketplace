@@ -35,3 +35,19 @@ export const containsUppercaseChar = (str: string) => {
 export const validateUsername = (username: string) => {
   return username.length > 4 && username.length < 20;
 };
+
+export const validateResourceTitle = (title: string) => {
+  return title.length > 0
+}
+
+export const validateResourceDescription = (desc: string) => {
+  return desc.length > 0;
+}
+
+export const validateResourceVersion = (version: string) => {
+  return version.length > 0;
+}
+
+export const validateResourceThread = (thread: string) => {
+  return thread.length > 0;
+}

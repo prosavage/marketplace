@@ -11,6 +11,7 @@ import { atleastRole, Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
+import { Category } from "../../types/Category";
 import { ResourceType } from "../../types/Resource";
 import resourceIconRouter from "./ResourceIconRouter";
 
@@ -39,12 +40,8 @@ resourceRouter.get(
 resourceRouter.put(
   "/",
   [
-    body(["name", "thread", "darkThread", "category"]).isString(),
+    body(["name", "thread", "description", "category"]).isString(),
     body("price").isInt(),
-    body("type")
-      .custom((v) => (v as ResourceType) !== undefined)
-      .bail()
-      .customSanitizer((v) => v as ResourceType),
     body("category")
       .isMongoId()
       .bail()
@@ -64,10 +61,10 @@ resourceRouter.put(
     const database = getDatabase();
 
     const category = await database
-      .collection(CATEGORIES_COLLECTION)
+      .collection<Category>(CATEGORIES_COLLECTION)
       .findOne({ _id: resource.category });
 
-    if (!category) {
+    if (!category || category === null) {
       res.failure("invalid category");
       return;
     }
@@ -75,24 +72,25 @@ resourceRouter.put(
     const resourceToAdd = {
       name: resource.name,
       category: resource.category,
+      description: resource.description,
       rating: 0,
       hasIcon: false,
       price: resource.price,
       thread: resource.thread,
-      darkThread: resource.darkThread,
       owner: req.user!!._id,
       updated: resource.updated,
-      type: resource.type as ResourceType,
+      type: category.type,
       downloads: 0,
     };
 
     const result = await database
       .collection(RESOURCES_COLLECTION)
       .insertOne(resourceToAdd);
-    resource.version._id = new ObjectId(result.ops[0]._id);
+
+    resource.version.resource = new ObjectId(result.ops[0]._id);
     database.collection(VERSIONS_COLLECTION).insertOne(resource.version);
 
-    res.success({ resouce: resourceToAdd });
+    res.success({ resource: resourceToAdd });
   }
 );
 

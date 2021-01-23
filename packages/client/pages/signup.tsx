@@ -15,7 +15,7 @@ import {
 } from "../util/Validation";
 import Link from "next/link";
 import SecondaryButton from "../components/ui/Secondarybutton";
-import getAxios from "../util/AxiosInstance";
+import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
 import { userState } from "../atoms/user";
 import { useRouter } from "next/router";
@@ -37,9 +37,14 @@ export default function Signup(props) {
   };
 
   const signup = () => {
-    
-    if (!validateUsername(username)) {
+    if (
+      !validateUsername(username) ||
+      !validatePassword(password) ||
+      !validateEmail(email)
+    ) {
+      return;
     }
+
     getAxios()
       .post("/auth/signup", {
         email,
@@ -47,9 +52,10 @@ export default function Signup(props) {
         password,
       })
       .then((res) => {
-        setToken(res.data.payload.token)
-        setUser(res.data.payload.user)
-        router.push("/")
+        setToken(res.data.payload.token);
+        setUser(res.data.payload.user);
+        buildAxios()
+        router.push("/");
       })
       .catch((err) => console.log(err.response));
   };

@@ -8,7 +8,7 @@ import FeaturedPluginEntry from "./FeaturedPluginEntry";
 export default function FeaturedPlugins() {
   const [page, setPage] = useState(1);
 
-  const response: Resource[] = [
+  const response= [
     {
       _id: "5fe543e4617b45c9499e40d1",
       name: "FactionsX",
@@ -16,7 +16,6 @@ export default function FeaturedPlugins() {
       hasIcon: false,
       category: "5fe282e1af561421eec33fd6",
       thread: "lolxd",
-      darkThread: "dark thread.",
       owner: "5fe280bc3a1e07215e9bdf59",
       updated: new Date("2020-12-25T01:44:04.997Z"),
       type: ResourceType.PLUGIN,
@@ -30,7 +29,6 @@ export default function FeaturedPlugins() {
       hasIcon: false,
       category: "5fe282e1af561421eec33fd6",
       thread: "lolxd",
-      darkThread: "dark thread.",
       owner: "5fe280bc3a1e07215e9bdf59",
       updated: new Date("2020-12-25T01:44:04.997Z"),
       type: ResourceType.PLUGIN,
@@ -44,7 +42,6 @@ export default function FeaturedPlugins() {
       hasIcon: false,
       category: "5fe282e1af561421eec33fd6",
       thread: "lolxd",
-      darkThread: "dark thread.",
       owner: "5fe280bc3a1e07215e9bdf59",
       updated: new Date("2020-12-25T01:44:04.997Z"),
       type: ResourceType.PLUGIN,
@@ -60,7 +57,7 @@ export default function FeaturedPlugins() {
       </Header>
       <ContentWrapper>
         {response.map((entry) => (
-          <FeaturedPluginEntry key={entry._id} resource={entry} />
+          <FeaturedPluginEntry key={entry._id} resource={entry as Resource} />
         ))}
       </ContentWrapper>
     </Wrapper>
