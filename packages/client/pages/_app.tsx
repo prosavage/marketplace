@@ -21,10 +21,6 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export function reportWebVitals(metric) {
-  console.log(metric)
-}
-
 function WrappedApp({ Component, pageProps }) {
   const theme = useRecoilValue(themeState);
   const [user, setUser] = useRecoilState(userState);
