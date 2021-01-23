@@ -10,7 +10,7 @@ export const setToken = (newToken: string) => {
 };
 
 const getToken = () => {
-  if (token.length === 0) {
+  if (token === undefined || token === null || token.length === 0) {
     token = fetchToken();
   }
   return token;
