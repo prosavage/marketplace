@@ -28,7 +28,7 @@ export const getDatabase = () => {
 };
 export const tokenMap = new Map<string, User["_id"]>([
   // temp perma token for dev
-  ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")],
+  ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")]
 ]);
 
 export const bunny = new BunnyCDNStorage();
