@@ -39,7 +39,8 @@ resourceRouter.get(
 resourceRouter.put(
   "/",
   [
-    body(["name", "thread", "description", "category"]).isString(),
+    body(["name", "thread", "category"]).isString(),
+    body("description").isString().bail().isLength({min: 4, max: 35}),
     body("price").isInt(),
     body("category")
       .isMongoId()

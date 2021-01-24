@@ -31,13 +31,12 @@ export const tokenMap = new Map<string, User["_id"]>([
   ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")],
 ]);
 
-
 // clear dev tokens if running in prod.
 if (process.env.NODE_ENV === "production") {
-  tokenMap.clear()
-  console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.")
+  tokenMap.clear();
+  console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
 } else {
-  console.log("RUNNING IN DEVELOPEMNT MODE.")
+  console.log("RUNNING IN DEVELOPEMNT MODE.");
 }
 
 export const bunny = new BunnyCDNStorage();
