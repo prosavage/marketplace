@@ -12,7 +12,6 @@ import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
 import { Category } from "../../types/Category";
-import { ResourceType } from "../../types/Resource";
 import resourceIconRouter from "./ResourceIconRouter";
 
 const resourceRouter = express.Router();
@@ -40,7 +39,8 @@ resourceRouter.get(
 resourceRouter.put(
   "/",
   [
-    body(["name", "thread", "description", "category"]).isString(),
+    body(["name", "thread", "category"]).isString(),
+    body("description").isString().bail().isLength({min: 4, max: 35}),
     body("price").isInt(),
     body("category")
       .isMongoId()

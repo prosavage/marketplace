@@ -20,7 +20,7 @@ function ResourceListEntry(props: { resource: Resource }) {
     getAxios()
       .get(`/directory/user/${props.resource.owner}`)
       .then((res) => setUser(res.data.payload.user))
-      .catch((err) => console.log(err.response.data));
+      .catch((err) => setUser({username: err.response.data.error}));
 
     getAxios()
       .get(`/directory/reviews/${props.resource._id}`)

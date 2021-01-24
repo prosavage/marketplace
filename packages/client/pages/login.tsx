@@ -30,13 +30,12 @@ export default function Login() {
     }
 
 
-    getAxios()
+    getAxios() 
       .post("/auth/login", {
         email: email,
         password,
       })
       .then((res) => {
-        console.log(res.data)
         setToken(res.data.payload.token)
         setUser(res.data.payload.user)
         buildAxios()

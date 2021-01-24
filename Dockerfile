@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:15
 
 USER root
 
@@ -10,19 +10,21 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+# CRITICAL TO GET NODEJS MONOREPO PROJECT WORKING SMH.
+COPY packages/server/package*.json ./packages/server/
+
+# install dependencies
+RUN yarn
+
 # Bundle app source
 COPY . .
-
-RUN npm install
 
 # App runs on port 5000
 EXPOSE 5000
 
 WORKDIR /usr/src/app/packages/server
 
-RUN npm install -g typescript
+RUN yarn run build
 
-RUN tsc
-
-# Start the server!
-CMD [ "npm", "run", "prod" ]
+# # Start the server!
+CMD [ "yarn", "run", "start" ]

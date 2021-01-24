@@ -18,17 +18,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "prod": "tsc && node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
+    "start": "set \"NODE_ENV=production\" && yarn build && node dist/server.js",
+    "dev": "set \"NODE_ENV=development\" && ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.9",
-    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.9",
     "@types/express-fileupload": "^1.1.6",
-    "@types/express-validator": "^3.0.0",
     "@types/mongodb": "^3.6.3",
     "@types/morgan": "^1.9.2",
     "@types/node": "^14.14.14",

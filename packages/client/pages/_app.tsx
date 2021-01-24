@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric)
+  console.log(metric);
 }
 
 function WrappedApp({ Component, pageProps }) {
@@ -51,6 +51,11 @@ function WrappedApp({ Component, pageProps }) {
         console.log("successfully logged in using localstorage token.");
       })
       .catch((err) => {
+        if (err.response.data.errors) {
+          // if this exists the token is bad/malformed or edited.
+          setToken("");
+          console.log("token was malformed, or edited, resetting...");
+        }
         if (err.response.data.error === "token is invalid") {
           setToken("");
           console.log("token was invalid.");
