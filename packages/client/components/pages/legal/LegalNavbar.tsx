@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "react-feather";
+import { Moon, Sun, Menu, X } from "react-feather";
 import { useRecoilState } from "recoil";
 import ActiveLink from "./../../ActiveLink";
 import PropsTheme from "../../../styles/theme/PropsTheme";
@@ -72,8 +72,11 @@ export default function SubNavbar(props) {
           <LogoText>Legal</LogoText>
           {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
         </LogoSection>
-        {!isDesktop() && (
-            <HamburgerButton onClick={() => setToggled(!toggled)} />
+        {!toggled && !isDesktop() && (
+            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(!toggled)}/>
+          )}
+          {toggled && !isDesktop() && (
+            <X style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(false)}/>
           )}
       </Content>
       {toggled && isMobile() && <div>{getLinks()}</div>}
