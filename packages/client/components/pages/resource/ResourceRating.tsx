@@ -30,8 +30,8 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
 
   const fetchReviews = () => {
     getAxios()
-      .get(`/review/${resource?._id}`)
-      .then((res) => setReviews(res.data.payload))
+      .get(`/directory/reviews/${resource?._id}`)
+      .then((res) => setReviews(res.data.payload.reviews))
       .catch((err) => console.log(err.response.data));
   };
 
@@ -52,7 +52,7 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         rating,
         resource: resource._id,
       })
-      .then(() => fetchReviews())
+      .then((res) => console.log(res.data))
       .catch((err) => setStatus(err.response.data.error));
   };
 

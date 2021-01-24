@@ -3,6 +3,7 @@ import PropsTheme from "./theme/PropsTheme";
 
 const GlobalStyle = createGlobalStyle`
 
+
     body {
         transition: 250ms all;
         overflow-x: hidden;

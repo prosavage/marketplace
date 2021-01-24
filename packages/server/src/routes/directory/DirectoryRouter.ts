@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import {
   CATEGORIES_COLLECTION,
   RESOURCES_COLLECTION,
+  REVIEWS_COLLECTION,
   USERS_COLLECTION,
 } from "../../constants";
 import { isValidBody } from "../../middleware/BodyValidate";
@@ -18,6 +19,31 @@ const directoryRouter = express.Router();
 
 directoryRouter.use("/resources", directoryResourceRouter);
 directoryRouter.use("/versions", directoryVersionRouter);
+
+directoryRouter.get(
+  "/reviews/:resource",
+  [
+    param("resource")
+      .isMongoId()
+      .bail()
+      .customSanitizer((v) => new ObjectId(v)),
+    isValidBody,
+  ],
+  async (req: Request, res: Response) => {
+    const resourceId = (req.params.resource as unknown) as ObjectId;
+    if (!resourceId || resourceId === null) {
+      res.failure("invalid resource id");
+      return;
+    }
+
+    const reviews = await getDatabase()
+      .collection(REVIEWS_COLLECTION)
+      .find({ resource: resourceId })
+      .toArray();
+
+    res.success({ reviews });
+  }
+);
 
 directoryRouter.get(
   "/categories/:type",

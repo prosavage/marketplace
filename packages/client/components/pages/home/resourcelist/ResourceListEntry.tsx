@@ -7,19 +7,26 @@ import { themeState } from "../../../../atoms/theme";
 import timeago from "time-ago";
 import { useRecoilValue } from "recoil";
 import renderReviewDroplets from "../../../../util/Review";
+import { User } from "../../../../types/User";
+import getAxios from "../../../../util/AxiosInstance";
 
 function ResourceListEntry(props: { resource: Resource }) {
-  const [user, setUser] = useState("Loading...");
+  const [user, setUser] = useState<User>();
   const theme = useRecoilValue(themeState);
 
   const [reviewCount, setReviewCount] = useState(0);
 
   useEffect(() => {
-    setUser("ProSavage");
-    setReviewCount(Math.floor(Math.random() * 1000));
-  }, []);
+    getAxios()
+      .get(`/directory/user/${props.resource.owner}`)
+      .then((res) => setUser(res.data.payload.user))
+      .catch((err) => console.log(err.response.data));
 
-  
+    getAxios()
+      .get(`/directory/reviews/${props.resource._id}`)
+      .then((res) => setReviewCount(res.data.payload.reviews.length))
+      .catch((err) => console.log(err.response.data));
+  }, []);
 
   return (
     <Wrapper>
@@ -31,15 +38,16 @@ function ResourceListEntry(props: { resource: Resource }) {
               <h2>{props.resource.name}</h2>
             </Link>
             <Link href={`/users/${props.resource.owner}`}>
-              <AuthorLink>{user}</AuthorLink>
+              <AuthorLink>{user?.username}</AuthorLink>
             </Link>
           </TitleArea>
           <Description>{props.resource.description}</Description>
         </ResourceInfo>
-
         <ResourceStats>
           <Review>
-            <ReviewDropsContainer>{renderReviewDroplets(theme)}</ReviewDropsContainer>
+            <ReviewDropsContainer>
+              {renderReviewDroplets(theme, props.resource.rating)}
+            </ReviewDropsContainer>
             <ReviewCount>
               {new Intl.NumberFormat().format(reviewCount)} ratings
             </ReviewCount>
@@ -89,7 +97,7 @@ const ResourceInfo = styled.div`
 `;
 
 const AuthorLink = styled.p`
-  color: #00B2FF;
+  color: #00b2ff;
   font-size: 10px;
   line-height: 13px;
 `;
@@ -102,7 +110,6 @@ const TitleArea = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-
 `;
 
 const ResourceStats = styled.div`

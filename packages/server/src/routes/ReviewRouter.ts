@@ -60,7 +60,7 @@ reviewRouter.get("/:id", [
     isValidBody
 ], async (req: Request, res: Response) => {
     const id = req.params.id;
-    const reviews = await getDatabase().collection(REVIEWS_COLLECTION).find({ resource: id }).toArray();
+    const reviews = await getDatabase().collection(REVIEWS_COLLECTION).find({ _id: id }).toArray();
     res.success(reviews)
 })
 

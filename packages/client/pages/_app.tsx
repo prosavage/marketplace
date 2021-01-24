@@ -10,6 +10,7 @@ import { userState } from "../atoms/user";
 import { useEffect } from "react";
 import getToken, { setToken } from "../util/TokenManager";
 import getAxios, { buildAxios } from "../util/AxiosInstance";
+import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,6 +20,10 @@ function MyApp({ Component, pageProps }) {
       </RecoilRoot>
     </Wrapper>
   );
+}
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  console.log(metric)
 }
 
 function WrappedApp({ Component, pageProps }) {
