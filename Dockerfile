@@ -9,9 +9,11 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
+
 # CRITICAL TO GET NODEJS MONOREPO PROJECT WORKING SMH.
 COPY packages/server/package*.json ./packages/server/
 
+# install dependencies
 RUN yarn
 
 # Bundle app source
