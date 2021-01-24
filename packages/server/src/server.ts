@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import morgan, { token } from "morgan";
+import morgan from "morgan";
 import mongodb, { ObjectId } from "mongodb";
 import dotenv from "dotenv";
 import { User } from "./types/User";
