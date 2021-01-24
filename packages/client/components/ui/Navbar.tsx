@@ -4,7 +4,7 @@ import DarkTheme from "../../styles/theme/DarkTheme";
 import LightTheme from "../../styles/theme/LightTheme";
 import PropsTheme from "../../styles/theme/PropsTheme";
 import ActiveLink from "./../ActiveLink";
-import { Moon, Sun, User } from "react-feather";
+import { Moon, Sun, User, Menu, X } from "react-feather";
 import { useRecoilState } from "recoil";
 import { themeState } from "../../atoms/theme";
 import Button from "./Button";
@@ -118,8 +118,11 @@ export default function Navbar(props) {
           >
             {theme === DarkTheme ? <Moon /> : <Sun />}
           </LinkWrapper>
-          {!isDesktop() && (
-            <HamburgerButton onClick={() => setToggled(!toggled)} />
+          {!toggled && !isDesktop() && (
+            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(!toggled)}/>
+          )}
+          {toggled && !isDesktop() && (
+            <X style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(false)}/>
           )}
         </AccountSection>
       </Content>
