@@ -111,7 +111,7 @@ export default function Navbar(props) {
           )}
 
           <LinkWrapper
-            style={{ paddingRight: "1em" }}
+            style={{ paddingRight: "1em", cursor: "pointer" }}
             onClick={() =>
               setTheme(theme === DarkTheme ? LightTheme : DarkTheme)
             }
@@ -181,6 +181,7 @@ const HamburgerButton = styled.div`
   border-top: 1px solid ${(props: PropsTheme) => props.theme.color};
   border-bottom: 1px solid ${(props: PropsTheme) => props.theme.color};
   padding: 5px;
+  cursor: pointer;
 `;
 
 const LinkWrapper = styled.div`
