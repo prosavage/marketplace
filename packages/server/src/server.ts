@@ -15,7 +15,6 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
-import { RESOURCES_COLLECTION } from "./constants";
 
 dotenv.config();
 
@@ -51,6 +50,8 @@ app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });
 });
 
+console.log("starting...")
+console.log("attemping database connection...")
 mongoClient.connect(async () => {
   console.log("connected to database.");
   await ensureIndexes();

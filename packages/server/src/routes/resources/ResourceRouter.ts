@@ -12,7 +12,6 @@ import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
 import { Category } from "../../types/Category";
-import { ResourceType } from "../../types/Resource";
 import resourceIconRouter from "./ResourceIconRouter";
 
 const resourceRouter = express.Router();
