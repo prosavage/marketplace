@@ -17,6 +17,7 @@
     "ts-node-dev": "^1.1.1"
   },
   "scripts": {
+    "build": "tsc",
     "prod": "tsc && node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
   },
