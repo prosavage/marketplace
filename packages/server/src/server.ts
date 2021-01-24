@@ -15,6 +15,7 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
+import { RESOURCES_COLLECTION, USERS_COLLECTION } from "./constants";
 
 dotenv.config();
 
