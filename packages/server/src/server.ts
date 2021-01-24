@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import morgan from "morgan";
+import morgan, { token } from "morgan";
 import mongodb, { ObjectId } from "mongodb";
 import dotenv from "dotenv";
 import { User } from "./types/User";
@@ -25,10 +25,20 @@ const mongoClient = new mongodb.MongoClient(
 export const getDatabase = () => {
   return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
 };
+
 export const tokenMap = new Map<string, User["_id"]>([
   // temp perma token for dev
-  ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")]
+  ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")],
 ]);
+
+
+// clear dev tokens if running in prod.
+if (process.env.NODE_ENV === "production") {
+  tokenMap.clear()
+  console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.")
+} else {
+  console.log("RUNNING IN DEVELOPEMNT MODE.")
+}
 
 export const bunny = new BunnyCDNStorage();
 
@@ -39,7 +49,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(betterResponse);
 app.use("/auth", authRouter);
-app.use("/users/icon", userIconRouter)
+app.use("/users/icon", userIconRouter);
 app.use("/resources", resourceRouter);
 app.use("/categories", categoryRouter);
 app.use("/directory", directoryRouter);
@@ -50,8 +60,8 @@ app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });
 });
 
-console.log("starting...")
-console.log("attemping database connection...")
+console.log("starting...");
+console.log("attemping database connection...");
 mongoClient.connect(async () => {
   console.log("connected to database.");
   await ensureIndexes();

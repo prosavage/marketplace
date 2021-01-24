@@ -7,6 +7,7 @@ services:
     depends_on:
       - mongo
     environment:
+      - NODE_ENV=production
       - MONGODB_URL=mongodb://mongo:27017
       - MONGODB_DB_NAME=marketplace
       - BUNNY_STORAGE_API_KEY=adb096aa-02cd-4f39-a07d75ff43f6-6e7d-46a5

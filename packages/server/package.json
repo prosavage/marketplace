@@ -18,8 +18,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "prod": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
+    "start": "set \"NODE_ENV=production\" && yarn build && node dist/server.js",
+    "dev": "set \"NODE_ENV=development\" && ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

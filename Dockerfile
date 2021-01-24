@@ -27,4 +27,4 @@ WORKDIR /usr/src/app/packages/server
 RUN yarn run build
 
 # # Start the server!
-CMD [ "yarn", "run", "prod" ]
+CMD [ "yarn", "run", "start" ]
