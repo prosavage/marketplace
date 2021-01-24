@@ -23,7 +23,7 @@ function Categories(props: {
   return (
     <Wrapper>
       <Header>
-        <p>Categories</p>
+        <TextBox>Categories</TextBox>
       </Header>
       <Content>
         {categories.map((entry) => (
@@ -49,7 +49,9 @@ const Wrapper = styled.div`
   overflow: hidden;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 `;
-
+const TextBox = styled.p`
+  font-weight: 600;
+`
 const Header = styled.div`
   background: ${(props: PropsTheme) => props.theme.accentColor};
   padding: 0.5em;
