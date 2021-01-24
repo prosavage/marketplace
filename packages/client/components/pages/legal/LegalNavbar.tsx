@@ -10,16 +10,16 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../atoms/user";
 const links = [
   {
-    link: "/directory/resources/plugin",
-    text: "Plugins",
+    link: "/legal/terms",
+    text: "Terms & Conditions",
   },
   {
-    link: "/directory/resources/mod",
-    text: "Mods",
+    link: "/legal/privacy",
+    text: "Privacy Policy",
   },
   {
-    link: "/directory/resources/software",
-    text: "Software",
+    link: "/legal/rules",
+    text: "Rules",
   },
 ];
 
@@ -69,23 +69,12 @@ export default function SubNavbar(props) {
     <Wrapper>
       <Content>
         <LogoSection>
-          <LogoText>Resources</LogoText>
+          <LogoText>Legal</LogoText>
           {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
         </LogoSection>
-        <AccountSection>
-          <LinkWrapper style={{paddingRight: "1em"}}>
-            <CreateButton onClick={() => {
-              if (user) {
-                router.push("/create")
-              } else {
-                router.push("/login")
-              }
-            }}>CREATE +</CreateButton>
-          </LinkWrapper>
-          {!isDesktop() && (
+        {!isDesktop() && (
             <HamburgerButton onClick={() => setToggled(!toggled)} />
           )}
-        </AccountSection>
       </Content>
       {toggled && isMobile() && <div>{getLinks()}</div>}
     </Wrapper>
@@ -183,21 +172,4 @@ const LinkText = styled.p`
   @media (min-width: 700px) {
     padding: 0 15px;
   }
-`;
-
-const AccountSection = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0 15px;
-`;
-
-const CreateButton = styled(Button)`
-  background: black !important;
-  color: ${(props: PropsTheme) => props.theme.accentColor} !important;
-  border: none !important;
-  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28);
-  padding: 15px 14px !important;
-  cursor: pointer;
 `;
