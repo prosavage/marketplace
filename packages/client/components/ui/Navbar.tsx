@@ -119,10 +119,10 @@ export default function Navbar(props) {
             {theme === DarkTheme ? <Moon /> : <Sun />}
           </LinkWrapper>
           {!toggled && !isDesktop() && (
-            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(!toggled)}/>
+            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(!toggled)}/>
           )}
           {toggled && !isDesktop() && (
-            <X style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(false)}/>
+            <X style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(false)}/>
           )}
         </AccountSection>
       </Content>
