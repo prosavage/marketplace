@@ -12,23 +12,36 @@ export default function ResourceHeader(props: {
   version: Version | undefined;
 }) {
   return (
-    <TitleContainer>
-      <ResourceIcon resource={props.resource} size={"100px"} />
-      <ContentContainer>
-        <TextContainer>
-          <HeaderContainer>
-            <h1>{props.resource?.name}</h1>
-            <VersionText>v{props.version?.version}</VersionText>
-          </HeaderContainer>
-          <Description>{props.resource?.description}</Description>
-        </TextContainer>
-        <ButtonContainer>
+    <>
+      <TitleContainer>
+        <ResourceIcon resource={props.resource} size={"100px"} />
+        <ContentContainer>
+          <TextContainer>
+            <HeaderContainer>
+              <h1>{props.resource?.name}</h1>
+              <VersionText>v{props.version?.version}</VersionText>
+            </HeaderContainer>
+            <Description>{props.resource?.description}</Description>
+          </TextContainer>
+          <DesktopButtonContainer>
           <DownloadButton>
             <p>Download</p>
           </DownloadButton>
-        </ButtonContainer>
-      </ContentContainer>
-    </TitleContainer>
+          <VersionButton>
+            <p>Versions</p>
+          </VersionButton>
+        </DesktopButtonContainer>
+        </ContentContainer>
+      </TitleContainer>
+      <MobileButtonContainer>
+        <DownloadButton>
+          <p>Download</p>
+        </DownloadButton>
+        <VersionButton>
+          <p>Versions</p>
+        </VersionButton>
+      </MobileButtonContainer>
+    </>
   );
 }
 
@@ -38,6 +51,7 @@ const TitleContainer = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   border-radius: 4px;
   width: 100%;
+  align-items: center;
 `;
 
 const ContentContainer = styled.div`
@@ -80,8 +94,19 @@ const VersionText = styled.p`
 `;
 const DownloadButton = styled(Button)`
   background: black !important;
-  padding: 10px 25px !important;
+  padding: 10px 10px !important;
   color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  margin: 0.5em 0;
+
+  @media (max-width: 600px) {
+    margin: 1em 0;
+    width: 100%;
+  }
+`;
+
+const VersionButton = styled(Button)`
+  padding: 10px 10px !important;
+  margin: 0.5em 0;
 
   @media (max-width: 600px) {
     margin: 1em 0;
@@ -93,3 +118,16 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const MobileButtonContainer = styled(ButtonContainer)`
+  @media(min-width: 600px) {
+    display: none;
+  }
+`
+
+const DesktopButtonContainer = styled(ButtonContainer)`
+
+@media(max-width: 600px) {
+    display: none;
+  }
+`
