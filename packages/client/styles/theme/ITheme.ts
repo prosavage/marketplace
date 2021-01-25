@@ -3,6 +3,7 @@ interface ITheme {
     backgroundSecondary: string,
     color: string;
     accentColor: string;
+    secondaryAccentColor: string;
     buttonAccent: string;
     borderColor: string;
     errorColor: string;
