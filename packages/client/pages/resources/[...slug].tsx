@@ -16,11 +16,13 @@ import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 import ResourceRating from "../../components/pages/resource/ResourceRating";
 import ResourceVersions from "../../components/pages/resource/ResourceVersions";
 import ResourceWiki from "../../components/pages/resource/ResourceWiki";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../atoms/user";
 
 enum ResourceView {
   HOME = "home",
   VERSIONS = "versions",
-  WIKI = "wiki"
+  WIKI = "wiki",
 }
 
 export default function ResourceId(props: { id: string; view: string }) {
@@ -30,6 +32,14 @@ export default function ResourceId(props: { id: string; view: string }) {
   const [view, setView] = useState<ResourceView>(
     props.view === null ? ResourceView.HOME : (props.view as ResourceView)
   );
+  const user = useRecoilValue(userState);
+
+  const viewerOwnsResource = () => {
+    // both can be undefined if loading, and return true, causing a flicker.
+    if (!resource || !user) return false;
+    return resource?.owner === user?._id
+  }
+
   const router = useRouter();
 
   const BASE_URL = `/resources/${props.id}`;
@@ -71,8 +81,8 @@ export default function ResourceId(props: { id: string; view: string }) {
       case ResourceView.VERSIONS:
         return <ResourceVersions resource={resource} />;
       case ResourceView.WIKI:
-        return <ResourceWiki/>
-      }
+        return <ResourceWiki />;
+    }
   };
 
   const changeView = (view: ResourceView) => {
@@ -118,7 +128,7 @@ export default function ResourceId(props: { id: string; view: string }) {
             resource={resource}
             firstVersion={getFirstVersion()}
           />
-          <ResourceEdit resource={resource} />
+          {viewerOwnsResource() && <ResourceEdit resource={resource} />}
           <DiscordInfo discordServerId={author?.discordServerId} />
         </MetadataContainer>
       </ResourceContentContainer>

@@ -171,14 +171,14 @@ const LinkText = styled.p`
   ${(props: { selected: boolean }) =>
     props.selected &&
     css`
-      background: #00b2ff;
+      background: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
       border-radius: 5px;
     `};
   @media (min-width: 700px) {
     padding: 0 15px;
   }
   &:hover {
-    background: #00b2ff;
+    background: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
     border-radius: 5px;
   }
 `;

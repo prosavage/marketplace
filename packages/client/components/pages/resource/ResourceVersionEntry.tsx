@@ -5,14 +5,22 @@ import timeago from "time-ago";
 import React from "react";
 import Button from "../../ui/Button";
 import parser from "./../../../util/parser/Parser"
+import { animated, useSpring } from "react-spring";
 
 export default function ResourceVersionEntry({
   version,
 }: {
   version: Version;
 }) {
+
+  const anime = useSpring({
+    config: {duration: 250},
+    opacity: 1,
+    from: {opacity: 0.5}
+  })
+
   return (
-    <Wrapper>
+    <Wrapper style={anime}>
       <Header>
         <TextContainer>
           <h3>{version.title}</h3>
@@ -30,7 +38,7 @@ export default function ResourceVersionEntry({
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(animated.div)`
   display: flex;
   flex-direction: column;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
