@@ -120,7 +120,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   padding: 1em;
   border-radius: 4px;
-  margin: 1em 0;
+  margin-bottom: 1em;
 `;
 
 const Title = styled.div`

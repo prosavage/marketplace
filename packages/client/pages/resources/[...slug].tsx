@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowLeft, TrendingUp } from "react-feather";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ResourceHeader from "../../components/pages/resource/ResourceHeader";
 import Button from "../../components/ui/Button";
 import PropsTheme from "../../styles/theme/PropsTheme";
@@ -14,14 +14,34 @@ import ResourceThread from "../../components/pages/resource/ResourceThread";
 import DiscordInfo from "../../components/pages/resource/DiscordInfo";
 import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 import ResourceRating from "../../components/pages/resource/ResourceRating";
+import ResourceVersions from "../../components/pages/resource/ResourceVersions";
+import ResourceWiki from "../../components/pages/resource/ResourceWiki";
 
-export default function ResourceId(props: { id: string }) {
+enum ResourceView {
+  HOME = "home",
+  VERSIONS = "versions",
+  WIKI = "wiki"
+}
+
+export default function ResourceId(props: { id: string; view: string }) {
   const [resource, setResource] = useState<Resource>();
   const [versions, setVersions] = useState<Version[]>([]);
   const [author, setAuthor] = useState<User>();
+  const [view, setView] = useState<ResourceView>(
+    props.view === null ? ResourceView.HOME : (props.view as ResourceView)
+  );
   const router = useRouter();
 
+  const BASE_URL = `/resources/${props.id}`;
+
+  const handleViewRouting = () => {
+    let viewToUse = props.view === null ? ResourceView.HOME : props.view;
+    const view = viewToUse as ResourceView;
+    changeView(view);
+  };
+
   useEffect(() => {
+    handleViewRouting();
     getAxios()
       .get(`/resources/${props.id}`)
       .then((res) => setResource(res.data.payload.resource));
@@ -44,18 +64,53 @@ export default function ResourceId(props: { id: string }) {
     return versions[versions.length - 1];
   };
 
+  const renderView = () => {
+    switch (view) {
+      case ResourceView.HOME:
+        return <ResourceThread resource={resource} />;
+      case ResourceView.VERSIONS:
+        return <ResourceVersions resource={resource} />;
+      case ResourceView.WIKI:
+        return <ResourceWiki/>
+      }
+  };
+
+  const changeView = (view: ResourceView) => {
+    // lowercases just in case. I broke it before using Object.keys :D
+    router.push(`${BASE_URL}/${view.toLowerCase()}`, undefined, {
+      shallow: true,
+    });
+    setView(view.toLowerCase() as ResourceView);
+  };
+
   return (
     <Wrapper>
-      <div> 
+      <div>
         <BackButton onClick={() => router.back()}>
           <ArrowLeft size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
       </div>
       <ResourceContentContainer>
         <ResourceBody>
-          <ResourceHeader resource={resource} version={versions[0]} />
-          <ResourceThread resource={resource}/>
-          <ResourceRating resource={resource}/>
+          <ResourceHeader
+            resource={resource}
+            version={versions[0]}
+            onVersionPress={() => {
+              changeView(ResourceView.VERSIONS);
+            }}
+          />
+          <ViewController>
+            {Object.keys(ResourceView).map((viewEntry: ResourceView) => (
+              <ViewEntry
+                selected={view === viewEntry.toLowerCase()}
+                onClick={() => changeView(viewEntry)}
+              >
+                {viewEntry}
+              </ViewEntry>
+            ))}
+          </ViewController>
+          {renderView()}
+          <ResourceRating resource={resource} />
         </ResourceBody>
         <MetadataContainer>
           <PluginInfo
@@ -63,10 +118,8 @@ export default function ResourceId(props: { id: string }) {
             resource={resource}
             firstVersion={getFirstVersion()}
           />
-          <ResourceEdit
-          resource={resource}
-          />
-          <DiscordInfo discordServerId={author?.discordServerId}/>
+          <ResourceEdit resource={resource} />
+          <DiscordInfo discordServerId={author?.discordServerId} />
         </MetadataContainer>
       </ResourceContentContainer>
     </Wrapper>
@@ -74,9 +127,10 @@ export default function ResourceId(props: { id: string }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const id = params.id as string;
-
-  return { props: { id } };
+  const slug = params.slug as string[];
+  const id = slug[0] ? slug[0] : null;
+  const view = slug[1] ? slug[1] : null;
+  return { props: { id, view } };
 }
 
 const Wrapper = styled.div`
@@ -108,7 +162,7 @@ const ResourceContentContainer = styled.div`
   width: 100%;
   margin: 2em 0;
 
-  @media(max-width: 1000px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
   }
 `;
@@ -124,4 +178,29 @@ const MetadataContainer = styled.div`
   flex-direction: column;
   flex-basis: 30%;
   margin: 0 1em;
+`;
+
+const ViewController = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+  margin-top: 1em;
+  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+  border-radius: 4px;
+`;
+
+const ViewEntry = styled.p`
+  padding: 0 0.5em;
+  transition: 250ms ease-in-out;
+  cursor: pointer;
+
+  ${(props: { selected: boolean }) =>
+    props.selected &&
+    css`
+      color: ${(props: PropsTheme) => props.theme.accentColor};
+    `}
+
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.accentColor};
+  }
 `;

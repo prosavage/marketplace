@@ -10,7 +10,21 @@ import ResourceIcon from "../../ui/ResourceIcon";
 export default function ResourceHeader(props: {
   resource: Resource;
   version: Version | undefined;
+  onVersionPress: () => void;
 }) {
+  const renderButtons = () => {
+    return (
+      <>
+        <DownloadButton>
+          <p>Download</p>
+        </DownloadButton>
+        <VersionButton onClick={() => props.onVersionPress()}>
+          <p>Versions</p>
+        </VersionButton>
+      </>
+    );
+  };
+
   return (
     <>
       <TitleContainer>
@@ -23,24 +37,10 @@ export default function ResourceHeader(props: {
             </HeaderContainer>
             <Description>{props.resource?.description}</Description>
           </TextContainer>
-          <DesktopButtonContainer>
-          <DownloadButton>
-            <p>Download</p>
-          </DownloadButton>
-          <VersionButton>
-            <p>Versions</p>
-          </VersionButton>
-        </DesktopButtonContainer>
+          <DesktopButtonContainer>{renderButtons()}</DesktopButtonContainer>
         </ContentContainer>
       </TitleContainer>
-      <MobileButtonContainer>
-        <DownloadButton>
-          <p>Download</p>
-        </DownloadButton>
-        <VersionButton>
-          <p>Versions</p>
-        </VersionButton>
-      </MobileButtonContainer>
+      <MobileButtonContainer>{renderButtons()}</MobileButtonContainer>
     </>
   );
 }
@@ -120,14 +120,13 @@ const ButtonContainer = styled.div`
 `;
 
 const MobileButtonContainer = styled(ButtonContainer)`
-  @media(min-width: 600px) {
+  @media (min-width: 600px) {
     display: none;
   }
-`
+`;
 
 const DesktopButtonContainer = styled(ButtonContainer)`
-
-@media(max-width: 600px) {
+  @media (max-width: 600px) {
     display: none;
   }
-`
+`;

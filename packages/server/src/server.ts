@@ -15,7 +15,14 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
-import { RESOURCES_COLLECTION, USERS_COLLECTION } from "./constants";
+import {
+  CATEGORIES_COLLECTION,
+  RESOURCES_COLLECTION,
+  VERSIONS_COLLECTION,
+} from "./constants";
+import { ResourceType } from "./types/Resource";
+import { rword } from "rword";
+import { Category } from "./types/Category";
 
 dotenv.config();
 
@@ -69,56 +76,57 @@ mongoClient.connect(async () => {
   app.listen(5000, () => console.log("started marketplace backend."));
 });
 
-// const generateAndPutResource = async (
-//   file: any,
-//   resourceType: ResourceType,
-//   randomCategory: Category
-// ) => {
-//   const resource = {
-//     name: (rword.generate(1) + "-" + resourceType.substring(0, 1)) as string,
-//     price: 0,
-//     rating: 0,
-//     category: randomCategory!!._id,
-//     thread: "lol xd",
-//     owner: new ObjectId("5ff5018f90a7f7554427af6d"),
-//     updated: new Date(),
-//     downloads: Math.floor(Math.random() * 100000),
-//     type: resourceType,
-//   };
-//   const result = await getDatabase()
-//     .collection(RESOURCES_COLLECTION)
-//     .insertOne(resource);
-//   const resourceResult = result.ops[0];
-//   const version = {
-//     version: (Math.random() * 10).toString(),
-//     title: rword.generate(1) as string,
-//     description: (rword.generate(5) as string[]).join(" "),
-//     timestamp: new Date(
-//       new Date().getTime() - Math.floor(Math.random() * 1000)
-//     ),
-//     resource: resourceResult._id,
-//     author: new ObjectId("5ff5018f90a7f7554427af6d"),
-//   };
-//   await getDatabase().collection(VERSIONS_COLLECTION).insertOne(version);
-// };
+const generateAndPutResource = async (
+  file: any,
+  resourceType: ResourceType,
+  randomCategory: Category
+) => {
+  // console.log("resource")
+  const resource = {
+    name: (rword.generate(1) + "-" + resourceType.substring(0, 1)) as string,
+    price: 0,
+    rating: 0,
+    category: randomCategory!!._id,
+    thread: "lol xd",
+    owner: new ObjectId("5fe53ce6ffa79fc6331f8ab4"),
+    updated: new Date(),
+    downloads: Math.floor(Math.random() * 100000),
+    type: resourceType,
+  };
+  const result = await getDatabase()
+    .collection(RESOURCES_COLLECTION)
+    .insertOne(resource);
+    // console.log("starting version")
+  const resourceResult = result.ops[0];
+  const versions = []
+  for (let i = 0; i <= 15; i++) {
+    const version = {
+      version: (Math.random() * 10).toString(),
+      title: rword.generate(1) as string,
+      description: (rword.generate(5) as string[]).join(" "),
+      timestamp: new Date(
+        new Date().getTime() - Math.floor(Math.random() * 1000)
+      ),
+      resource: resourceResult._id,
+      author: new ObjectId("5fe53ce6ffa79fc6331f8ab4"),
+    };
+    versions.push(version)
+  }
+  await getDatabase().collection(VERSIONS_COLLECTION).insertMany(versions);
+};
 
-// const addDummyData = async () => {
-//   const file = readFileSync(
-//     "C:\\Users\\prosavage\\Documents\\Projects\\marketplace\\packages\\server\\FactionsX-lib.jar"
-//   );
-//   for (const resourceType of [
-//     ResourceType.MOD,
-//     ResourceType.PLUGIN,
-//     ResourceType.SOFTWARE,
-//   ]) {
-//     const categories: Category[] = await getDatabase()
-//       .collection(CATEGORIES_COLLECTION)
-//       .find({ type: resourceType })
-//       .toArray();
-//     for (let i = 0; i < 10000; i++) {
-//       const randomCategory =
-//         categories[Math.floor(Math.random() * categories.length)];
-//       generateAndPutResource(file, resourceType, randomCategory!!);
-//     }
-//   }
-// };
+const addDummyData = async () => {
+  for (const resourceType of [
+    ResourceType.PLUGIN,
+  ]) {
+    const categories: Category[] = await getDatabase()
+      .collection(CATEGORIES_COLLECTION)
+      .find({ type: resourceType })
+      .toArray();
+    for (let i = 0; i < 10000; i++) {
+      const randomCategory =
+        categories[Math.floor(Math.random() * categories.length)];
+      generateAndPutResource(undefined, resourceType, randomCategory!!);
+    }
+  }
+};
