@@ -178,15 +178,6 @@ const LogoSection = styled.div`
   }
 `;
 
-const HamburgerButton = styled.div`
-  width: 25px;
-  height: 10px;
-  border-top: 1px solid ${(props: PropsTheme) => props.theme.color};
-  border-bottom: 1px solid ${(props: PropsTheme) => props.theme.color};
-  padding: 5px;
-  cursor: pointer;
-`;
-
 const LinkWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -216,6 +207,9 @@ const LinkText = styled.p`
   @media (min-width: 800px) {
     padding: 0 15px;
   }
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
+  }
 `;
 
 const AccountSection = styled.div`
@@ -230,6 +224,9 @@ const AccountText = styled.p`
   font-size: 1.1em;
   display: flex;
   justify-content: center;
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
+  }
 `;
 
 const SignUpButton = styled(Button)`

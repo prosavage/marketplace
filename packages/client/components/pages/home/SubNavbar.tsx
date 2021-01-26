@@ -141,15 +141,6 @@ const LogoSection = styled.div`
   }
 `;
 
-const HamburgerButton = styled.div`
-  width: 25px;
-  height: 10px;
-  border-top: 1px solid ${(props: PropsTheme) => props.theme.color};
-  border-bottom: 1px solid ${(props: PropsTheme) => props.theme.color};
-  padding: 5px;
-  cursor: pointer;
-`;
-
 const LinkWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -185,6 +176,10 @@ const LinkText = styled.p`
     `};
   @media (min-width: 700px) {
     padding: 0 15px;
+  }
+  &:hover {
+    background: #00b2ff;
+    border-radius: 5px;
   }
 `;
 
