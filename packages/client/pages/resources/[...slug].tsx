@@ -18,29 +18,42 @@ import ResourceVersions from "../../components/pages/resource/ResourceVersions";
 import ResourceWiki from "../../components/pages/resource/ResourceWiki";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
+import ResourceVersionEntry from "../../components/pages/resource/ResourceVersionEntry";
 
 enum ResourceView {
   HOME = "home",
   VERSIONS = "versions",
   WIKI = "wiki",
+  VERSION = "version",
 }
 
-export default function ResourceId(props: { id: string; view: string }) {
+export default function ResourceId(props: {
+  id: string;
+  view: string;
+  entry: string;
+}) {
+  // For general resource info.
   const [resource, setResource] = useState<Resource>();
+  // For versions page and browser.
   const [versions, setVersions] = useState<Version[]>([]);
+  // For specific version rendering, when we just want to show one version's info.
+  const [specificVersion, setSpecificVersion] = useState<Version>();
+  // Author info for sidebar, and ownership purposes.
   const [author, setAuthor] = useState<User>();
+  // Actual viewing system for changing components out based on URL state.
   const [view, setView] = useState<ResourceView>(
     props.view === null ? ResourceView.HOME : (props.view as ResourceView)
   );
+
+  const router = useRouter();
+
   const user = useRecoilValue(userState);
 
   const viewerOwnsResource = () => {
     // both can be undefined if loading, and return true, causing a flicker.
     if (!resource || !user) return false;
-    return resource?.owner === user?._id
-  }
-
-  const router = useRouter();
+    return resource?.owner === user?._id;
+  };
 
   const BASE_URL = `/resources/${props.id}`;
 
@@ -64,6 +77,25 @@ export default function ResourceId(props: { id: string; view: string }) {
   }, []);
 
   useEffect(() => {
+    if (view === ResourceView.VERSION) {
+      if (props.entry === undefined) {
+        // no version entry given.
+        // we need to redirect to versions.
+        router.push(`${BASE_URL}/versions`);
+        return;
+      }
+      fetchVersion(props.entry);
+    }
+  }, [props.entry]);
+
+  const fetchVersion = (id: string) => {
+    getAxios()
+      .get(`/version/${id}`)
+      .then((res) => setSpecificVersion(res.data.payload))
+      .catch((err) => console.log(err.response.data));
+  };
+
+  useEffect(() => {
     if (!resource) return;
     getAxios()
       .get(`/directory/user/${resource.owner}`)
@@ -79,9 +111,28 @@ export default function ResourceId(props: { id: string; view: string }) {
       case ResourceView.HOME:
         return <ResourceThread resource={resource} />;
       case ResourceView.VERSIONS:
-        return <ResourceVersions resource={resource} />;
+        return (
+          <ResourceVersions
+            onVersionSelect={(v) => {
+              console.log("ver change");
+              setView(ResourceView.VERSION);
+              router.push(`/resources/${resource._id}/version/${v._id}`, undefined, {shallow: true});
+              setSpecificVersion(v);
+            }}
+            resource={resource}
+          />
+        );
       case ResourceView.WIKI:
         return <ResourceWiki />;
+      case ResourceView.VERSION:
+        return (
+          <ResourceVersionEntry
+            // dont need to do anything on version select since its like already done.
+            onVersionSelect={(v) => {}}
+            resource={resource}
+            version={specificVersion}
+          />
+        );
     }
   };
 
@@ -110,15 +161,21 @@ export default function ResourceId(props: { id: string; view: string }) {
             }}
           />
           <ViewController>
-            {Object.keys(ResourceView).map((viewEntry: ResourceView) => (
-              <ViewEntry
-                key={viewEntry}
-                selected={view === viewEntry.toLowerCase()}
-                onClick={() => changeView(viewEntry)}
-              >
-                {viewEntry}
-              </ViewEntry>
-            ))}
+            {Object.keys(ResourceView)
+              // filter version view since its for specified version only.
+              .filter(
+                (entry) =>
+                  entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
+              )
+              .map((viewEntry: ResourceView) => (
+                <ViewEntry
+                  key={viewEntry}
+                  selected={view === viewEntry.toLowerCase()}
+                  onClick={() => changeView(viewEntry)}
+                >
+                  {viewEntry}
+                </ViewEntry>
+              ))}
           </ViewController>
           {renderView()}
           <ResourceRating resource={resource} />
@@ -141,7 +198,8 @@ export async function getServerSideProps({ params }) {
   const slug = params.slug as string[];
   const id = slug[0] ? slug[0] : null;
   const view = slug[1] ? slug[1] : null;
-  return { props: { id, view } };
+  const entry = slug[2] ? slug[2] : null;
+  return { props: { id, view, entry } };
 }
 
 const Wrapper = styled.div`
@@ -208,10 +266,10 @@ const ViewEntry = styled.p`
   ${(props: { selected: boolean }) =>
     props.selected &&
     css`
-      color: ${(props: PropsTheme) => props.theme.accentColor};
+      color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
     `}
 
   &:hover {
-    color: ${(props: PropsTheme) => props.theme.accentColor};
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   }
 `;

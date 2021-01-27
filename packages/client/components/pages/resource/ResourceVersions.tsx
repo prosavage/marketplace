@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState, version } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
@@ -9,11 +10,14 @@ import ResourceVersionEntry from "./ResourceVersionEntry";
 
 export default function ResourceVersions({
   resource,
+  onVersionSelect,
 }: {
+  onVersionSelect: (version: Version) => void;
   resource: Resource | undefined;
 }) {
   const [versions, setVersions] = useState<Version[]>([]);
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   useEffect(() => {
     if (!resource) return;
@@ -48,9 +52,18 @@ export default function ResourceVersions({
         <h2>Versions</h2>
         {renderPageControls()}
       </Header>
-      {versions.length > 0 ? versions.map((entry) => (
-        <ResourceVersionEntry key={entry._id} version={entry} />
-      )) : <p>No versions found.</p>}
+      {versions.length > 0 ? (
+        versions.map((entry) => (
+          <ResourceVersionEntry
+            onVersionSelect={onVersionSelect}
+            resource={resource}
+            key={entry._id}
+            version={entry}
+          />
+        ))
+      ) : (
+        <p>No versions found.</p>
+      )}
     </Wrapper>
   );
 }
@@ -70,6 +83,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1em;
 `;
 
 const PageControlsWrapper = styled.div`
