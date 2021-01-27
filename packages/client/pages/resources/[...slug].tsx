@@ -112,6 +112,7 @@ export default function ResourceId(props: { id: string; view: string }) {
           <ViewController>
             {Object.keys(ResourceView).map((viewEntry: ResourceView) => (
               <ViewEntry
+                key={viewEntry}
                 selected={view === viewEntry.toLowerCase()}
                 onClick={() => changeView(viewEntry)}
               >
