@@ -5,10 +5,10 @@ import DarkTag from "./DarkTag";
 import LeftTag from "./LeftTag";
 import QuoteTag from "./QuoteTag";
 
+parser.registerTag("quote", QuoteTag);
+parser.registerTag("left", LeftTag);
+parser.registerTag("br", BreakTag);
+parser.registerTag("dark", DarkTag);
+parser.registerTag("light", LightTag);
 
-parser.registerTag("quote", QuoteTag)
-parser.registerTag("left", LeftTag)
-parser.registerTag("br", BreakTag)
-parser.registerTag("dark", DarkTag)
-parser.registerTag("light", LightTag)
 export default parser;

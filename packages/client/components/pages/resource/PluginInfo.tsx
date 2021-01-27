@@ -53,6 +53,6 @@ const DropletsContainer = styled.div`
 `;
 
 const AuthorLink = styled.p`
-  color: #00b2ff;
+  color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   cursor: pointer;
 `;

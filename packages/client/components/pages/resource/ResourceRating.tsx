@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Droplet } from "react-feather";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { resourceLimits } from "worker_threads";
 import { themeState } from "../../../atoms/theme";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
@@ -107,7 +106,7 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         <Button onClick={() => postRating()}>Post Review</Button>
       </RatingSelect>
       {reviews.map((review) => (
-        <ReviewEntry review={review} />
+        <ReviewEntry key={review._id} review={review} />
       ))}
     </Wrapper>
   );
@@ -120,7 +119,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   padding: 1em;
   border-radius: 4px;
-  margin: 1em 0;
+  margin-bottom: 1em;
 `;
 
 const Title = styled.div`

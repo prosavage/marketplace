@@ -1,3 +1,4 @@
+import { animated, useSpring } from "react-spring";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { User, UserStats } from "../../../types/User";
@@ -5,10 +6,22 @@ import { formatNumber } from "../../../util/Format";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
-
-
-
-export default function UserHeader(props: { user: User | undefined, stats: UserStats | undefined }) {
+export default function UserHeader(props: {
+  user: User | undefined;
+  stats: UserStats | undefined;
+}) {
+  const resourceSpring: any = useSpring({
+    from: { val: 0 },
+    to: { val: props.stats?.resourceCount ? props.stats?.resourceCount : 0 },
+  });
+  const downloadSpring: any = useSpring({
+    from: { val: 0 },
+    to: { val: props.stats?.downloads ? props.stats?.downloads : 0 },
+  });
+  const ratingSpring: any = useSpring({
+    from: { val: 0 },
+    to: { val: props.stats?.avgReviewScore ? props.stats?.avgReviewScore : 0 },
+  });
 
   return (
     <Wrapper>
@@ -23,15 +36,21 @@ export default function UserHeader(props: { user: User | undefined, stats: UserS
           </MetaSubContainer>
           <StatsContainer>
             <Stat>
-              <h2>{props.stats?.resourceCount ? formatNumber(props.stats?.resourceCount) : "0"}</h2>
+              <animated.h2>
+                {resourceSpring.val.interpolate((val) => Math.ceil(val))}
+              </animated.h2>
               <StatText>RESOURCES</StatText>
             </Stat>
             <Stat>
-              <h2>{props.stats?.downloads ? formatNumber(props.stats?.downloads) : "0"}</h2>
+              <animated.h2>
+                {downloadSpring.val.interpolate((val) => Math.ceil(val))}
+              </animated.h2>
               <StatText>DOWNLOADS</StatText>
             </Stat>
             <Stat>
-              <h2>{props.stats?.avgReviewScore}</h2>
+              <animated.h2>
+                {ratingSpring.val.interpolate((val) => Math.ceil(val))}
+              </animated.h2>
               <StatText>RATING</StatText>
             </Stat>
           </StatsContainer>
@@ -67,7 +86,6 @@ const TextContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 2em 0.5em;
-
 
   @media (max-width: 800px) {
     flex-direction: column;

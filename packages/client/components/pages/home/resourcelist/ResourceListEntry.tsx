@@ -9,6 +9,8 @@ import { useRecoilValue } from "recoil";
 import renderReviewDroplets from "../../../../util/Review";
 import { User } from "../../../../types/User";
 import getAxios from "../../../../util/AxiosInstance";
+import { animated, useSpring } from "react-spring";
+import PropsTheme from "../../../../styles/theme/PropsTheme";
 
 function ResourceListEntry(props: { resource: Resource }) {
   const [user, setUser] = useState<User>();
@@ -28,8 +30,14 @@ function ResourceListEntry(props: { resource: Resource }) {
       .catch((err) => console.log(err.response.data));
   }, []);
 
+  const anime = useSpring({
+    config: { duration: 500 },
+    opacity: 1,
+    from: { opacity: 0.5 },
+  });
+
   return (
-    <Wrapper>
+    <Wrapper style={anime}>
       <ResourceIcon resource={props.resource} size={"100px"} />
       <Metadata>
         <ResourceInfo>
@@ -72,7 +80,7 @@ function ResourceListEntry(props: { resource: Resource }) {
 
 export default ResourceListEntry;
 
-const Wrapper = styled.div`
+const Wrapper = styled(animated.div)`
   display: flex;
   flex-direction: row;
   padding: 1em;
@@ -97,7 +105,7 @@ const ResourceInfo = styled.div`
 `;
 
 const AuthorLink = styled.p`
-  color: #00b2ff;
+  color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   font-size: 10px;
   line-height: 13px;
 `;

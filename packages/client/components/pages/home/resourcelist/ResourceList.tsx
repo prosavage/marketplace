@@ -121,12 +121,12 @@ const TitleContainer = styled.div`
   border-radius: 4px 4px 0 0;
 `;
 
-const PageButton = styled(Button)`
-  &:hover {
-    border: 1px solid ${(props: PropsTheme) => props.theme.borderColor} !important;
-    color: ${(props: PropsTheme) => props.theme.accentColor} !important;
-  }
-`;
+  const PageButton = styled(Button)`
+    &:hover {
+      border: 1px solid ${(props: PropsTheme) => props.theme.borderColor} !important;
+      color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+    }
+  `;
 
 const NoResourcesFoundContainer = styled.div`
   display: flex;
