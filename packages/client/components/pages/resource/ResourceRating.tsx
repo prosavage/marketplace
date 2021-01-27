@@ -106,7 +106,7 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         <Button onClick={() => postRating()}>Post Review</Button>
       </RatingSelect>
       {reviews.map((review) => (
-        <ReviewEntry review={review} />
+        <ReviewEntry key={review._id} review={review} />
       ))}
     </Wrapper>
   );
