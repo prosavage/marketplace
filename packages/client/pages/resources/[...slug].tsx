@@ -84,16 +84,13 @@ export default function ResourceId(props: {
         router.push(`${BASE_URL}/versions`);
         return;
       }
-      fetchVersion(props.entry);
+      getAxios()
+      .get(`/version/${props.entry}`)
+      .then((res) => setSpecificVersion(res.data.payload))
+      .catch((err) => console.log(err.response.data));
     }
   }, [props.entry]);
 
-  const fetchVersion = (id: string) => {
-    getAxios()
-      .get(`/version/${id}`)
-      .then((res) => setSpecificVersion(res.data.payload))
-      .catch((err) => console.log(err.response.data));
-  };
 
   useEffect(() => {
     if (!resource) return;
@@ -129,7 +126,6 @@ export default function ResourceId(props: {
           <ResourceVersionEntry
             // dont need to do anything on version select since its like already done.
             onVersionSelect={(v) => {}}
-            resource={resource}
             version={specificVersion}
           />
         );
@@ -143,6 +139,26 @@ export default function ResourceId(props: {
     });
     setView(view.toLowerCase() as ResourceView);
   };
+
+  const renderViewController = () => {
+    return <ViewController>
+    {Object.keys(ResourceView)
+      // filter version view since its for specified version only.
+      .filter(
+        (entry) =>
+          entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
+      )
+      .map((viewEntry: ResourceView) => (
+        <ViewEntry
+          key={viewEntry}
+          selected={view === viewEntry.toLowerCase()}
+          onClick={() => changeView(viewEntry)}
+        >
+          {viewEntry}
+        </ViewEntry>
+      ))}
+  </ViewController>
+  }
 
   return (
     <Wrapper>
@@ -160,23 +176,7 @@ export default function ResourceId(props: {
               changeView(ResourceView.VERSIONS);
             }}
           />
-          <ViewController>
-            {Object.keys(ResourceView)
-              // filter version view since its for specified version only.
-              .filter(
-                (entry) =>
-                  entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
-              )
-              .map((viewEntry: ResourceView) => (
-                <ViewEntry
-                  key={viewEntry}
-                  selected={view === viewEntry.toLowerCase()}
-                  onClick={() => changeView(viewEntry)}
-                >
-                  {viewEntry}
-                </ViewEntry>
-              ))}
-          </ViewController>
+          {renderViewController()}
           {renderView()}
           <ResourceRating resource={resource} />
         </ResourceBody>

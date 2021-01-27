@@ -10,12 +10,10 @@ import { Resource } from "../../../types/Resource";
 import { useRouter } from "next/router";
 
 export default function ResourceVersionEntry({
-  resource,
   version,
   onVersionSelect,
 }: {
   onVersionSelect: (version: Version) => void;
-  resource: Resource;
   version: Version;
 }) {
   const router = useRouter();

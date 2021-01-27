@@ -56,7 +56,6 @@ export default function ResourceVersions({
         versions.map((entry) => (
           <ResourceVersionEntry
             onVersionSelect={onVersionSelect}
-            resource={resource}
             key={entry._id}
             version={entry}
           />
