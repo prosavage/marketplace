@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Droplet } from "react-feather";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { resourceLimits } from "worker_threads";
 import { themeState } from "../../../atoms/theme";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";

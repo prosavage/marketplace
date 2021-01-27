@@ -10,15 +10,15 @@ export default function UserHeader(props: {
   user: User | undefined;
   stats: UserStats | undefined;
 }) {
-  const resourceSpring = useSpring({
+  const resourceSpring: any = useSpring({
     from: { val: 0 },
     to: { val: props.stats?.resourceCount ? props.stats?.resourceCount : 0 },
   });
-  const downloadSpring = useSpring({
+  const downloadSpring: any = useSpring({
     from: { val: 0 },
     to: { val: props.stats?.downloads ? props.stats?.downloads : 0 },
   });
-  const ratingSpring = useSpring({
+  const ratingSpring: any = useSpring({
     from: { val: 0 },
     to: { val: props.stats?.avgReviewScore ? props.stats?.avgReviewScore : 0 },
   });

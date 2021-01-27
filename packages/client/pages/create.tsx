@@ -18,7 +18,7 @@ import DarkTheme from "../styles/theme/DarkTheme";
 import { useRecoilState } from "recoil";
 import LightTheme from "../styles/theme/LightTheme";
 import Editor from "react-simple-code-editor";
-import {highlight, languages} from "prismjs";
+import { highlight, languages } from "prismjs";
 import DefaultThread from "../util/DefaultThread";
 
 export default function Create() {
@@ -83,8 +83,7 @@ export default function Create() {
 
   useEffect(() => {
     fetchOptions();
-    console.log(thread)
-
+    console.log(thread);
   }, []);
 
   return (
@@ -151,14 +150,14 @@ export default function Create() {
           <p>Be sure to optimize for dark and light themes.</p>
           <label>LIGHT THEME THREAD</label>
           <ThreadEditor
-           value={thread}
-           onValueChange={code => setThread(code)}
-           highlight={code => highlight(code, languages.bbcode, "bbcode")}
-           padding={15}
-           style={{	
-             fontFamily: '"Fira code", "Fira Mono", monospace',	
-             fontSize: 12,	
-         }}	
+            value={thread}
+            onValueChange={(code) => setThread(code)}
+            highlight={(code) => highlight(code, languages.bbcode, "bbcode")}
+            padding={15}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              fontSize: 12,
+            }}
           />
           <VSpacedInputContainer>
             <Button
@@ -179,7 +178,8 @@ export default function Create() {
         </VSpacedInputContainer>
       </HContainer>
       <VSpacedInputContainer>
-        <Button style={{margin: "1em 0"}}
+        <Button
+          style={{ margin: "1em 0" }}
           type={"submit"}
           onClick={(e) => {
             e.preventDefault();
