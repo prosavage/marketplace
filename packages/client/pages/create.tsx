@@ -83,6 +83,7 @@ export default function Create() {
 
   useEffect(() => {
     fetchOptions();
+    console.log(thread);
   }, []);
 
   return (
@@ -204,15 +205,6 @@ const ThreadContainer = styled.div`
   padding: 1em;
   border-radius: 4px;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
-  /* background: white; */
-
-  img {
-    width: 100%;
-  }
-
-  * > img {
-    width: 100%;
-  }
 `;
 
 const HContainer = styled.div`
@@ -250,4 +242,3 @@ const ThreadEditor = styled(Editor)`
 const VSpacedInputContainer = styled(InputContainer)`
   margin: 1em 0;
 `;
-

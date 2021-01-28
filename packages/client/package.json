@@ -16,11 +16,13 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "^2.0.8",
+    "react-parallax-tilt": "^1.4.71",
     "react-simple-code-editor": "^0.11.0",
     "react-spring": "^8.0.27",
     "recoil": "^0.1.2",
     "styled-components": "^5.2.0",
-    "time-ago": "^0.2.1"
+    "time-ago": "^0.2.1",
+    "use-3d-effect": "^1.1.0"
   },
   "devDependencies": {
     "@types/bbcode-to-react": "^0.2.0",

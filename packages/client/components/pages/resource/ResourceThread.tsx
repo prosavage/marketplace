@@ -10,6 +10,10 @@ import LightTheme from "../../../styles/theme/LightTheme";
 export default function ResourceThread(props: {
   resource: Resource | undefined;
 }) {
+  const theme = useRecoilValue(themeState);
+
+
+
   return <Wrapper>{parser.toReact(props.resource?.thread ? props.resource?.thread : "")}</Wrapper>;
 }
 
@@ -18,7 +22,6 @@ const Wrapper = styled.div`
   margin: 1em 0;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   border-radius: 4px;
-  /* background: white; */
 
   img {
     width: 100%;
