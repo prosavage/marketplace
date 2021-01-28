@@ -50,6 +50,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 `;
 const TextBox = styled.p`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
   font-weight: 600;
 `
 const Header = styled.div`

@@ -230,9 +230,9 @@ const AccountText = styled.p`
 `;
 
 const SignUpButton = styled(Button)`
-  background: black !important;
+  background: ${(props: PropsTheme) => props.theme.oppositeColor} !important;
   color: ${(props: PropsTheme) => props.theme.accentColor} !important;
-  /* box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28); */
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.28);
   padding: 15px 20px !important;
   cursor: pointer;
 `;

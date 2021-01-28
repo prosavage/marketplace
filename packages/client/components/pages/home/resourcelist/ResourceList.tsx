@@ -4,7 +4,7 @@ import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { Resource, ResourceType } from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
-import Button from "./../../../ui/Button";
+import { ArrowLeft, ArrowRight } from "react-feather";
 import { User } from "../../../../types/User";
 
 function ResourceList(props: {
@@ -49,7 +49,7 @@ function ResourceList(props: {
   const renderPageControls = () => {
     return (
       <PageControlsWrapper>
-        <PageButton
+        <BackArrow
           onClick={() => {
             if (page <= 1) {
               return;
@@ -58,9 +58,9 @@ function ResourceList(props: {
           }}
         >
           &larr;
-        </PageButton>
+        </BackArrow>
         <CenterContainer>{page}</CenterContainer>
-        <PageButton onClick={() => setPage(page + 1)}>&rarr;</PageButton>
+        <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
       </PageControlsWrapper>
     );
   };
@@ -103,6 +103,21 @@ const PageControlsWrapper = styled.div`
   margin: 1em 0;
 `;
 
+const BackArrow = styled(ArrowLeft)`
+  cursor: pointer;
+  transition: 250ms ease-in-out;
+  &:hover {
+    stroke-width: 3; 
+  }
+`
+const ForwardArrow = styled(ArrowRight)`
+  cursor: pointer;
+  transition: 250ms ease-in-out;
+  &:hover {
+    stroke-width: 3; 
+  }
+`
+
 const CenterContainer = styled.div`
   margin: 0 1em;
   display: flex;
@@ -117,16 +132,9 @@ const TitleContainer = styled.div`
   width: 100%;
   border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   background: ${(props: PropsTheme) => props.theme.accentColor};
-  color: black;
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
   border-radius: 4px 4px 0 0;
 `;
-
-  const PageButton = styled(Button)`
-    &:hover {
-      border: 1px solid ${(props: PropsTheme) => props.theme.borderColor} !important;
-      color: ${(props: PropsTheme) => props.theme.accentColor} !important;
-    }
-  `;
 
 const NoResourcesFoundContainer = styled.div`
   display: flex;
