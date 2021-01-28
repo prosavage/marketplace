@@ -34,7 +34,6 @@ reviewRouter.put("/", [
         .find({ resource: body.resource, author: req.user!!._id, version: latestVersion._id })
         .toArray();
 
-    console.log(reviews)
     if (reviews != null && reviews.length != 0) {
         res.failure("You have already reviewed this version");
         return;

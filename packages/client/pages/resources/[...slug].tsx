@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, TrendingUp } from "react-feather";
+import { ArrowLeft } from "react-feather";
 import styled, { css } from "styled-components";
 import ResourceHeader from "../../components/pages/resource/ResourceHeader";
 import Button from "../../components/ui/Button";
@@ -85,12 +85,11 @@ export default function ResourceId(props: {
         return;
       }
       getAxios()
-      .get(`/version/${props.entry}`)
-      .then((res) => setSpecificVersion(res.data.payload))
-      .catch((err) => console.log(err.response.data));
+        .get(`/version/${props.entry}`)
+        .then((res) => setSpecificVersion(res.data.payload))
+        .catch((err) => console.log(err.response.data));
     }
   }, [props.entry]);
-
 
   useEffect(() => {
     if (!resource) return;
@@ -111,9 +110,12 @@ export default function ResourceId(props: {
         return (
           <ResourceVersions
             onVersionSelect={(v) => {
-              console.log("ver change");
               setView(ResourceView.VERSION);
-              router.push(`/resources/${resource._id}/version/${v._id}`, undefined, {shallow: true});
+              router.push(
+                `/resources/${resource._id}/version/${v._id}`,
+                undefined,
+                { shallow: true }
+              );
               setSpecificVersion(v);
             }}
             resource={resource}
@@ -141,24 +143,26 @@ export default function ResourceId(props: {
   };
 
   const renderViewController = () => {
-    return <ViewController>
-    {Object.keys(ResourceView)
-      // filter version view since its for specified version only.
-      .filter(
-        (entry) =>
-          entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
-      )
-      .map((viewEntry: ResourceView) => (
-        <ViewEntry
-          key={viewEntry}
-          selected={view === viewEntry.toLowerCase()}
-          onClick={() => changeView(viewEntry)}
-        >
-          {viewEntry}
-        </ViewEntry>
-      ))}
-  </ViewController>
-  }
+    return (
+      <ViewController>
+        {Object.keys(ResourceView)
+          // filter version view since its for specified version only.
+          .filter(
+            (entry) =>
+              entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
+          )
+          .map((viewEntry: ResourceView) => (
+            <ViewEntry
+              key={viewEntry}
+              selected={view === viewEntry.toLowerCase()}
+              onClick={() => changeView(viewEntry)}
+            >
+              {viewEntry}
+            </ViewEntry>
+          ))}
+      </ViewController>
+    );
+  };
 
   return (
     <Wrapper>

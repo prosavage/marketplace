@@ -1,54 +1,19 @@
-import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "react-feather";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { Resource, ResourceType } from "../../../../types/Resource";
+import { Resource } from "../../../../types/Resource";
+import getAxios from "../../../../util/AxiosInstance";
 import FeaturedPluginEntry from "./FeaturedPluginEntry";
 
 export default function FeaturedPlugins() {
-  const [page, setPage] = useState(1);
+  const [resources, setResources] = useState<Resource[]>([]);
 
-  const response= [
-    {
-      _id: "5fe543e4617b45c9499e40d1",
-      name: "FactionsX",
-      price: 0,
-      hasIcon: false,
-      category: "5fe282e1af561421eec33fd6",
-      thread: "lolxd",
-      owner: "5fe280bc3a1e07215e9bdf59",
-      updated: new Date("2020-12-25T01:44:04.997Z"),
-      type: ResourceType.PLUGIN,
-      rating: 0,
-      downloads: 0
-    },
-    {
-      _id: "5fe543e4617b45c9499e40d3",
-      name: "WildStacker",
-      price: 0,
-      hasIcon: false,
-      category: "5fe282e1af561421eec33fd6",
-      thread: "lolxd",
-      owner: "5fe280bc3a1e07215e9bdf59",
-      updated: new Date("2020-12-25T01:44:04.997Z"),
-      type: ResourceType.PLUGIN,
-      rating: 0,
-      downloads: 0
-    },
-    {
-      _id: "5fe543e4617b45c9499e40d4",
-      name: "VillageDefense",
-      price: 0,
-      hasIcon: false,
-      category: "5fe282e1af561421eec33fd6",
-      thread: "lolxd",
-      owner: "5fe280bc3a1e07215e9bdf59",
-      updated: new Date("2020-12-25T01:44:04.997Z"),
-      type: ResourceType.PLUGIN,
-      rating: 0,
-      downloads: 0
-    },
-  ];
+  useEffect(() => {
+    getAxios()
+      .get(`/directory/featured`)
+      .then((res) => setResources(res.data.payload.resources))
+      .catch((err) => console.log(err.response.data));
+  }, []);
 
   return (
     <Wrapper>
@@ -56,7 +21,7 @@ export default function FeaturedPlugins() {
         <h2>Featured Plugins</h2>
       </Header>
       <ContentWrapper>
-        {response.map((entry) => (
+        {resources.map((entry) => (
           <FeaturedPluginEntry key={entry._id} resource={entry as Resource} />
         ))}
       </ContentWrapper>

@@ -17,7 +17,7 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
 
 
     return (
-        <Wrapper>
+        <Wrapper onClick={() => router.push(`/resources/${props.resource._id}`)}>
             <ResourceIconWrapper>
                 <ResourceIcon resource={props.resource} size={"75px"} />
             </ResourceIconWrapper>
@@ -26,7 +26,7 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
                     <h3>{props.resource.name}</h3>
                     <DescText>pls add descriptions to resource api prosavage.</DescText>
                 </TextWrapper>
-                <AuthorWrapper onClick={() => router.push(`/user/${props.resource.owner}`)}>
+                <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
                     {/* <AuthorIcon /> */}
                     <TempAuthorIcon>X</TempAuthorIcon>
                     <AuthorName>{author}</AuthorName>
@@ -45,6 +45,7 @@ const Wrapper = styled.div`
   background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
   max-width: 300px;
   margin: 5px 0;
+  cursor: pointer;
 
 
 /* parent container will put it into column, so use all width. */

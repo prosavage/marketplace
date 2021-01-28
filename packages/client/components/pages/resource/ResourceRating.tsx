@@ -51,7 +51,7 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         rating,
         resource: resource._id,
       })
-      .then((res) => console.log(res.data))
+      .then((res) => fetchReviews())
       .catch((err) => setStatus(err.response.data.error));
   };
 
