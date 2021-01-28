@@ -111,6 +111,7 @@ const Wrapper = styled.div`
 const LogoText = styled.p`
   font-size: 20px;
   font-weight: bold;
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
 `;
 
 const Content = styled.div`
@@ -166,14 +167,13 @@ const LinksWrapper = styled.div`
 const LinkText = styled.p`
   font-size: 1rem;
   cursor: pointer;
-  color: black;
   font-weight: 600;
-  ${(props: { selected: boolean }) =>
-    props.selected &&
-    css`
+  ${(props: { selected: boolean }) => props.selected && css`
       background: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
       border-radius: 5px;
     `};
+
+    color: ${(props: PropsTheme) => props.theme.oppositeColor};
   @media (min-width: 700px) {
     padding: 0 15px;
   }
@@ -192,14 +192,12 @@ const AccountSection = styled.div`
 `;
 
 const CreateButton = styled(Button)`
-  background: black !important;
   color: ${(props: PropsTheme) => props.theme.accentColor} !important;
   border: none !important;
   box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.28);
   padding: 15px 14px !important;
-  cursor: pointer;
 
   &:hover {
-    color: white !important;
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor} !important;
   }
 `;
