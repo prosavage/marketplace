@@ -5,7 +5,7 @@ import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
 import { Version } from "../../../types/Version";
 import getAxios from "../../../util/AxiosInstance";
-import Button from "../../ui/Button";
+import { ArrowLeft, ArrowRight } from "react-feather";
 import ResourceVersionEntry from "./ResourceVersionEntry";
 
 export default function ResourceVersions({
@@ -30,7 +30,7 @@ export default function ResourceVersions({
   const renderPageControls = () => {
     return (
       <PageControlsWrapper>
-        <PageButton
+        <BackArrow
           onClick={() => {
             if (page <= 1) {
               return;
@@ -39,9 +39,9 @@ export default function ResourceVersions({
           }}
         >
           &larr;
-        </PageButton>
+        </BackArrow>
         <CenterContainer>{page}</CenterContainer>
-        <PageButton onClick={() => setPage(page + 1)}>&rarr;</PageButton>
+        <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
       </PageControlsWrapper>
     );
   };
@@ -92,11 +92,20 @@ const PageControlsWrapper = styled.div`
   margin: 1em 0;
 `;
 
-const PageButton = styled(Button)`
+const BackArrow = styled(ArrowLeft)`
+  cursor: pointer;
+  transition: 250ms ease-in-out;
   &:hover {
-    color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+    stroke-width: 3; 
   }
-`;
+`
+const ForwardArrow = styled(ArrowRight)`
+  cursor: pointer;
+  transition: 250ms ease-in-out;
+  &:hover {
+    stroke-width: 3; 
+  }
+`
 
 const CenterContainer = styled.div`
   margin: 0 1em;
