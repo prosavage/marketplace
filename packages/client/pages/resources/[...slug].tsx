@@ -19,12 +19,15 @@ import ResourceWiki from "../../components/pages/resource/ResourceWiki";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
 import ResourceVersionEntry from "../../components/pages/resource/ResourceVersionEntry";
+import ResourceUpdate from "../../components/pages/resource/ResourceUpdate";
 
 enum ResourceView {
   HOME = "home",
   VERSIONS = "versions",
   WIKI = "wiki",
   VERSION = "version",
+  UPDATE = "update",
+  ICON = "icon",
 }
 
 export default function ResourceId(props: {
@@ -53,6 +56,12 @@ export default function ResourceId(props: {
     // both can be undefined if loading, and return true, causing a flicker.
     if (!resource || !user) return false;
     return resource?.owner === user?._id;
+  };
+
+  const isOwnerView = (view: ResourceView) => {
+    return [ResourceView.UPDATE, ResourceView.ICON].includes(
+      view.toLowerCase() as ResourceView
+    );
   };
 
   const BASE_URL = `/resources/${props.id}`;
@@ -131,6 +140,8 @@ export default function ResourceId(props: {
             version={specificVersion}
           />
         );
+      case ResourceView.UPDATE:
+        return <ResourceUpdate resource={resource}/>  
     }
   };
 
@@ -150,6 +161,13 @@ export default function ResourceId(props: {
           .filter(
             (entry) =>
               entry.toUpperCase() !== ResourceView.VERSION.toUpperCase()
+          )
+          .filter(
+            (e) =>
+              !(
+                !viewerOwnsResource() &&
+                isOwnerView(e.toUpperCase() as ResourceView)
+              )
           )
           .map((viewEntry: ResourceView) => (
             <ViewEntry

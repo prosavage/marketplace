@@ -25,7 +25,7 @@ export default function ReviewEntry({ review }: { review: Review }) {
 
   return (
     <Wrapper>
-      <AuthorIcon user={user} size={"64px"} />
+      <AuthorIcon user={user} size={"96px"} />
       <Content>
         <ReviewDropsContainer>
           {renderReviewDroplets(theme, review.rating)}
