@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import * as React from 'react'
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Tilt from 'react-parallax-tilt';
@@ -7,7 +6,7 @@ import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { Resource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 
-export default function FeaturedPluginEntry(props) {
+export default function FeaturedPluginEntry(props: { resource: Resource }) {
 
     const router = useRouter();
 
@@ -15,7 +14,7 @@ export default function FeaturedPluginEntry(props) {
 
     useEffect(() => {
         setAuthor("ProSavage");
-    })
+    }, [])
     
     return (
       <Tilt
@@ -34,7 +33,7 @@ export default function FeaturedPluginEntry(props) {
                     <h3>{props.resource.name}</h3>
                     <DescText>pls add descriptions to resource api prosavage.</DescText>
                 </TextWrapper>
-                <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
+                <AuthorWrapper onClick={() => router.push(`/user/${props.resource.owner}`)}>
                     {/* <AuthorIcon /> */}
                     <TempAuthorIcon>X</TempAuthorIcon>
                     <AuthorName>{author}</AuthorName>
