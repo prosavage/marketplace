@@ -14,7 +14,7 @@ import {
   validateUsername,
 } from "../util/Validation";
 import Link from "next/link";
-import SecondaryButton from "../components/ui/Secondarybutton";
+import Button from "../components/ui/Button";
 import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
 import { userState } from "../atoms/user";
@@ -162,7 +162,8 @@ export default function Signup(props) {
           </label>
         </VerticalMarginContainer>
         <VerticalMarginContainer>
-          <SecondaryButton
+          <ButtonWrapper>
+          <SignUpButton
             type="submit"
             onClick={(e) => {
               e.preventDefault();
@@ -170,7 +171,8 @@ export default function Signup(props) {
             }}
           >
             Create my account
-          </SecondaryButton>
+          </SignUpButton>
+          </ButtonWrapper>
         </VerticalMarginContainer>
       </SignupContainer>
     </Wrapper>
@@ -220,6 +222,25 @@ const RequirementEntry = styled.div`
 
 const RequirementText = styled.p`
   padding: 0 0.5em;
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const SignUpButton = styled(Button)`
+  width: 75%;
+  color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+  padding: 12px !important;
+
+  transition: 500ms ease-in-out;
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor} !important;
+  }
 `;
 
 const Error = styled.p`

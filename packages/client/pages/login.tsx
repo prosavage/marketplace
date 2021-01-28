@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../atoms/user";
 import Input from "../components/ui/Input";
-import SecondaryButton from "../components/ui/Secondarybutton";
+import Button from "../components/ui/Button";
 import PropsTheme from "../styles/theme/PropsTheme";
 import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
@@ -77,7 +77,8 @@ export default function Login() {
             />
           </InputDivider>
           <InputDivider>
-            <SecondaryButton
+          <ButtonWrapper>
+          <LoginButton
               type={"submit"}
               onClick={(e) => {
                 e.preventDefault();
@@ -85,7 +86,8 @@ export default function Login() {
               }}
             >
               Log in
-            </SecondaryButton>
+            </LoginButton>
+          </ButtonWrapper>
           </InputDivider>
         </InputContainer>
       </LoginContainer>
@@ -131,7 +133,23 @@ const InputDivider = styled.div`
   flex-direction: column;
   padding: 0.5em 0;
 `;
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+const LoginButton = styled(Button)`
+  width: 75%;
+  color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+  padding: 12px !important;
 
+  transition: 500ms ease-in-out;
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.secondaryAccentColor} !important;
+  }
+`;
 
 const ErrorText = styled.p`
   color: ${(props: PropsTheme) => props.theme.errorColor};
