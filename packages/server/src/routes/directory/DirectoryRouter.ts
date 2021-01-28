@@ -20,7 +20,7 @@ const directoryRouter = express.Router();
 directoryRouter.use("/resources", directoryResourceRouter);
 directoryRouter.use("/versions", directoryVersionRouter);
 
-directoryRouter.get("/featured", async (req: Request, res: Response) => {
+directoryRouter.get("/featured", async (_req: Request, res: Response) => {
   // static values for now...
   const featuredResource = [
     new ObjectId("601103008efa94fcb7c8d375"),
