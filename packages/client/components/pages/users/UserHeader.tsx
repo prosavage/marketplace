@@ -1,4 +1,4 @@
-import { animated, useSpring } from "react-spring";
+import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { User, UserStats } from "../../../types/User";

@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
+import * as React from 'react'
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { Resource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 
-export default function FeaturedPluginEntry(props: { resource: Resource }) {
+export default function FeaturedPluginEntry(props) {
 
     const router = useRouter();
 
@@ -13,11 +15,17 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
 
     useEffect(() => {
         setAuthor("ProSavage");
-    }, [])
-
-
+    })
+    
     return (
-        <Wrapper>
+      <Tilt
+        tiltReverse={true}
+        tiltMaxAngleX={4}
+        tiltMaxAngleY={4}
+        transitionSpeed={2800}
+        scale={1.05}
+      >
+        <Wrapper onClick={() => router.push(`/resources/${props.resource._id}`)}>
             <ResourceIconWrapper>
                 <ResourceIcon resource={props.resource} size={"75px"} />
             </ResourceIconWrapper>
@@ -26,13 +34,14 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
                     <h3>{props.resource.name}</h3>
                     <DescText>pls add descriptions to resource api prosavage.</DescText>
                 </TextWrapper>
-                <AuthorWrapper onClick={() => router.push(`/user/${props.resource.owner}`)}>
+                <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
                     {/* <AuthorIcon /> */}
                     <TempAuthorIcon>X</TempAuthorIcon>
                     <AuthorName>{author}</AuthorName>
                 </AuthorWrapper>
             </RightWrapper>
         </Wrapper>
+        </Tilt>
     )
 }
 
@@ -45,6 +54,7 @@ const Wrapper = styled.div`
   background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
   max-width: 300px;
   margin: 5px 0;
+  cursor: pointer;
 
 
 /* parent container will put it into column, so use all width. */
@@ -79,7 +89,6 @@ const AuthorWrapper = styled.div`
   width: 100%;
   justify-content: flex-end;
   bottom: 0;
-  cursor: pointer;
 `
 
 const TempAuthorIcon = styled.div`
