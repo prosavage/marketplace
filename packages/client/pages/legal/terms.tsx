@@ -8,6 +8,55 @@ export default function Terms() {
     <LegalNavbar />
       <Wrapper>
           <h1>Terms & Conditions</h1>
+          /*
+            Effective (date) // last Updated: (date)
+
+            What is convered in these Terms
+
+            Age Requirments
+
+            Privacy
+              View our privacy policy
+
+            Our relationship
+              What you can expect from us
+              what we expect from you
+
+            Using our platform
+              Your account
+              Organizations/Teams
+
+            Content
+              our Content
+              your content
+              OWNERSHIP
+              others content
+              Downloads
+              Subscriptions
+              Copyright
+              Piracy
+              License Terms
+              Updates
+              Ratings/Reviews
+
+            Purchases/Payment
+              Returns
+              Support
+              Disputes
+
+            In case of problems or disagreements
+              Disclaimers
+              Liabilities
+                For Users
+                For Organizations
+              Taking Action
+                Removing your content
+                Suspending or termiating access to our platform
+              Settling diputes, govering law and courts
+
+              About These terms
+
+           */
       </Wrapper>
     </>
   );
