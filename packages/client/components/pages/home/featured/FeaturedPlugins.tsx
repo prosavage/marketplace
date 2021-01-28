@@ -76,7 +76,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
   padding: 1em 1.5em;
   background: ${(props: PropsTheme) => props.theme.accentColor};
-  color: black;
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
 `;
 
 const ContentWrapper = styled.div`
