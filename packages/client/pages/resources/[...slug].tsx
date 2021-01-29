@@ -164,7 +164,7 @@ export default function ResourceId(props: {
     <Wrapper>
       <div>
         <BackButton onClick={() => router.back()}>
-          <ArrowLeft size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
+          <BackArrow size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
       </div>
       <ResourceContentContainer>
@@ -221,8 +221,13 @@ const BackButton = styled(Button)`
   align-items: center;
 `;
 
+const BackArrow = styled(ArrowLeft)`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
+`
+
 const ButtonText = styled.p`
   margin: 0 0.5em;
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
 `;
 
 const ResourceContentContainer = styled.div`

@@ -10,8 +10,8 @@ export default function ResourceWidget(props: {
   return (
     <Wrapper>
       <PluginInfoHeader>
-        <TrendingUp style={{ margin: "0 1em" }} />
-        <h3>{props.header}</h3>
+        <WidgetIcon />
+        <WidgetHeader>{props.header}</WidgetHeader>
       </PluginInfoHeader>
       <InfoDataContainer>
         {props.children}
@@ -45,6 +45,14 @@ const InfoDataContainer = styled.div`
   padding: 1em;
 `;
 
+const WidgetHeader = styled.h3`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
+`
+
+const WidgetIcon = styled(TrendingUp)`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
+  margin: 0 1em
+`
 export const PluginInfoRow = styled.div`
   display: flex;
   justify-content: space-between;

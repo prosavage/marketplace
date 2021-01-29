@@ -93,9 +93,10 @@ const VersionText = styled.p`
   }
 `;
 const DownloadButton = styled(Button)`
-  background: black !important;
-  padding: 10px 10px !important;
+  background: ${(props: PropsTheme) => props.theme.oppositeColor} !important;
   color: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.28);
+  padding: 10px 10px !important;
   margin: 0.5em 0;
 
   @media (max-width: 600px) {
@@ -105,6 +106,9 @@ const DownloadButton = styled(Button)`
 `;
 
 const VersionButton = styled(Button)`
+  background: ${(props: PropsTheme) => props.theme.oppositeColor} !important;
+  color: ${(props: PropsTheme) => props.theme.color} !important;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.28);
   padding: 10px 10px !important;
   margin: 0.5em 0;
 
