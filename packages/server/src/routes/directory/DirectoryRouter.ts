@@ -45,6 +45,25 @@ directoryRouter.get(
   }
 );
 
+
+directoryRouter.get("/featured", async (_req: Request, res: Response) => {
+  // static values for now...
+  const featuredResource = [
+    new ObjectId("601103008efa94fcb7c8d375"),
+    new ObjectId("601104f062de2105a4250223"),
+    new ObjectId("601103898efa94fcb7c8d377"),
+  ];
+
+  const resources = await Promise.all(
+    featuredResource.map((resourceId) => {
+      return getDatabase()
+        .collection<Resource>(RESOURCES_COLLECTION)
+        .findOne({ _id: resourceId });
+    })
+  );
+  res.success({resources})
+});
+
 directoryRouter.get(
   "/categories/:type",
   [param("type").isString(), isValidBody],

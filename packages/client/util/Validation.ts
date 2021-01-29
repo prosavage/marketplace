@@ -51,3 +51,15 @@ export const validateResourceVersion = (version: string) => {
 export const validateResourceThread = (thread: string) => {
   return thread.length > 0;
 }
+
+export const validateVersionDescription = (desc: string) => {
+  return desc.length > 4;
+}
+
+export const validateVersionTitle = (title: string) => {
+  return title.length >= 2 && title.length <= 30
+}
+
+export const validateVersionVersionString = (ver: string) => {
+  return ver.length >= 2 && ver.length <= 30
+}

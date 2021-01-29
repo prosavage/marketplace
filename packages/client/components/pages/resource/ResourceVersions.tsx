@@ -55,6 +55,7 @@ export default function ResourceVersions({
       {versions.length > 0 ? (
         versions.map((entry) => (
           <ResourceVersionEntry
+            resource={resource}
             onVersionSelect={onVersionSelect}
             key={entry._id}
             version={entry}
@@ -96,16 +97,16 @@ const BackArrow = styled(ArrowLeft)`
   cursor: pointer;
   transition: 250ms ease-in-out;
   &:hover {
-    stroke-width: 3; 
+    stroke-width: 3;
   }
-`
+`;
 const ForwardArrow = styled(ArrowRight)`
   cursor: pointer;
   transition: 250ms ease-in-out;
   &:hover {
-    stroke-width: 3; 
+    stroke-width: 3;
   }
-`
+`;
 
 const CenterContainer = styled.div`
   margin: 0 1em;

@@ -22,7 +22,7 @@ directoryVersionRouter.get("/resource/:resource/:page", [
     }
 );
 
-directoryVersionRouter.get("/resource/:version", [
+directoryVersionRouter.get("/download/:version", [
     param("version").isMongoId().bail().customSanitizer(v => new ObjectId(v)),
     Authorize,
     isValidBody

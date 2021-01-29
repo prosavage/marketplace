@@ -133,13 +133,14 @@ export default function ResourceId(props: {
       case ResourceView.VERSION:
         return (
           <ResourceVersionEntry
+            resource={resource}
             // dont need to do anything on version select since its like already done.
             onVersionSelect={(v) => {}}
             version={specificVersion}
           />
         );
       case ResourceView.UPDATE:
-        return <ResourceUpdate resource={resource}/>  
+        return <ResourceUpdate resource={resource} onSubmit={() => changeView(ResourceView.VERSIONS)}/>  
     }
   };
 

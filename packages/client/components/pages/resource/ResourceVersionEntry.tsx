@@ -8,21 +8,30 @@ import parser from "./../../../util/parser/Parser";
 import { animated, useSpring } from "react-spring";
 import { Resource } from "../../../types/Resource";
 import { useRouter } from "next/router";
+import getAxios from "../../../util/AxiosInstance";
+import FileDownload from "js-file-download";
 
 export default function ResourceVersionEntry({
+  resource,
   version,
   onVersionSelect,
 }: {
+  resource: Resource,
   onVersionSelect: (version: Version) => void;
   version: Version;
 }) {
-  const router = useRouter();
-
   const anime = useSpring({
     config: { duration: 125 },
     opacity: 1,
     from: { opacity: 0.5 },
   });
+
+  const download = () => {
+    getAxios()
+      .get(`directory/versions/download/${version._id}`)
+      .then((res) => FileDownload(res.data, `${resource.name}-${version.version}.jar`))
+      .catch((err) => console.log(err.response.data));
+  };
 
   return (
     <Wrapper onClick={() => onVersionSelect(version)} style={anime}>
@@ -33,7 +42,10 @@ export default function ResourceVersionEntry({
           <p>v{version?.version}</p>
         </TextContainer>
         <ButtonContainer>
-          <Button onClick={(e) => e.stopPropagation()}>
+          <Button onClick={(e) => {
+            e.stopPropagation()
+            download()
+          }}>
             <p>Download</p>
           </Button>
         </ButtonContainer>
@@ -46,9 +58,10 @@ export default function ResourceVersionEntry({
 const Wrapper = styled(animated.div)`
   display: flex;
   flex-direction: column;
+  width: 100%;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   transition: 250ms ease-in-out;
   border-radius: 4px;
   cursor: pointer;
