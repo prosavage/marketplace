@@ -36,6 +36,20 @@ resourceRouter.get(
   }
 );
 
+// resourceRouter.patch("/:id", [
+//   param("id")
+//   .isMongoId()
+//   .bail()
+//   .customSanitizer(v => new ObjectId(v)),
+//   isValidBody
+// ],
+// async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   const resource = await getDatabase()
+//       .collection(RESOURCES_COLLECTION)
+//       .findOne({ _id: id });
+// })
+
 resourceRouter.put(
   "/",
   [
