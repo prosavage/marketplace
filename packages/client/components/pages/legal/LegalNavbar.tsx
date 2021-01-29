@@ -100,6 +100,7 @@ const Wrapper = styled.div`
 const LogoText = styled.p`
   font-size: 20px;
   font-weight: bold;
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
 `;
 
 const Content = styled.div`
@@ -155,7 +156,6 @@ const LinksWrapper = styled.div`
 const LinkText = styled.p`
   font-size: 1rem;
   cursor: pointer;
-  color: black;
   font-weight: 600;
   ${(props: { selected: boolean }) =>
     props.selected &&
@@ -163,11 +163,12 @@ const LinkText = styled.p`
       background: #00b2ff;
       border-radius: 5px;
     `};
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
   @media (min-width: 700px) {
     padding: 0 15px;
   }
   &:hover {
-    background: #00b2ff;
+    background: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
     border-radius: 5px;
   }
 `;
