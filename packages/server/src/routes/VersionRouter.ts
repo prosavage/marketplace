@@ -13,7 +13,8 @@ import { Version } from "../types/Version";
 const versionRouter = express.Router();
 
 versionRouter.put("/", [
-    body(["title", "version", "description"]).isString(),
+    body(["title", "version"]).isString().bail().isLength({min: 2, max: 30}),
+    body(["description"]).isString().bail().isLength({min: 4}),
     body("resource").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
     Authorize,
     isValidBody
@@ -75,9 +76,11 @@ versionRouter.put("/:id", [
     }
 
     const file = req.files!!.resource as any;
+    console.log("sending file to bunny")
     const result = await bunny.putVersionFile(resource, version, file.data)
     res.success({ result: result.data });
 })
+
 
 versionRouter.get("/:id", [
     param("id").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
