@@ -1,9 +1,10 @@
 import {
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
+  TOKENS_COLLECTION,
   VERSIONS_COLLECTION,
 } from "./constants";
-import { getDatabase } from "./server";
+import { getDatabase, tokenMap } from "./server";
 import { Resource } from "./types/Resource";
 import { Review } from "./types/Review";
 
@@ -81,5 +82,13 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
     .collection(RESOURCES_COLLECTION)
     .updateOne({ _id: resourceId }, { $set: { rating: avg } });
 };
+
+export const readTokens = async () => {
+  const tokens = await getDatabase().collection(TOKENS_COLLECTION).find().toArray();
+  tokens.forEach(token => {
+    tokenMap.set(token.token, token.user);
+  })
+  console.log(`Read ${tokenMap.size} from database into token cache.`)
+}
 
 export default ensureIndexes;

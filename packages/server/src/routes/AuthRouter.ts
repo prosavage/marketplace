@@ -3,11 +3,12 @@ import bcrypt from "bcrypt";
 
 import crypto from "crypto";
 import { getDatabase, tokenMap } from "../server";
-import { USERS_COLLECTION } from "../constants";
+import { TOKENS_COLLECTION, USERS_COLLECTION } from "../constants";
 import { User } from "../types/User";
 import { Role } from "../struct/Role";
 import { isValidBody } from "../middleware/BodyValidate";
 import { body } from "express-validator";
+import { Authorize } from "../middleware/Authenticate";
 
 const authRouter = express.Router();
 
@@ -87,6 +88,17 @@ authRouter.post(
   }
 );
 
+authRouter.post("/logout", Authorize, async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    res.failure("no token found.");
+    return;
+  }
+  const result = tokenMap.delete(token);
+  await getDatabase().collection(TOKENS_COLLECTION).deleteOne({ token: token });
+  res.success({ token, removed: result });
+});
+
 authRouter.post(
   "/validate",
   [body("token").isString().bail().isLength({ min: 96, max: 96 }), isValidBody],
@@ -119,6 +131,10 @@ authRouter.post(
 const generateToken = async (user: User) => {
   const token = (await crypto.randomBytes(48)).toString("hex");
   tokenMap.set(token, user._id);
+  // insert into database for persistence.
+  getDatabase()
+    .collection(TOKENS_COLLECTION)
+    .insertOne({ token: token, user: user._id });
   return token;
 };
 

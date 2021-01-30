@@ -3,6 +3,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../atoms/user";
+import getAxios from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
 import SecondaryButton from "./../components/ui/Secondarybutton";
 
@@ -19,6 +20,7 @@ export default function Account(props) {
           onClick={() => {
             setToken("");
             setUser(undefined);
+            getAxios().post("/auth/logout");
             router.push("/");
           }}
         >

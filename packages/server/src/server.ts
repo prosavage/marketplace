@@ -9,7 +9,7 @@ import categoryRouter from "./routes/CategoryRouter";
 import versionRouter from "./routes/VersionRouter";
 import betterResponse from "./middleware/ResponseFunctions";
 import directoryRouter from "./routes/directory/DirectoryRouter";
-import ensureIndexes from "./database";
+import ensureIndexes, { readTokens } from "./database";
 import reviewRouter from "./routes/ReviewRouter";
 import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
@@ -28,7 +28,7 @@ export const getDatabase = () => {
 
 export const tokenMap = new Map<string, User["_id"]>([
   // temp perma token for dev
-  ["hehexddd", new ObjectId("5ff5018f90a7f7554427af6d")],
+  ["hehexddd", new ObjectId("5fe53ce6ffa79fc6331f8ab4")],
 ]);
 
 // clear dev tokens if running in prod.
@@ -65,6 +65,7 @@ mongoClient.connect(async () => {
   console.log("connected to database.");
   await ensureIndexes();
   // await addDummyData();
+  await readTokens();
   app.listen(5000, () => console.log("started marketplace backend."));
 });
 
