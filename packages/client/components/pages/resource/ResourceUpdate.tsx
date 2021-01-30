@@ -99,7 +99,7 @@ export default function ResourceUpdate({
           placeholder={"Version string e.g. 1.4"}
           value={version}
           onChange={(e) => setVersion(e.target.value)}
-          invalid={!validateVersionVersionString(title)}
+          invalid={!validateVersionVersionString(version)}
         />
       </InputWrapper>
       <InputWrapper>
