@@ -50,7 +50,6 @@ export default function Create() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         const resource: Resource = res.data.payload.resource;
         router.push(`/resources/${resource._id}`);
       })
@@ -83,7 +82,6 @@ export default function Create() {
 
   useEffect(() => {
     fetchOptions();
-    console.log(thread);
   }, []);
 
   return (
