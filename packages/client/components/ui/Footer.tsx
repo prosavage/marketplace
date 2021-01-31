@@ -30,12 +30,14 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
 `
 
 const Code = styled.p`
     padding-left: 10px;
     font-size: 14px;
+    @media(max-width: 600px) {
+        display: none;
+    }
 `
 
 const LinkWrapper = styled.div`
