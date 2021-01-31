@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDown, ChevronDown } from "react-feather";
+import { ArrowDown, ChevronDown, ChevronUp } from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
 
@@ -20,7 +20,12 @@ export default function CategorySelect(props: {
       <Wrapper onClick={() => setOpen(!open)}>
         <SelectedWrapper>{props.selected?.label}</SelectedWrapper>
         <DownWrapper>
-          <ChevronDown />
+          {!open &&
+            <OpenDropdown size="24px" onClick={() => setOpen(!open)}/>
+            }
+            {open &&
+            <CloseDropdown size="24px" onClick={() => setOpen(false)}/>
+            }
         </DownWrapper>
       </Wrapper>
       {open && (
@@ -51,11 +56,20 @@ const Wrapper = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   justify-content: space-between;
   border-radius: 4px;
+  cursor: pointer;
   transition: 250ms ease-in-out;
   &:hover {
     border: 1px solid ${(props: PropsTheme) => props.theme.accentColor};
   }
 `;
+
+const OpenDropdown = styled(ChevronDown)`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
+`
+
+const CloseDropdown = styled(ChevronUp)`
+  color: ${(props: PropsTheme) => props.theme.oppositeColor};
+`
 
 const SelectedWrapper = styled.div`
   height: 100%;
@@ -89,6 +103,7 @@ const DropDownWrapper = styled.div`
 const Category = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: default;
 `;
 
 const CategoryEntry = styled.div`
@@ -96,6 +111,7 @@ const CategoryEntry = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-left: 1em;
+  cursor: pointer;
 
   &:hover {
     background: ${(props: PropsTheme) => props.theme.accentColor};
