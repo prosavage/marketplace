@@ -5,6 +5,10 @@ import PropsTheme from "../../styles/theme/PropsTheme";
 export default function Terms() {
   return (
     <>
+    <Head>
+      <title>Legal - Terms & Conditions</title>
+      <meta name="description" content="Terms and Conditions" />
+    </Head>
     <LegalNavbar />
       <Wrapper>
           <h1>Terms & Conditions</h1>

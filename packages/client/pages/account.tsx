@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import { useRecoilState } from "recoil";
@@ -13,6 +14,11 @@ export default function Account(props) {
   const router = useRouter();
 
   return (
+    <>
+    <Head>
+      <title>User - Marketplace</title>
+      <meta name="description" content="Account Page" />
+    </Head>
     <Wrapper>
       <p>Temporary Account Page.</p>
       <VSpace>
@@ -28,6 +34,7 @@ export default function Account(props) {
         </SecondaryButton>
       </VSpace>
     </Wrapper>
+    </>
   );
 }
 

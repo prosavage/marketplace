@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
@@ -11,6 +12,10 @@ export default function Resource(props: {
 }) {
   return (
     <>
+    <Head>
+      <title>{props.category} - Resources</title>
+      <meta name="description" content={props.category + "Resources"} />
+    </Head>
       <SubNavbar />
       <Wrapper>
         <ResourcesView type={props.type} category={props.category} />

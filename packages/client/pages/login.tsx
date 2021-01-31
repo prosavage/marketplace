@@ -10,6 +10,7 @@ import PropsTheme from "../styles/theme/PropsTheme";
 import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
 import { validateEmail, validatePassword, validateUsername } from "../util/Validation";
+import Head from "next/head";
 
 export default function Login() {
   
@@ -45,6 +46,11 @@ export default function Login() {
   };
 
   return (
+    <>
+    <Head>
+      <title>Login - Marketplace</title>
+      <meta name="description" content="Login" />
+    </Head>
     <Wrapper>
       <LoginContainer>
         <Header>Log in</Header>
@@ -92,6 +98,7 @@ export default function Login() {
         </InputContainer>
       </LoginContainer>
     </Wrapper>
+    </>
   );
 }
 

@@ -10,6 +10,10 @@ import { ResourceType } from "../types/Resource";
 export default function Home() {
   return (
     <>
+    <Head>
+      <title>Marketplace</title>
+      <meta name="description" content="Marketplace" />
+    </Head>
     <SubNavbar />
       <Wrapper>
         <FeaturedPlugins />

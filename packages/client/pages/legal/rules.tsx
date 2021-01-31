@@ -5,6 +5,10 @@ import PropsTheme from "../../styles/theme/PropsTheme";
 export default function Privacy() {
   return (
     <>
+    <Head>
+      <title>Legal - Rules</title>
+      <meta name="description" content="Rules" />
+    </Head>
     <LegalNavbar />
       <Wrapper>
           <h1>Rules</h1>

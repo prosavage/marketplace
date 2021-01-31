@@ -20,6 +20,7 @@ import LightTheme from "../styles/theme/LightTheme";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import DefaultThread from "../util/DefaultThread";
+import Head from "next/head";
 
 export default function Create() {
   const [theme, setTheme] = useRecoilState(themeState);
@@ -87,6 +88,11 @@ export default function Create() {
   }, []);
 
   return (
+    <>
+    <Head>
+      <title>Create - Marketplace</title>
+      <meta name="description" content="Create a Resource" />
+    </Head>
     <Wrapper>
       <h1>Create a Resource</h1>
       <HContainer>
@@ -190,6 +196,7 @@ export default function Create() {
         </Button>
       </VSpacedInputContainer>
     </Wrapper>
+    </>
   );
 }
 
