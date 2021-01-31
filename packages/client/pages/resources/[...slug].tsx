@@ -12,7 +12,6 @@ import getAxios from "../../util/AxiosInstance";
 import PluginInfo from "../../components/pages/resource/PluginInfo";
 import ResourceThread from "../../components/pages/resource/ResourceThread";
 import DiscordInfo from "../../components/pages/resource/DiscordInfo";
-import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 import ResourceRating from "../../components/pages/resource/ResourceRating";
 import ResourceVersions from "../../components/pages/resource/ResourceVersions";
 import ResourceWiki from "../../components/pages/resource/ResourceWiki";
@@ -20,6 +19,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
 import ResourceVersionEntry from "../../components/pages/resource/ResourceVersionEntry";
 import ResourceUpdate from "../../components/pages/resource/ResourceUpdate";
+import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 
 enum ResourceView {
   HOME = "home",
@@ -28,6 +28,7 @@ enum ResourceView {
   VERSION = "version",
   UPDATE = "update",
   ICON = "icon",
+  EDIT = "edit",
 }
 
 export default function ResourceId(props: {
@@ -59,7 +60,7 @@ export default function ResourceId(props: {
   };
 
   const isOwnerView = (view: ResourceView) => {
-    return [ResourceView.UPDATE, ResourceView.ICON].includes(
+    return [ResourceView.UPDATE, ResourceView.ICON, ResourceView.EDIT].includes(
       view.toLowerCase() as ResourceView
     );
   };
@@ -94,12 +95,11 @@ export default function ResourceId(props: {
         return;
       }
       getAxios()
-      .get(`/version/${props.entry}`)
-      .then((res) => setSpecificVersion(res.data.payload))
-      .catch((err) => console.log(err.response.data));
+        .get(`/version/${props.entry}`)
+        .then((res) => setSpecificVersion(res.data.payload))
+        .catch((err) => console.log(err.response.data));
     }
   }, [props.entry]);
-
 
   useEffect(() => {
     if (!resource) return;
@@ -122,7 +122,11 @@ export default function ResourceId(props: {
             onVersionSelect={(v) => {
               console.log("ver change");
               setView(ResourceView.VERSION);
-              router.push(`/resources/${resource._id}/version/${v._id}`, undefined, {shallow: true});
+              router.push(
+                `/resources/${resource._id}/version/${v._id}`,
+                undefined,
+                { shallow: true }
+              );
               setSpecificVersion(v);
             }}
             resource={resource}
@@ -140,7 +144,15 @@ export default function ResourceId(props: {
           />
         );
       case ResourceView.UPDATE:
-        return <ResourceUpdate resource={resource} onSubmit={() => changeView(ResourceView.VERSIONS)}/>  
+        return (
+          <ResourceUpdate
+            resource={resource}
+            onSubmit={() => changeView(ResourceView.VERSIONS)}
+          />
+        );
+
+      case ResourceView.EDIT:
+        return <ResourceEdit resource={resource} />;
     }
   };
 
@@ -207,7 +219,6 @@ export default function ResourceId(props: {
             resource={resource}
             firstVersion={getFirstVersion()}
           />
-          {viewerOwnsResource() && <ResourceEdit resource={resource} />}
           <DiscordInfo discordServerId={author?.discordServerId} />
         </MetadataContainer>
       </ResourceContentContainer>
@@ -244,7 +255,7 @@ const BackButton = styled(Button)`
 
 const BackArrow = styled(ArrowLeft)`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
-`
+`;
 
 const ButtonText = styled.p`
   margin: 0 0.5em;

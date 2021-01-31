@@ -12,8 +12,8 @@ export const validatePassword = (password: string) => {
 };
 
 export const hasPasswordLength = (str: string) => {
-    return str.length > 8
-}
+  return str.length > 8;
+};
 
 export const containsSpecialCharacters = (str: string) => {
   return /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g.test(str);
@@ -37,29 +37,33 @@ export const validateUsername = (username: string) => {
 };
 
 export const validateResourceTitle = (title: string) => {
-  return title.length > 0
-}
+  return moreThanFourAndLessThenThirtyFive(title);
+};
 
 export const validateResourceDescription = (desc: string) => {
-  return desc.length > 0;
-}
+  return moreThanFourAndLessThenThirtyFive(desc);
+};
+
+const moreThanFourAndLessThenThirtyFive = (str: string) => {
+  return str.length >= 4 && str.length <= 35;
+};
 
 export const validateResourceVersion = (version: string) => {
   return version.length > 0;
-}
+};
 
 export const validateResourceThread = (thread: string) => {
   return thread.length > 0;
-}
+};
 
 export const validateVersionDescription = (desc: string) => {
   return desc.length > 4;
-}
+};
 
 export const validateVersionTitle = (title: string) => {
-  return title.length >= 2 && title.length <= 30
-}
+  return title.length >= 2 && title.length <= 30;
+};
 
 export const validateVersionVersionString = (ver: string) => {
-  return ver.length >= 2 && ver.length <= 30
-}
+  return ver.length >= 2 && ver.length <= 30;
+};

@@ -7,7 +7,11 @@ import {
   REVIEWS_COLLECTION,
   VERSIONS_COLLECTION,
 } from "../../constants";
-import { atleastRole, Authorize } from "../../middleware/Authenticate";
+import {
+  atleastRole,
+  Authorize,
+  hasPermissionForResource,
+} from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
@@ -36,25 +40,55 @@ resourceRouter.get(
   }
 );
 
-// resourceRouter.patch("/:id", [
-//   param("id")
-//   .isMongoId()
-//   .bail()
-//   .customSanitizer(v => new ObjectId(v)),
-//   isValidBody
-// ],
-// async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   const resource = await getDatabase()
-//       .collection(RESOURCES_COLLECTION)
-//       .findOne({ _id: id });
-// })
+resourceRouter.patch(
+  "/:id",
+  [
+    param("id")
+      .isMongoId()
+      .bail()
+      .customSanitizer((v) => new ObjectId(v)),
+    body(["name", "description"])
+      .isString()
+      .bail()
+      .isLength({ min: 4, max: 35 }),
+    body("thread").isString(),
+    Authorize,
+    hasPermissionForResource("id", Role.ADMIN),
+    isValidBody,
+  ],
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const resource = await getDatabase()
+      .collection(RESOURCES_COLLECTION)
+      .findOne({ _id: id });
+
+    if (!resource) {
+      res.failure("resource not found.");
+      return;
+    }
+
+    const transaction = await getDatabase()
+      .collection(RESOURCES_COLLECTION)
+      .updateOne(
+        { _id: id },
+        {
+          $set: {
+            name: req.body.name,
+            description: req.body.description,
+            thread: req.body.thread,
+          },
+        }
+      );
+
+    res.success({ result: transaction.result });
+  }
+);
 
 resourceRouter.put(
   "/",
   [
-    body(["name", "thread", "category"]).isString(),
-    body("description").isString().bail().isLength({min: 4, max: 35}),
+    body(["thread", "category"]).isString(),
+    body("name", "description").isString().bail().isLength({ min: 4, max: 35 }),
     body("price").isInt(),
     body("category")
       .isMongoId()
