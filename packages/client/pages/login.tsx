@@ -62,7 +62,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="text"
-              placeholder={"Enter an email address"}
+              placeholder={"Enter your email address"}
               invalid={!validateEmail(email)}
             />
           </InputDivider>
@@ -72,7 +72,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
-              placeholder={"Enter an email address"}
+              placeholder={"Enter your password"}
               invalid={!validatePassword(password)}
             />
           </InputDivider>
