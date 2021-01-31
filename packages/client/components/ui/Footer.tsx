@@ -30,6 +30,7 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 `
 
 const Code = styled.p`
