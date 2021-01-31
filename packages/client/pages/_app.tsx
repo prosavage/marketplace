@@ -23,7 +23,6 @@ function MyApp({ Component, pageProps }) {
 }
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric);
 }
 
 function WrappedApp({ Component, pageProps }) {

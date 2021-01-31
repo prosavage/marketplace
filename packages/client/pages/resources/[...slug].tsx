@@ -20,6 +20,7 @@ import { userState } from "../../atoms/user";
 import ResourceVersionEntry from "../../components/pages/resource/ResourceVersionEntry";
 import ResourceUpdate from "../../components/pages/resource/ResourceUpdate";
 import ResourceEdit from "../../components/pages/resource/ResourceEdit";
+import { Category } from "../../types/Category";
 
 enum ResourceView {
   HOME = "home",
@@ -48,6 +49,8 @@ export default function ResourceId(props: {
   const [view, setView] = useState<ResourceView>(
     props.view === null ? ResourceView.HOME : (props.view as ResourceView)
   );
+  // Category for pushing back button.
+  const [category, setCategory] = useState<Category>();
 
   const router = useRouter();
 
@@ -78,7 +81,6 @@ export default function ResourceId(props: {
     getAxios()
       .get(`/resources/${props.id}`)
       .then((res) => setResource(res.data.payload.resource));
-
     getAxios()
       .get(`/directory/versions/resource/${props.id}/1`)
       .then((res) => {
@@ -106,6 +108,11 @@ export default function ResourceId(props: {
     getAxios()
       .get(`/directory/user/${resource.owner}`)
       .then((res) => setAuthor(res.data.payload.user));
+
+    getAxios()
+      .get(`/category/${resource.category}`)
+      .then((res) => setCategory(res.data.payload.category))
+      .catch((err) => console.log(err.response.data));
   }, [resource]);
 
   const getFirstVersion = () => {
@@ -120,7 +127,6 @@ export default function ResourceId(props: {
         return (
           <ResourceVersions
             onVersionSelect={(v) => {
-              console.log("ver change");
               setView(ResourceView.VERSION);
               router.push(
                 `/resources/${resource._id}/version/${v._id}`,
@@ -196,7 +202,13 @@ export default function ResourceId(props: {
   return (
     <Wrapper>
       <div>
-        <BackButton onClick={() => router.back()}>
+        <BackButton
+          onClick={() =>
+            router.push(
+              `/directory/resources/${category.type}/${category.name}`
+            )
+          }
+        >
           <BackArrow size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
       </div>

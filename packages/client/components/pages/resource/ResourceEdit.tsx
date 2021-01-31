@@ -8,7 +8,11 @@ import Editor from "react-simple-code-editor";
 import { useEffect } from "react";
 import Button from "../../ui/Button";
 import getAxios from "../../../util/AxiosInstance";
-import { validateResourceTitle, validateResourceDescription, validateResourceThread } from "../../../util/Validation";
+import {
+  validateResourceTitle,
+  validateResourceDescription,
+  validateResourceThread,
+} from "../../../util/Validation";
 
 export default function ResourceEdit({ resource }: { resource: Resource }) {
   const [title, setTitle] = useState(resource?.name ? resource.name : "");
@@ -16,7 +20,7 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
   const [description, setDescription] = useState(
     resource?.description ? resource.description : ""
   );
-  const [err, setErr] = useState("")
+  const [err, setErr] = useState("");
 
   useEffect(() => {
     if (!resource) return;
@@ -26,28 +30,26 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
   }, [resource]);
 
   const sendEdit = () => {
-
     if (validateResourceTitle(title)) {
-        setErr("invalid title")
-        return
+      setErr("invalid title");
+      return;
     }
 
     if (validateResourceDescription(description)) {
-        setErr("invalid description")
-        return
+      setErr("invalid description");
+      return;
     }
 
     if (validateResourceThread(thread)) {
-        setErr("invalid thread");
-        return
+      setErr("invalid thread");
+      return;
     }
-
 
     getAxios()
       .patch(`/resources/${resource._id}`, {
-          name: title,
-          description,
-          thread
+        name: title,
+        description,
+        thread,
       })
       .then((res) => console.log(res.data))
       .catch((err) => setErr(err.response.data.error));
@@ -56,6 +58,7 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
   return (
     <Wrapper>
       <Content>
+        {err}
         <Spacer>
           <label>Resource Title</label>
           <Input

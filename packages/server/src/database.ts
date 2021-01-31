@@ -29,6 +29,15 @@ const ensureIndexes = async () => {
   await getDatabase()
     .collection(VERSIONS_COLLECTION)
     .createIndex({ resource: 1 });
+
+  // indexer for timestamp to get last updated.
+  await getDatabase()
+    .collection(VERSIONS_COLLECTION)
+    .createIndex({ timestamp: -1 });
+
+  // indexer for tokens so they can be searched?
+  // we do not really use it but a useful one to have in prod.
+  await getDatabase().collection(TOKENS_COLLECTION).createIndex({ token: 1 });
 };
 
 export const pageSearchCollectionWithFilter = async (
@@ -84,11 +93,14 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
 };
 
 export const readTokens = async () => {
-  const tokens = await getDatabase().collection(TOKENS_COLLECTION).find().toArray();
-  tokens.forEach(token => {
+  const tokens = await getDatabase()
+    .collection(TOKENS_COLLECTION)
+    .find()
+    .toArray();
+  tokens.forEach((token) => {
     tokenMap.set(token.token, token.user);
-  })
-  console.log(`Read ${tokenMap.size} from database into token cache.`)
-}
+  });
+  console.log(`Read ${tokenMap.size} from database into token cache.`);
+};
 
 export default ensureIndexes;
