@@ -11,10 +11,7 @@ export default function FeaturedPlugins() {
   useEffect(() => {
     getAxios()
       .get(`/directory/featured`)
-      .then((res) => {
-        setResources(res.data.payload.resources)
-        console.log(res.data)
-      })
+      .then((res) => setResources(res.data.payload.resources))
       .catch((err) => console.log(err.response.data));
   }, []);
 

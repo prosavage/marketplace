@@ -50,7 +50,7 @@ app.use(betterResponse);
 app.use("/auth", authRouter);
 app.use("/users/icon", userIconRouter);
 app.use("/resources", resourceRouter);
-app.use("/categories", categoryRouter);
+app.use("/category", categoryRouter);
 app.use("/directory", directoryRouter);
 app.use("/version", versionRouter);
 app.use("/review", reviewRouter);

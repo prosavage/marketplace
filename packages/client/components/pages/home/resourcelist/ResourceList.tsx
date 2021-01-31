@@ -35,7 +35,6 @@ function ResourceList(props: {
     }
 
     if (props.author) {
-      console.log(props.author);
       url = "/directory/resources/author/" + props.author?._id + "/" + page;
     }
 

@@ -12,7 +12,6 @@ import getAxios from "../../util/AxiosInstance";
 import PluginInfo from "../../components/pages/resource/PluginInfo";
 import ResourceThread from "../../components/pages/resource/ResourceThread";
 import DiscordInfo from "../../components/pages/resource/DiscordInfo";
-import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 import ResourceRating from "../../components/pages/resource/ResourceRating";
 import ResourceVersions from "../../components/pages/resource/ResourceVersions";
 import ResourceWiki from "../../components/pages/resource/ResourceWiki";
@@ -20,6 +19,8 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
 import ResourceVersionEntry from "../../components/pages/resource/ResourceVersionEntry";
 import ResourceUpdate from "../../components/pages/resource/ResourceUpdate";
+import ResourceEdit from "../../components/pages/resource/ResourceEdit";
+import { Category } from "../../types/Category";
 
 enum ResourceView {
   HOME = "home",
@@ -28,6 +29,7 @@ enum ResourceView {
   VERSION = "version",
   UPDATE = "update",
   ICON = "icon",
+  EDIT = "edit",
 }
 
 export default function ResourceId(props: {
@@ -47,6 +49,8 @@ export default function ResourceId(props: {
   const [view, setView] = useState<ResourceView>(
     props.view === null ? ResourceView.HOME : (props.view as ResourceView)
   );
+  // Category for pushing back button.
+  const [category, setCategory] = useState<Category>();
 
   const router = useRouter();
 
@@ -59,7 +63,7 @@ export default function ResourceId(props: {
   };
 
   const isOwnerView = (view: ResourceView) => {
-    return [ResourceView.UPDATE, ResourceView.ICON].includes(
+    return [ResourceView.UPDATE, ResourceView.ICON, ResourceView.EDIT].includes(
       view.toLowerCase() as ResourceView
     );
   };
@@ -77,7 +81,6 @@ export default function ResourceId(props: {
     getAxios()
       .get(`/resources/${props.id}`)
       .then((res) => setResource(res.data.payload.resource));
-
     getAxios()
       .get(`/directory/versions/resource/${props.id}/1`)
       .then((res) => {
@@ -94,18 +97,22 @@ export default function ResourceId(props: {
         return;
       }
       getAxios()
-      .get(`/version/${props.entry}`)
-      .then((res) => setSpecificVersion(res.data.payload))
-      .catch((err) => console.log(err.response.data));
+        .get(`/version/${props.entry}`)
+        .then((res) => setSpecificVersion(res.data.payload))
+        .catch((err) => console.log(err.response.data));
     }
   }, [props.entry]);
-
 
   useEffect(() => {
     if (!resource) return;
     getAxios()
       .get(`/directory/user/${resource.owner}`)
       .then((res) => setAuthor(res.data.payload.user));
+
+    getAxios()
+      .get(`/category/${resource.category}`)
+      .then((res) => setCategory(res.data.payload.category))
+      .catch((err) => console.log(err.response.data));
   }, [resource]);
 
   const getFirstVersion = () => {
@@ -120,9 +127,12 @@ export default function ResourceId(props: {
         return (
           <ResourceVersions
             onVersionSelect={(v) => {
-              console.log("ver change");
               setView(ResourceView.VERSION);
-              router.push(`/resources/${resource._id}/version/${v._id}`, undefined, {shallow: true});
+              router.push(
+                `/resources/${resource._id}/version/${v._id}`,
+                undefined,
+                { shallow: true }
+              );
               setSpecificVersion(v);
             }}
             resource={resource}
@@ -140,7 +150,15 @@ export default function ResourceId(props: {
           />
         );
       case ResourceView.UPDATE:
-        return <ResourceUpdate resource={resource} onSubmit={() => changeView(ResourceView.VERSIONS)}/>  
+        return (
+          <ResourceUpdate
+            resource={resource}
+            onSubmit={() => changeView(ResourceView.VERSIONS)}
+          />
+        );
+
+      case ResourceView.EDIT:
+        return <ResourceEdit resource={resource} />;
     }
   };
 
@@ -184,7 +202,13 @@ export default function ResourceId(props: {
   return (
     <Wrapper>
       <div>
-        <BackButton onClick={() => router.back()}>
+        <BackButton
+          onClick={() =>
+            router.push(
+              `/directory/resources/${category.type}/${category.name}`
+            )
+          }
+        >
           <BackArrow size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
       </div>
@@ -207,7 +231,6 @@ export default function ResourceId(props: {
             resource={resource}
             firstVersion={getFirstVersion()}
           />
-          {viewerOwnsResource() && <ResourceEdit resource={resource} />}
           <DiscordInfo discordServerId={author?.discordServerId} />
         </MetadataContainer>
       </ResourceContentContainer>
@@ -244,7 +267,7 @@ const BackButton = styled(Button)`
 
 const BackArrow = styled(ArrowLeft)`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
-`
+`;
 
 const ButtonText = styled.p`
   margin: 0 0.5em;

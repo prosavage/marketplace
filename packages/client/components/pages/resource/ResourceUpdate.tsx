@@ -29,7 +29,11 @@ export default function ResourceUpdate({
   const [version, setVersion] = useState("");
   const [file, setFile] = useState<File>();
   const [description, setDescription] = useState(
-    "[center]Example Description Title[/center]"
+    `[center]Example Description Title[/center]
+[list]
+[*] New feature 1
+[*] New feature 2
+[/list]`
   );
 
   const [err, setErr] = useState("");
@@ -53,7 +57,7 @@ export default function ResourceUpdate({
     }
 
     if (!file) {
-      setErr("upload a file.");
+      setErr("upload a file first.");
       return;
     }
 
@@ -116,10 +120,11 @@ export default function ResourceUpdate({
         />
       </InputWrapper>
       <InputWrapper>
-        <input
+        <Input
           onChange={(e) => setFile(e.target.files[0])}
           type={"file"}
           accept={"application/java-archive"}
+          invalid={!file}
         />
       </InputWrapper>
       <InputWrapper>

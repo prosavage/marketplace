@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function Footer() {
     return <Wrapper>
-        <Code>{process.env.NEXT_PUBLIC_GIT_BRANCH}-{process.env.NEXT_PUBLIC_GIT_SHA.substring(0, 4)}</Code>
+        <Code>{process.env.NEXT_PUBLIC_GIT_BRANCH}-{process.env.NEXT_PUBLIC_GIT_SHA}</Code>
         <LinkWrapper>
             <Link href={"https://prosavage.net"}>By ProSavage</Link>
         </LinkWrapper>
