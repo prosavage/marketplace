@@ -5,6 +5,10 @@ import PropsTheme from "../../styles/theme/PropsTheme";
 export default function Legal() {
   return (
     <>
+    <Head>
+      <title>Legal - Marketplace</title>
+      <meta name="description" content="Legal Documents" />
+    </Head>
     <LegalNavbar />
       <Wrapper>
           <h1>Legal Documents</h1>

@@ -19,6 +19,7 @@ import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { setToken } from "../util/TokenManager";
 import { userState } from "../atoms/user";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function Signup(props) {
   const theme = useRecoilValue(themeState);
@@ -62,6 +63,11 @@ export default function Signup(props) {
   };
 
   return (
+    <>
+    <Head>
+      <title>Signup - Marketplace</title>
+      <meta name="description" content="Create an Account" />
+    </Head>
     <Wrapper>
       <SignupContainer>
         <Header>Create account</Header>
@@ -176,6 +182,7 @@ export default function Signup(props) {
         </VerticalMarginContainer>
       </SignupContainer>
     </Wrapper>
+    </>
   );
 }
 

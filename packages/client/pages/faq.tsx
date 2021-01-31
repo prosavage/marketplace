@@ -38,6 +38,10 @@ export default function FAQ(props) {
 
   return (
     <>
+    <Head>
+      <title>FAQ - Marketplace</title>
+      <meta name="description" content="Frequently Asked Questions" />
+    </Head>
       <Wrapper>
           {getFAQs()}
       </Wrapper>

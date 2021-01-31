@@ -258,6 +258,7 @@ const BackButton = styled(Button)`
   padding: 12px 20px !important;
   color: black !important;
   background: ${(props: PropsTheme) => props.theme.accentColor} !important;
+  box-shadow: none;
 
   display: flex;
   flex-direction: row;
