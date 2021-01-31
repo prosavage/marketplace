@@ -23,11 +23,6 @@ const links = [
     mobileOnly: false,
   },
   {
-    link: "/authors",
-    text: "AUTHORS",
-    mobileOnly: false,
-  },
-  {
     link: "/login",
     text: "LOG IN",
     mobileOnly: true,
