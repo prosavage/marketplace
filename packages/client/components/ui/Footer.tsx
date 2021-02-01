@@ -35,6 +35,9 @@ const Wrapper = styled.div`
 const Code = styled.p`
     padding-left: 10px;
     font-size: 14px;
+    @media(max-width: 600px) {
+        display: none;
+    }
 `
 
 const LinkWrapper = styled.div`
