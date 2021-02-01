@@ -13,8 +13,8 @@ export default function Resource(props: {
   return (
     <>
     <Head>
-      <title>{props.category} - Resources</title>
-      <meta name="description" content={props.category + "Resources"} />
+      <title>{props.category} - {props.type}</title>
+      <meta name="description" content={props.category + props.type} />
     </Head>
       <SubNavbar />
       <Wrapper>
