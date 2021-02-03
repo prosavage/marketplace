@@ -38,7 +38,7 @@ function ResourceListEntry(props: { resource: Resource }) {
 
   return (
     <Wrapper style={anime}>
-      <ResourceIcon resource={props.resource} size={"100px"} />
+      <ResourceIcon resource={props.resource} size={"75px"} />
       <Metadata>
         <ResourceInfo>
           <TitleArea>
@@ -83,6 +83,7 @@ export default ResourceListEntry;
 const Wrapper = styled(animated.div)`
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 1em;
 `;
 

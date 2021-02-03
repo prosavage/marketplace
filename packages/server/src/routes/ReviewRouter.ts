@@ -13,7 +13,7 @@ import { Version } from "../types/Version";
 const reviewRouter = express.Router();
 
 reviewRouter.put("/", [
-    body("message").isString(),
+    body("message").isString().bail().isLength({min: 50, max: 500}),
     body("rating").isInt().bail().toInt(),
     body(["resource"]).isMongoId().bail().customSanitizer(value => new ObjectId(value)),
     Authorize,
@@ -64,13 +64,13 @@ reviewRouter.get("/:id", [
     res.success(reviews)
 })
 
-reviewRouter.delete("/", [
-    body("id").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
+reviewRouter.delete("/:id", [
+    param("id").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
     Authorize,
     isValidBody
 ], async (req: Request, res: Response) => {
     const user = req.user!!;
-    const reviewId = req.body.id
+    const reviewId = req.params.id as unknown as ObjectId
 
     // permission check logic.
     if (user.role < Role.ADMIN) {

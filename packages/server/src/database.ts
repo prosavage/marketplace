@@ -83,9 +83,9 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
     calculatedReviews.push(latestReview);
   }
 
-  const sum = calculatedReviews
-    .map((review) => review.rating)
-    .reduce((total, current) => total + current);
+  const sum = calculatedReviews.length > 0 ? calculatedReviews
+  .map((review) => review.rating)
+  .reduce((total, current) => total + current) : 0
   const avg = Math.round(sum / calculatedReviews.length);
   await getDatabase()
     .collection(RESOURCES_COLLECTION)

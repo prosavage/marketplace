@@ -8,6 +8,7 @@ import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
 import { Review } from "../../../types/Review";
 import getAxios from "../../../util/AxiosInstance";
+import useToast from "../../../util/hooks/useToast";
 import Button from "../../ui/Button";
 import ReviewEntry from "./ReviewEntry";
 
@@ -20,6 +21,8 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const [status, setStatus] = useState("");
+
+  const toast = useToast();
 
   useEffect(() => {
     // while loading...
@@ -39,6 +42,12 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
       setStatus("Review is not comprehensive enough, please add more info.");
       return;
     }
+
+    if (message.length >= 500) {
+      setStatus("Review is too long, 500 chars max.");
+      return;
+    }
+
     if (preview) {
       setStatus(
         "Resource rating not set, click the droplets for your desired rating."
@@ -51,7 +60,14 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         rating,
         resource: resource._id,
       })
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        fetchReviews();
+        toast("Review posted successfully");
+        setMessage("");
+        setStatus("");
+        setPreview(true);
+        setRating(0);
+      })
       .catch((err) => setStatus(err.response.data.error));
   };
 
@@ -106,7 +122,7 @@ export default function ResourceReview({ resource }: { resource: Resource }) {
         <Button onClick={() => postRating()}>Post Review</Button>
       </RatingSelect>
       {reviews.map((review) => (
-        <ReviewEntry key={review._id} review={review} />
+        <ReviewEntry key={review._id} review={review} onDelete={() => fetchReviews()}/>
       ))}
     </Wrapper>
   );
