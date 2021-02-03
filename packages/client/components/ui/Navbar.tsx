@@ -10,6 +10,7 @@ import { themeState } from "../../atoms/theme";
 import Button from "./Button";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
+import useStoredTheme from "../../util/hooks/useStoredTheme";
 
 const links = [
   {
@@ -37,6 +38,8 @@ const links = [
 export default function Navbar(props) {
   const [theme, setTheme] = useRecoilState(themeState);
   const user = useRecoilValue(userState);
+
+  const [storedTheme, setStoredTheme] = useStoredTheme();
 
   const [toggled, setToggled] = useState(false);
   const [width, setWidth] = useState(0);
@@ -107,17 +110,32 @@ export default function Navbar(props) {
 
           <LinkWrapper
             style={{ paddingRight: "1em", cursor: "pointer" }}
-            onClick={() =>
-              setTheme(theme === DarkTheme ? LightTheme : DarkTheme)
-            }
+            onClick={() => {
+              setStoredTheme(theme === DarkTheme ? LightTheme : DarkTheme);
+              setTheme(theme === DarkTheme ? LightTheme : DarkTheme);
+            }}
           >
             {theme === DarkTheme ? <Moon /> : <Sun />}
           </LinkWrapper>
           {!toggled && !isDesktop() && (
-            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(!toggled)}/>
+            <Menu
+              style={{
+                color: `${(props: PropsTheme) => props.theme.color}`,
+                cursor: "pointer",
+              }}
+              size="24px"
+              onClick={() => setToggled(!toggled)}
+            />
           )}
           {toggled && !isDesktop() && (
-            <X style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(false)}/>
+            <X
+              style={{
+                color: `${(props: PropsTheme) => props.theme.color}`,
+                cursor: "pointer",
+              }}
+              size="24px"
+              onClick={() => setToggled(false)}
+            />
           )}
         </AccountSection>
       </Content>

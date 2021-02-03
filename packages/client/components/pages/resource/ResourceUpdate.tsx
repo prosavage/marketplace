@@ -17,6 +17,7 @@ import {
 } from "../../../util/Validation";
 import { useRouter } from "next/router";
 import { Version } from "../../../types/Version";
+import useToast from "../../../util/hooks/useToast";
 
 export default function ResourceUpdate({
   resource,
@@ -39,6 +40,8 @@ export default function ResourceUpdate({
   const [err, setErr] = useState("");
 
   const user = useRecoilValue(userState);
+
+  const toast = useToast();
 
   const router = useRouter();
 
@@ -81,7 +84,11 @@ export default function ResourceUpdate({
       .put(`/version/${version._id}`, formData, {
         headers: { "content-type": "multipart/form-data" },
       })
-      .then((res) => onSubmit())
+      .then((res) => {
+        onSubmit()
+        toast("Successfully updated!")
+        router.push(`/resources/${resource._id}/versions`)
+      })
       .catch((err) => setErr(err.response.data.error));
   };
 

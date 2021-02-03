@@ -21,6 +21,7 @@ import ResourceVersionEntry from "../../components/pages/resource/ResourceVersio
 import ResourceUpdate from "../../components/pages/resource/ResourceUpdate";
 import ResourceEdit from "../../components/pages/resource/ResourceEdit";
 import { Category } from "../../types/Category";
+import ResourceIcon from "../../components/pages/resource/ResourceIcon";
 
 enum ResourceView {
   HOME = "home",
@@ -156,7 +157,8 @@ export default function ResourceId(props: {
             onSubmit={() => changeView(ResourceView.VERSIONS)}
           />
         );
-
+      case ResourceView.ICON:
+        return <ResourceIcon resource={resource} />;
       case ResourceView.EDIT:
         return <ResourceEdit resource={resource} />;
     }

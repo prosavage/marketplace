@@ -1,8 +1,7 @@
-import styled, { ThemeProvider, useTheme } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import Navbar from "./../components/ui/Navbar";
 import GlobalStyle from "../styles/GlobalStyle";
 import { RecoilRoot } from "recoil";
-import { useRecoilValue } from "recoil";
 import { themeState } from "../atoms/theme";
 import Footer from "../components/ui/Footer";
 import { useRecoilState } from "recoil";
@@ -11,7 +10,10 @@ import { useEffect } from "react";
 import getToken, { setToken } from "../util/TokenManager";
 import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
-import Head from "next/head"
+import Head from "next/head";
+import useStoredTheme from "../util/hooks/useStoredTheme";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -23,12 +25,16 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-}
+export function reportWebVitals(metric: NextWebVitalsMetric) {}
 
 function WrappedApp({ Component, pageProps }) {
-  const theme = useRecoilValue(themeState);
+  const [theme, setTheme] = useRecoilState(themeState);
+  const [storedTheme, setStoredTheme] = useStoredTheme();
   const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    setTheme(storedTheme)
+  }, [storedTheme])
 
   useEffect(() => {
     if (user) {
@@ -65,18 +71,19 @@ function WrappedApp({ Component, pageProps }) {
 
   return (
     <>
-    <Head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <PageContainer>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
-      </PageContainer>
-    </ThemeProvider>
+      <Head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <PageContainer>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </PageContainer>
+        <ToastContainer position={"bottom-right"}/>
+      </ThemeProvider>
     </>
   );
 }

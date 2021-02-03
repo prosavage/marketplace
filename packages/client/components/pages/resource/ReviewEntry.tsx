@@ -10,10 +10,13 @@ import AuthorIcon from "../../ui/AuthorIcon";
 import timeago from "time-ago";
 import { User } from "../../../types/User";
 import Link from "next/link";
+import { MessageSquare } from "react-feather";
+import useToast from "../../../util/hooks/useToast";
 
 export default function ReviewEntry({ review }: { review: Review }) {
   const [user, setUser] = useState<User>();
   const theme = useRecoilValue(themeState);
+  const toast = useToast();
 
   useEffect(() => {
     getAxios()
@@ -27,15 +30,18 @@ export default function ReviewEntry({ review }: { review: Review }) {
     <Wrapper>
       <AuthorIcon user={user} size={"96px"} />
       <Content>
-        <ReviewDropsContainer>
-          {renderReviewDroplets(theme, review.rating)}
-        </ReviewDropsContainer>
-        <p>{review.message}</p>
         <BottomRow>
           <Link href={`/users/${user?._id}`}>
             <AuthorLink>{user?.username}</AuthorLink>
           </Link>
-          <p>{timeago.ago(review.timestamp)}</p>
+          <ReviewDropsContainer>
+          {renderReviewDroplets(theme, review.rating)}
+        </ReviewDropsContainer>
+        </BottomRow>
+        <p>{review.message}</p>
+        <BottomRow>
+        <p>{timeago.ago(review.timestamp)}</p>
+        <MessageSquare onClick={() => toast(`Coming Soon`)}/>
         </BottomRow>
       </Content>
     </Wrapper>
@@ -75,6 +81,6 @@ const BottomRow = styled.div`
 `;
 
 const AuthorLink = styled.p`
-  color: #00b2ff;
+  color: ${(props: PropsTheme) => props.theme.accentColor};
   cursor: pointer;
 `;

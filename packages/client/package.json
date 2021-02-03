@@ -9,7 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "babel-plugin-styled-components": "^1.11.1",
     "bbcode-to-react": "^0.2.9",
     "js-file-download": "^0.4.12",
     "next": "^10.0.4",
@@ -20,6 +19,7 @@
     "react-parallax-tilt": "^1.4.71",
     "react-simple-code-editor": "^0.11.0",
     "react-spring": "^8.0.27",
+    "react-toastify": "^7.0.3",
     "recoil": "^0.1.2",
     "styled-components": "^5.2.0",
     "time-ago": "^0.2.1"
