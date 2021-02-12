@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { Resource, ResourceType } from "../../../../types/Resource";
+import { DirectoryResource, Resource, ResourceType } from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
 import { ArrowLeft, ArrowRight } from "react-feather";
@@ -12,7 +12,7 @@ function ResourceList(props: {
   category: string | undefined;
   author: User | undefined;
 }) {
-  const [resources, setResources] = useState<Resource[]>([]);
+  const [resources, setResources] = useState<DirectoryResource[]>([]);
   const [page, setPage] = useState(1);
 
   // component stays mounted...

@@ -9,6 +9,7 @@ import {
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
+import { Resource } from "../../types/Resource";
 
 const resourceIconRouter = express.Router();
 
@@ -117,10 +118,30 @@ resourceIconRouter.delete(
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    const result = await bunny.deleteResourceIconById(
-      (req.params.id as unknown) as ObjectId
-    );
-    res.success({ data: result.data });
+    const resource = await getDatabase()
+      .collection<Resource>(RESOURCES_COLLECTION)
+      .findOne({ _id: (req.params.id as unknown) as ObjectId });
+
+    if (!resource?.hasIcon) {
+      res.failure("resource has no icon.");
+      return;
+    }
+
+    try {
+      const result = await bunny.deleteResourceIconById(
+        (req.params.id as unknown) as ObjectId
+      );
+
+      await getDatabase()
+        .collection<Resource>(RESOURCES_COLLECTION)
+        .updateOne(
+          { _id: (req.params.id as unknown) as ObjectId },
+          { $set: { hasIcon: false } }
+        );
+      res.success({ data: result.data });
+    } catch (err) {
+      res.failure(err.response.data.Message);
+    }
   }
 );
 

@@ -6,6 +6,7 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import getAxios from "../../../util/AxiosInstance";
 import { useRouter } from "next/router";
+import useToast from "../../../util/hooks/useToast";
 
 export default function ResourceIcon({ resource }: { resource: Resource }) {
   const [file, setFile] = useState<File>();
@@ -14,22 +15,34 @@ export default function ResourceIcon({ resource }: { resource: Resource }) {
 
   const router = useRouter();
 
-  const sendIcon = () => {
+  const toast = useToast();
 
+  const sendIcon = () => {
     const formData = new FormData();
     formData.append("icon", file);
-
     getAxios()
       .put(`/resources/icon/${resource._id}`, formData, {
         headers: { "content-type": "multipart/form-data" },
       })
       .then((res) => {
-        console.log(res.data)
-        router.push(`/resources/${resource._id}/`)
+        console.log(res.data);
+        router.push(`/resources/${resource._id}/`);
       })
       .catch((err) => setErr(err.response.data.error));
   };
 
+  const deleteIcon = () => {
+    getAxios()
+      .delete(`/resources/icon/${resource._id}`)
+      .then((res) => {
+        console.log(res.data);
+        toast("Icon deleted.");
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        toast(err.response.data.error);
+      });
+  };
 
   return (
     <Wrapper>
@@ -45,8 +58,9 @@ export default function ResourceIcon({ resource }: { resource: Resource }) {
         <SubmitContainer>
           <Button onClick={sendIcon}>Submit</Button>
         </SubmitContainer>
+        <Button onClick={deleteIcon}>Delete</Button>
       </ContentContainer>
-    </Wrapper>
+    </Wrapper> 
   );
 }
 

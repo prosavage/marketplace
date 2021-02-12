@@ -91,8 +91,6 @@ userIconRouter.get(
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-
-    
     if (!req.user?._id.equals(req.params.id as unknown as ObjectId)) {
         res.failure("not your profile.")
         return;

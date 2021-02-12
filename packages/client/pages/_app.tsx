@@ -12,8 +12,9 @@ import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
 import useStoredTheme from "../util/hooks/useStoredTheme";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import NextNprogress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -33,8 +34,8 @@ function WrappedApp({ Component, pageProps }) {
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
-    setTheme(storedTheme)
-  }, [storedTheme])
+    setTheme(storedTheme);
+  }, [storedTheme]);
 
   useEffect(() => {
     if (user) {
@@ -77,12 +78,13 @@ function WrappedApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
+        <NextNprogress color={theme.accentColor} startPosition={0.3} stopDelayMs={10}  height={3} />
         <PageContainer>
           <Navbar />
           <Component {...pageProps} />
           <Footer />
         </PageContainer>
-        <ToastContainer position={"bottom-right"}/>
+        <ToastContainer position={"bottom-right"} />
       </ThemeProvider>
     </>
   );

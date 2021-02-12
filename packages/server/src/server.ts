@@ -15,6 +15,7 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
+import { RESOURCES_COLLECTION, REVIEWS_COLLECTION } from "./constants";
 
 dotenv.config();
 
@@ -66,6 +67,13 @@ mongoClient.connect(async () => {
   await ensureIndexes();
   // await addDummyData();
   await readTokens();
+
+  // const resources = await getDatabase().collection(RESOURCES_COLLECTION).find().toArray();
+  // resources.forEach(async resource => {
+  //   const reviews = await getDatabase().collection(REVIEWS_COLLECTION).find({resource: resource._id}).toArray();
+  //   await getDatabase().collection(RESOURCES_COLLECTION).updateOne({_id: resource._id}, {$set: {reviewCount: reviews.length}})
+  //   console.log("processed", resource.name)
+  // })
   app.listen(5000, () => console.log("started marketplace backend."));
 });
 

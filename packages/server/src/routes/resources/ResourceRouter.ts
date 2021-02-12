@@ -129,6 +129,7 @@ resourceRouter.put(
       updated: resource.updated,
       type: category.type,
       downloads: 0,
+      resouceCount: 0
     };
 
     const result = await database

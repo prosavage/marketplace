@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import { ObjectId } from "mongodb";
-import { REVIEWS_COLLECTION, VERSIONS_COLLECTION } from "../constants";
+import {
+  RESOURCES_COLLECTION,
+  REVIEWS_COLLECTION,
+  VERSIONS_COLLECTION,
+} from "../constants";
 import { updateResourceRating } from "../database";
 import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
@@ -12,89 +16,125 @@ import { Version } from "../types/Version";
 
 const reviewRouter = express.Router();
 
-reviewRouter.put("/", [
-    body("message").isString().bail().isLength({min: 50, max: 500}),
+reviewRouter.put(
+  "/",
+  [
+    body("message").isString().bail().isLength({ min: 50, max: 500 }),
     body("rating").isInt().bail().toInt(),
-    body(["resource"]).isMongoId().bail().customSanitizer(value => new ObjectId(value)),
+    body(["resource"])
+      .isMongoId()
+      .bail()
+      .customSanitizer((value) => new ObjectId(value)),
     Authorize,
-    isValidBody
-], async (req: Request, res: Response) => {
+    isValidBody,
+  ],
+  async (req: Request, res: Response) => {
     const body = req.body;
 
-    const latestVersion = (await getDatabase().collection<Version>(VERSIONS_COLLECTION)
+    const latestVersion = (
+      await getDatabase()
+        .collection<Version>(VERSIONS_COLLECTION)
         .find({ resource: body.resource })
         .sort({ timestamp: -1 })
-        .limit(1).toArray())[0];
+        .limit(1)
+        .toArray()
+    )[0];
 
     if (!latestVersion) {
-        res.failure("No version found on the resource")
-        return;
+      res.failure("No version found on the resource");
+      return;
     }
-    const reviews = await getDatabase().collection<Review>(REVIEWS_COLLECTION)
-        .find({ resource: body.resource, author: req.user!!._id, version: latestVersion._id })
-        .toArray();
+    const reviews = await getDatabase()
+      .collection<Review>(REVIEWS_COLLECTION)
+      .find({
+        resource: body.resource,
+        author: req.user!!._id,
+        version: latestVersion._id,
+      })
+      .toArray();
 
-    console.log(reviews)
+    console.log(reviews);
     if (reviews != null && reviews.length != 0) {
-        res.failure("You have already reviewed this version");
-        return;
+      res.failure("You have already reviewed this version");
+      return;
     }
 
     const review = {
-        author: req.user!!._id,
-        message: body.message,
-        rating: body.rating,
-        timestamp: new Date(),
-        version: latestVersion._id,
-        resource: body.resource,
+      author: req.user!!._id,
+      message: body.message,
+      rating: body.rating,
+      timestamp: new Date(),
+      version: latestVersion._id,
+      resource: body.resource,
     };
     await getDatabase().collection(REVIEWS_COLLECTION).insertOne(review);
-
+    await getDatabase()
+      .collection(RESOURCES_COLLECTION)
+      .updateOne({ _id: body.resource }, { $inc: { reviewCount: 1 } });
     // update resource rating - ignore await for this as it's just a background task.
     updateResourceRating(body.resource);
-    res.success({ review })
-})
+    res.success({ review });
+  }
+);
 
-reviewRouter.get("/:id", [
-    param("id").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
-    isValidBody
-], async (req: Request, res: Response) => {
+reviewRouter.get(
+  "/:id",
+  [
+    param("id")
+      .isMongoId()
+      .bail()
+      .customSanitizer((value) => new ObjectId(value)),
+    isValidBody,
+  ],
+  async (req: Request, res: Response) => {
     const id = req.params.id;
-    const reviews = await getDatabase().collection(REVIEWS_COLLECTION).find({ _id: id }).toArray();
-    res.success(reviews)
-})
+    const reviews = await getDatabase()
+      .collection(REVIEWS_COLLECTION)
+      .find({ _id: id })
+      .toArray();
+    res.success(reviews);
+  }
+);
 
-reviewRouter.delete("/:id", [
-    param("id").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
+reviewRouter.delete(
+  "/:id",
+  [
+    param("id")
+      .isMongoId()
+      .bail()
+      .customSanitizer((value) => new ObjectId(value)),
     Authorize,
-    isValidBody
-], async (req: Request, res: Response) => {
+    isValidBody,
+  ],
+  async (req: Request, res: Response) => {
     const user = req.user!!;
-    const reviewId = req.params.id as unknown as ObjectId
+    const reviewId = (req.params.id as unknown) as ObjectId;
 
     // permission check logic.
     if (user.role < Role.ADMIN) {
-        const review = await getDatabase()
-            .collection<Version>(REVIEWS_COLLECTION)
-            .findOne({ _id: reviewId });
-        if (!review?.author.equals(user._id)) {
-            res.failure("You do not have permission to delete this review.");
-            return;
-        }
+      const review = await getDatabase()
+        .collection<Version>(REVIEWS_COLLECTION)
+        .findOne({ _id: reviewId });
+      if (!review?.author.equals(user._id)) {
+        res.failure("You do not have permission to delete this review.");
+        return;
+      }
     }
 
     const result = await getDatabase()
-        .collection(REVIEWS_COLLECTION)
-        .findOneAndDelete({ _id: reviewId });
+      .collection(REVIEWS_COLLECTION)
+      .findOneAndDelete({ _id: reviewId });
 
     // update resource rating - ignore await for this as it's just a background task.
     // Only update resource ratings if the findOneAndDelete finds a review.
     if (result.value) {
-        updateResourceRating(result.value!!.resource);
+      await getDatabase()
+        .collection(RESOURCES_COLLECTION)
+        .updateOne({ _id: result.value!!.resource }, { $inc: { reviewCount: -1 } });
+      updateResourceRating(result.value!!.resource);
     }
     res.success({ result });
-})
-
-
+  }
+);
 
 export default reviewRouter;

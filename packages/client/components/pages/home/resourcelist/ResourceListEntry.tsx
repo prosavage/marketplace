@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Resource } from "../../../../types/Resource";
+import { DirectoryResource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -7,37 +7,15 @@ import { themeState } from "../../../../atoms/theme";
 import timeago from "time-ago";
 import { useRecoilValue } from "recoil";
 import renderReviewDroplets from "../../../../util/Review";
-import { User } from "../../../../types/User";
 import getAxios from "../../../../util/AxiosInstance";
-import { animated, useSpring } from "react-spring";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
+import FadeDiv from "../../../ui/FadeDiv";
 
-function ResourceListEntry(props: { resource: Resource }) {
-  const [user, setUser] = useState<User>();
+function ResourceListEntry(props: { resource: DirectoryResource }) {
   const theme = useRecoilValue(themeState);
 
-  const [reviewCount, setReviewCount] = useState(0);
-
-  useEffect(() => {
-    getAxios()
-      .get(`/directory/user/${props.resource.owner}`)
-      .then((res) => setUser(res.data.payload.user))
-      .catch((err) => console.log(err.response.data.error));
-
-    getAxios()
-      .get(`/directory/reviews/${props.resource._id}`)
-      .then((res) => setReviewCount(res.data.payload.reviews.length))
-      .catch((err) => console.log(err.response.data));
-  }, []);
-
-  const anime = useSpring({
-    config: { duration: 500 },
-    opacity: 1,
-    from: { opacity: 0.5 },
-  });
-
   return (
-    <Wrapper style={anime}>
+    <Wrapper>
       <ResourceIcon resource={props.resource} size={"75px"} />
       <Metadata>
         <ResourceInfo>
@@ -45,8 +23,8 @@ function ResourceListEntry(props: { resource: Resource }) {
             <Link href={`/resources/${props.resource._id}`}>
               <h2>{props.resource.name}</h2>
             </Link>
-            <Link href={`/users/${props.resource.owner}`}>
-              <AuthorLink>{user?.username}</AuthorLink>
+            <Link href={`/users/${props.resource.owner?._id}`}>
+              <AuthorLink>{props.resource.owner?.username}</AuthorLink>
             </Link>
           </TitleArea>
           <Description>{props.resource.description}</Description>
@@ -57,7 +35,7 @@ function ResourceListEntry(props: { resource: Resource }) {
               {renderReviewDroplets(theme, props.resource.rating)}
             </ReviewDropsContainer>
             <ReviewCount>
-              {new Intl.NumberFormat().format(reviewCount)} ratings
+              {new Intl.NumberFormat().format(props.resource.reviewCount)} ratings
             </ReviewCount>
           </Review>
           <DataEntryBottom>
@@ -80,7 +58,7 @@ function ResourceListEntry(props: { resource: Resource }) {
 
 export default ResourceListEntry;
 
-const Wrapper = styled(animated.div)`
+const Wrapper = styled(FadeDiv)`
   display: flex;
   flex-direction: row;
   align-items: center;

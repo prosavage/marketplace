@@ -2,3 +2,4 @@
 {"_id":{"$oid":"5feec160ae6dd59db8fd9908"},"name":"Addons","type":"plugin"}
 {"_id":{"$oid":"5feec167ae6dd59db8fd9909"},"name":"Tweaks","type":"plugin"}
 {"_id":{"$oid":"5feec16bae6dd59db8fd990a"},"name":"Anticheat","type":"plugin"}
+{"_id":{"$oid":"60162f7ed240ee7fc3fe8d87"},"name":"Misc","type":"plugin"}

@@ -19,6 +19,7 @@ export interface Resource {
     owner: User["_id"],
     updated: Date,
     type: ResourceType,
-    downloads: number
+    downloads: number,
+    reviewCount: number
 }
 

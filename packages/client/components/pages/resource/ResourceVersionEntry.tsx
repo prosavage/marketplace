@@ -5,11 +5,10 @@ import timeago from "time-ago";
 import React from "react";
 import Button from "../../ui/Button";
 import parser from "./../../../util/parser/Parser";
-import { animated, useSpring } from "react-spring";
 import { Resource } from "../../../types/Resource";
-import { useRouter } from "next/router";
 import getAxios from "../../../util/AxiosInstance";
 import FileDownload from "js-file-download";
+import FadeDiv from "../../ui/FadeDiv";
 
 export default function ResourceVersionEntry({
   resource,
@@ -20,11 +19,7 @@ export default function ResourceVersionEntry({
   onVersionSelect: (version: Version) => void;
   version: Version;
 }) {
-  const anime = useSpring({
-    config: { duration: 125 },
-    opacity: 1,
-    from: { opacity: 0.5 },
-  });
+  
 
   const download = () => {
     getAxios()
@@ -34,7 +29,7 @@ export default function ResourceVersionEntry({
   };
 
   return (
-    <Wrapper onClick={() => onVersionSelect(version)} style={anime}>
+    <Wrapper onClick={() => onVersionSelect(version)}>
       <Header>
         <TextContainer>
           <h3>{version?.title}</h3>
@@ -55,7 +50,7 @@ export default function ResourceVersionEntry({
   );
 }
 
-const Wrapper = styled(animated.div)`
+const Wrapper = styled(FadeDiv)`
   display: flex;
   flex-direction: column;
   width: 100%;

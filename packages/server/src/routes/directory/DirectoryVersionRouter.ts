@@ -43,6 +43,7 @@ directoryVersionRouter.get("/download/:version", [
         return;
     }
     const file = await bunny.getVersionFile(resource, version)
+    
     res.send(file.data)
 })
 

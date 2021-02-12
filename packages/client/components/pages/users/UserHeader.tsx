@@ -1,8 +1,6 @@
-import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { User, UserStats } from "../../../types/User";
-import { formatNumber } from "../../../util/Format";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
@@ -10,18 +8,6 @@ export default function UserHeader(props: {
   user: User | undefined;
   stats: UserStats | undefined;
 }) {
-  const resourceSpring: any = useSpring({
-    from: { val: 0 },
-    to: { val: props.stats?.resourceCount ? props.stats?.resourceCount : 0 },
-  });
-  const downloadSpring: any = useSpring({
-    from: { val: 0 },
-    to: { val: props.stats?.downloads ? props.stats?.downloads : 0 },
-  });
-  const ratingSpring: any = useSpring({
-    from: { val: 0 },
-    to: { val: props.stats?.avgReviewScore ? props.stats?.avgReviewScore : 0 },
-  });
 
   return (
     <Wrapper>
@@ -36,21 +22,21 @@ export default function UserHeader(props: {
           </MetaSubContainer>
           <StatsContainer>
             <Stat>
-              <animated.h2>
-                {resourceSpring.val.interpolate((val) => Math.ceil(val))}
-              </animated.h2>
+              <h2>
+                {props.stats?.resourceCount}
+              </h2>
               <StatText>RESOURCES</StatText>
             </Stat>
             <Stat>
-              <animated.h2>
-                {downloadSpring.val.interpolate((val) => Math.ceil(val))}
-              </animated.h2>
+              <h2>
+                {props.stats?.downloads}
+              </h2>
               <StatText>DOWNLOADS</StatText>
             </Stat>
             <Stat>
-              <animated.h2>
-                {ratingSpring.val.interpolate((val) => Math.ceil(val))}
-              </animated.h2>
+              <h2>
+                {props.stats?.avgReviewScore}
+              </h2>
               <StatText>RATING</StatText>
             </Stat>
           </StatsContainer>
