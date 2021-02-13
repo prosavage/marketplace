@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../../types/User";
 import { Version } from "../../../types/Version";
 import getAxios from "../../../util/AxiosInstance";
-import ResourceThread from "../../../components/pages/resource/ResourceThread";
 import { Category } from "../../../types/Category";
 import { Resource } from "../../../types/Resource";
 import ResourceVersions from "../../../components/pages/resource/ResourceVersions";
 import { useRouter } from "next/router";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
+import Head from "next/head";
 
 export default function ResourceId(props: { id: string }) {
   // For general resource info.
@@ -51,6 +51,9 @@ export default function ResourceId(props: { id: string }) {
       versions={versions}
       author={author}
     >
+      <Head>
+        <title>{resource?.name}: Version List</title>
+      </Head>
       <ResourceVersions
         resource={resource}
         onVersionSelect={(version) =>
