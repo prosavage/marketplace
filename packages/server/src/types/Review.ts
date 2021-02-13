@@ -1,10 +1,10 @@
-import { ObjectId } from "mongodb";
+
 import { Resource } from "./Resource";
 import { User } from "./User";
 import { Version } from "./Version";
 
 export interface Review {
-    _id: ObjectId,
+    _id: string,
     author: User["_id"],
     message: string,
     rating: number,

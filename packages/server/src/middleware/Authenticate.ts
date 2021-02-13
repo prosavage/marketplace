@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { ObjectId } from "mongodb";
+
 import { RESOURCES_COLLECTION, USERS_COLLECTION } from "../constants";
 import { getDatabase, tokenMap } from "../server";
 import { Role } from "../struct/Role";
@@ -52,12 +52,7 @@ export function hasPermissionForResource(pathToResourceId: string, bypassRole: R
             res.failure("Resource ID path does not exist, hence, permission access cannot be checked");
             return;
         }
-        let resourceObjectId: ObjectId;
-        if (typeof resourceId === "string") {
-            resourceObjectId = new ObjectId(resourceId);
-        } else {
-            resourceObjectId = resourceId;
-        }
+        
         if (!req.user) {
             res.failure("not logged in", 401);
             return;
@@ -70,13 +65,13 @@ export function hasPermissionForResource(pathToResourceId: string, bypassRole: R
             return;
         }
 
-        const resource = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).findOne({ _id: resourceObjectId });
+        const resource = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).findOne({ _id: resourceId });
         if (!resource) {
             res.failure("Resource does not exist, hence, permission to access cannot be checked.")
             return;
         }
 
-        if (!req.user._id.equals(resource.owner)) {
+        if (req.user._id !== (resource.owner)) {
             res.failure("You do not have permission to access this resource.");
             return;
         }

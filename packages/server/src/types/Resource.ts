@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+
 import { Category } from "./Category";
 import { User } from "./User";
 
@@ -8,7 +8,7 @@ export enum ResourceType {
 
 
 export interface Resource {
-    _id: ObjectId,
+    _id: string,
     name: string,
     description: string,
     price: number,

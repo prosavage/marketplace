@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
-import { ObjectId } from "mongodb";
+
 import {
   CATEGORIES_COLLECTION,
   RESOURCES_COLLECTION,
@@ -17,6 +17,7 @@ import { getDatabase } from "../../server";
 import { Role } from "../../struct/Role";
 import { Category } from "../../types/Category";
 import resourceIconRouter from "./ResourceIconRouter";
+import shortid from "shortid";
 
 const resourceRouter = express.Router();
 
@@ -24,13 +25,7 @@ resourceRouter.use("/icon", resourceIconRouter);
 
 resourceRouter.get(
   "/:id",
-  [
-    param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
-    isValidBody,
-  ],
+  [param("id").custom((id) => shortid.isValid(id)), isValidBody],
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const resource = await getDatabase()
@@ -43,10 +38,7 @@ resourceRouter.get(
 resourceRouter.patch(
   "/:id",
   [
-    param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+    param("id").custom((id) => shortid.isValid(id)),
     body(["name", "description"])
       .isString()
       .bail()
@@ -90,10 +82,7 @@ resourceRouter.put(
     body(["thread", "category"]).isString(),
     body("name", "description").isString().bail().isLength({ min: 4, max: 35 }),
     body("price").isInt(),
-    body("category")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+    body("category").custom((id) => shortid.isValid(id)),
     body([
       "version.title",
       "version.description",
@@ -118,6 +107,7 @@ resourceRouter.put(
     }
 
     const resourceToAdd = {
+      _id: shortid.generate(),
       name: resource.name,
       category: resource.category,
       description: resource.description,
@@ -129,14 +119,14 @@ resourceRouter.put(
       updated: resource.updated,
       type: category.type,
       downloads: 0,
-      resouceCount: 0
+      resouceCount: 0,
     };
 
     const result = await database
       .collection(RESOURCES_COLLECTION)
       .insertOne(resourceToAdd);
 
-    resource.version.resource = new ObjectId(result.ops[0]._id);
+    resource.version.resource = result.ops[0]._id
     database.collection(VERSIONS_COLLECTION).insertOne(resource.version);
 
     res.success({ resource: resourceToAdd });
@@ -146,10 +136,7 @@ resourceRouter.put(
 resourceRouter.delete(
   "/",
   [
-    body("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+    body("id").custom((id) => shortid.isValid(id)),
     Authorize,
     atleastRole(Role.MODERATOR),
     isValidBody,

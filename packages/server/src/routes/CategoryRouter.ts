@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import { CATEGORIES_COLLECTION } from "../constants";
 import { atleastRole, Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
@@ -24,7 +25,7 @@ categoryRouter.put(
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    const category = { name: req.body.name, type: req.body.type };
+    const category = { _id: shortid.generate(), name: req.body.name, type: req.body.type };
     await getDatabase().collection(CATEGORIES_COLLECTION).insertOne(category);
     res.success({ category });
   }
@@ -34,9 +35,7 @@ categoryRouter.get(
   "/:id",
   [
     param("id")
-      .isString()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .isString(),
       isValidBody
   ],
   async (req: Request, res: Response) => {

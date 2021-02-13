@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import { RESOURCES_COLLECTION, VERSIONS_COLLECTION } from "../../constants";
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
@@ -11,7 +12,7 @@ import { Version } from "../../types/Version";
 const directoryVersionRouter = express.Router();
 
 directoryVersionRouter.get("/resource/:resource/:page", [
-    param("resource").isMongoId().bail().customSanitizer(value => new ObjectId(value)),
+    param("resource").custom(id => shortid.isValid(id)),
     param("page").isInt().bail().toInt().custom(v => v > 0).bail(),
     isValidBody
 ],
@@ -23,11 +24,11 @@ directoryVersionRouter.get("/resource/:resource/:page", [
 );
 
 directoryVersionRouter.get("/download/:version", [
-    param("version").isMongoId().bail().customSanitizer(v => new ObjectId(v)),
+    param("version").custom(id => shortid.isValid(id)),
     Authorize,
     isValidBody
 ], async (req: Request, res: Response) => {
-    const versionId = req.params.version as unknown as ObjectId
+    const versionId = req.params.version as string
 
     const version = await getDatabase().collection<Version>(VERSIONS_COLLECTION).findOne({ _id: versionId });
     

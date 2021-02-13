@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import {
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
@@ -22,9 +23,8 @@ reviewRouter.put(
     body("message").isString().bail().isLength({ min: 50, max: 500 }),
     body("rating").isInt().bail().toInt(),
     body(["resource"])
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     isValidBody,
   ],
@@ -60,6 +60,7 @@ reviewRouter.put(
     }
 
     const review = {
+      _id: shortid.generate(),
       author: req.user!!._id,
       message: body.message,
       rating: body.rating,
@@ -81,9 +82,8 @@ reviewRouter.get(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
@@ -100,22 +100,21 @@ reviewRouter.delete(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
     const user = req.user!!;
-    const reviewId = (req.params.id as unknown) as ObjectId;
+    const reviewId = (req.params.id) as string;
 
     // permission check logic.
     if (user.role < Role.ADMIN) {
       const review = await getDatabase()
         .collection<Version>(REVIEWS_COLLECTION)
         .findOne({ _id: reviewId });
-      if (!review?.author.equals(user._id)) {
+      if (review?.author !==(user._id)) {
         res.failure("You do not have permission to delete this review.");
         return;
       }

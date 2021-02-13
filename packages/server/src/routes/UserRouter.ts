@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import { USERS_COLLECTION } from "../constants";
 import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
@@ -25,15 +26,14 @@ userIconRouter.put(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+     ,
     Authorize,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
 
-    if (!req.user?._id.equals(req.params.id as unknown as ObjectId)) {
+    if (req.user?._id !== req.params.id) {
         res.failure("not your profile.")
         return;
     }
@@ -55,12 +55,12 @@ userIconRouter.put(
       return;
     }
 
-    const dbId = (req.params.id as unknown) as ObjectId;
+    const dbId = (req.params.id as string);
 
     let getRes;
     try {
       getRes = await bunny.getUserIconById(
-        (req.params.id as unknown) as ObjectId
+        (req.params.id as string)
       );
     } catch (err) {
       getRes = { data: err };
@@ -84,21 +84,20 @@ userIconRouter.get(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    if (!req.user?._id.equals(req.params.id as unknown as ObjectId)) {
+    if (req.user?._id !== (req.params.id)) {
         res.failure("not your profile.")
         return;
     }
     let result;
     try {
       result = (
-        await bunny.getUserIconById((req.params.id as unknown) as ObjectId)
+        await bunny.getUserIconById((req.params.id as string))
       ).data;
     } catch (err) {
       result = err.message;
@@ -114,19 +113,18 @@ userIconRouter.delete(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+     ,
     Authorize,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    if (!req.user?._id.equals(req.params.id as unknown as ObjectId)) {
+    if (req.user?._id !== req.params.id) {
         res.failure("not your profile.")
         return;
     }
     const result = await bunny.deleteUserIconById(
-      (req.params.id as unknown) as ObjectId
+      (req.params.id as string)
     );
     res.success({ data: result.data });
   }

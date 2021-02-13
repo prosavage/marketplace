@@ -1,9 +1,9 @@
-import { ObjectId } from "mongodb";
+
 import { Resource } from "./Resource";
 import { User } from "./User";
 
 export interface Version {
-    _id: ObjectId
+    _id: string
     version: string,
     title: string,
     description: string,

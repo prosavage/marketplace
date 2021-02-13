@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import {
   CATEGORIES_COLLECTION,
   RESOURCES_COLLECTION,
@@ -24,13 +25,12 @@ directoryRouter.get(
   "/reviews/:resource",
   [
     param("resource")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+      ,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    const resourceId = (req.params.resource as unknown) as ObjectId;
+    const resourceId = (req.params.resource as string);
     if (!resourceId || resourceId === null) {
       res.failure("invalid resource id");
       return;
@@ -48,10 +48,8 @@ directoryRouter.get(
 
 directoryRouter.get("/featured", async (_req: Request, res: Response) => {
   // static values for now...
-  const featuredResource = [
-    new ObjectId("601103008efa94fcb7c8d375"),
-    new ObjectId("601104f062de2105a4250223"),
-    new ObjectId("601103898efa94fcb7c8d377"),
+  const featuredResource: string[] = [
+    
   ];
 
   const resources = await Promise.all(
@@ -86,15 +84,14 @@ directoryRouter.get(
   "/user/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+    ,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
     const user = await getDatabase()
       .collection<User>(USERS_COLLECTION)
-      .findOne({ _id: (req.params.id as unknown) as ObjectId });
+      .findOne({ _id: (req.params.id as string) });
 
     if (user === null) {
       res.failure("user not found");
@@ -103,7 +100,7 @@ directoryRouter.get(
 
     res.success({
       user: {
-        _id: user?._id.toHexString(),
+        _id: user?._id,
         username: user?.username,
         discordServerId: user?.discordServerId,
         hasIcon: user?.hasIcon,
@@ -116,15 +113,14 @@ directoryRouter.get(
   "/user-stats/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+   ,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
     const user = await getDatabase()
       .collection<User>(USERS_COLLECTION)
-      .findOne({ _id: (req.params.id as unknown) as ObjectId });
+      .findOne({ _id: (req.params.id as string) });
 
     if (user === null) {
       res.failure("user not found");

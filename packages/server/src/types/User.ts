@@ -1,8 +1,8 @@
-import { ObjectId } from "mongodb";
+
 import { Role } from "../struct/Role";
 
 export interface User {
-    _id: ObjectId,
+    _id: string,
     username: string,
     discordServerId: number | undefined,
     hasIcon: boolean,

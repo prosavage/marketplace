@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import { RESOURCES_COLLECTION } from "../../constants";
 import {
   Authorize,
@@ -30,9 +31,8 @@ resourceIconRouter.put(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
@@ -55,12 +55,12 @@ resourceIconRouter.put(
       return;
     }
 
-    const dbId = (req.params.id as unknown) as ObjectId;
+    const dbId = (req.params.id as string);
 
     let getRes;
     try {
       getRes = await bunny.getResourceIconById(
-        (req.params.id as unknown) as ObjectId
+        (req.params.id as string)
       );
     } catch (err) {
       getRes = { data: err };
@@ -83,9 +83,8 @@ resourceIconRouter.get(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
@@ -94,7 +93,7 @@ resourceIconRouter.get(
     let result;
     try {
       result = (
-        await bunny.getResourceIconById((req.params.id as unknown) as ObjectId)
+        await bunny.getResourceIconById((req.params.id as string))
       ).data;
     } catch (err) {
       result = err.message;
@@ -110,9 +109,8 @@ resourceIconRouter.delete(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
@@ -120,7 +118,7 @@ resourceIconRouter.delete(
   async (req: Request, res: Response) => {
     const resource = await getDatabase()
       .collection<Resource>(RESOURCES_COLLECTION)
-      .findOne({ _id: (req.params.id as unknown) as ObjectId });
+      .findOne({ _id: (req.params.id as string) });
 
     if (!resource?.hasIcon) {
       res.failure("resource has no icon.");
@@ -129,13 +127,13 @@ resourceIconRouter.delete(
 
     try {
       const result = await bunny.deleteResourceIconById(
-        (req.params.id as unknown) as ObjectId
+        (req.params.id as string)
       );
 
       await getDatabase()
         .collection<Resource>(RESOURCES_COLLECTION)
         .updateOne(
-          { _id: (req.params.id as unknown) as ObjectId },
+          { _id: (req.params.id as string) },
           { $set: { hasIcon: false } }
         );
       res.success({ data: result.data });

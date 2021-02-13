@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import {
   CATEGORIES_COLLECTION,
   RESOURCES_COLLECTION,
@@ -94,9 +95,8 @@ directoryResourceRouter.get(
   "/author/:user/:page",
   [
     param("user")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     param("page")
       .isInt()
       .bail()

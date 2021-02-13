@@ -1,6 +1,6 @@
 import Axios, { AxiosInstance } from "axios";
 import { UploadedFile } from "express-fileupload";
-import { ObjectId } from "mongodb";
+
 import { Resource } from "../types/Resource";
 import { Version } from "../types/Version";
 
@@ -28,23 +28,23 @@ export class BunnyCDNStorage {
         return this.bunnyAxios.delete(path + "/" + file)
     }
 
-    getResourcePath = (resourceId: ObjectId) => {
+    getResourcePath = (resourceId: string) => {
         return `resources/${resourceId}`
     }
 
-    getUserPath = (userId: ObjectId) => {
+    getUserPath = (userId: string) => {
         return `users/${userId}`
     }
 
-    getResourceIconById = (resourceId: ObjectId) => {
+    getResourceIconById = (resourceId: string) => {
         return this.getFile(this.getResourcePath(resourceId), "icon.png")
     }
 
-    putResourceIconById = (resourceId: ObjectId, file: any) => {
+    putResourceIconById = (resourceId: string, file: any) => {
         return this.putFile(this.getResourcePath(resourceId), "icon.png", file);
     }
 
-    deleteResourceIconById = (resourceId: ObjectId) => {
+    deleteResourceIconById = (resourceId: string) => {
         return this.deleteFile(this.getResourcePath(resourceId), "icon.png")
     }
 
@@ -56,15 +56,15 @@ export class BunnyCDNStorage {
         return this.deleteResourceIconById(resource._id)
     }
 
-    getUserIconById = (resourceId: ObjectId) => {
+    getUserIconById = (resourceId: string) => {
         return this.getFile(this.getUserPath(resourceId), "icon.png")
     }
 
-    putUserIconById = (resourceId: ObjectId, file: any) => {
+    putUserIconById = (resourceId: string, file: any) => {
         return this.putFile(this.getUserPath(resourceId), "icon.png", file);
     }
 
-    deleteUserIconById = (resourceId: ObjectId) => {
+    deleteUserIconById = (resourceId: string) => {
         return this.deleteFile(this.getUserPath(resourceId), "icon.png")
     }
 
@@ -76,7 +76,7 @@ export class BunnyCDNStorage {
         return this.deleteUserIconById(resource._id)
     }
 
-    getVersionPath = (resourceId: ObjectId, versionId: ObjectId) => {
+    getVersionPath = (resourceId: string, versionId: string) => {
         return `resources/${resourceId}/${versionId}`
     }
 

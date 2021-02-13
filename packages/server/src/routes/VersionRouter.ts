@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
-import { ObjectId } from "mongodb";
+
+import shortid from "shortid";
 import {
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
@@ -25,9 +26,8 @@ versionRouter.put(
     body(["title", "version"]).isString().bail().isLength({ min: 2, max: 30 }),
     body(["description"]).isString().bail().isLength({ min: 4 }),
     body("resource")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     hasPermissionForResource("resource", Role.ADMIN),
     isValidBody,
@@ -58,6 +58,7 @@ versionRouter.put(
     }
 
     const version = {
+      _id: shortid.generate(),
       title: body.title,
       description: body.description,
       version: body.version,
@@ -75,14 +76,13 @@ versionRouter.put(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((v) => new ObjectId(v)),
+      .custom(id => shortid.isValid(id))
+      ,
     Authorize,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    const id = (req.params.id as unknown) as ObjectId;
+    const id = (req.params.id as string);
 
     const version = await getDatabase()
       .collection<Version>(VERSIONS_COLLECTION)
@@ -115,7 +115,7 @@ versionRouter.put(
 
     if (
       req.user!!.role < Role.ADMIN &&
-      !req.user!!._id.equals(resource.owner)
+      req.user!!._id !==(resource.owner)
     ) {
       res.failure(
         "You do not have permission to access this resource or version."
@@ -139,9 +139,8 @@ versionRouter.get(
   "/:id",
   [
     param("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+     ,
     isValidBody,
   ],
   async (req: Request, res: Response) => {
@@ -157,9 +156,8 @@ versionRouter.delete(
   "/",
   [
     body("id")
-      .isMongoId()
-      .bail()
-      .customSanitizer((value) => new ObjectId(value)),
+      .custom(id => shortid.isValid(id))
+     ,
     Authorize,
     isValidBody,
   ],
@@ -174,7 +172,7 @@ versionRouter.delete(
       return;
     }
     // permission check logic.
-    if (user.role < Role.ADMIN && !version?.author.equals(user._id)) {
+    if (user.role < Role.ADMIN && version?.author !== (user._id)) {
       res.failure("You do not have permission to delete this version.");
       return;
     }

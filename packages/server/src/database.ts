@@ -72,7 +72,7 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
   const authors = new Set(reviews.map((review) => review.author));
   const calculatedReviews: Review[] = [];
   for (const author of authors) {
-    const authorReviews = reviews.filter((user) => user.author.equals(author));
+    const authorReviews = reviews.filter((user) => user.author === (author));
     const latestReview = authorReviews.sort((a, b) =>
       a.timestamp < b.timestamp ? 1 : -1
     )[0];
