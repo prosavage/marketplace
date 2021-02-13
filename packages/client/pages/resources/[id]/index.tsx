@@ -6,7 +6,7 @@ import ResourceThread from "../../../components/pages/resource/ResourceThread";
 import { Category } from "../../../types/Category";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
 import { Resource } from "../../../types/Resource";
-
+import Head from "next/head";
 
 
 export default function ResourceId(props: { id: string }) {
@@ -50,6 +50,9 @@ export default function ResourceId(props: { id: string }) {
       versions={versions}
       author={author}
     >
+      <Head>
+        <title>{resource?.name}: Thread</title>
+      </Head>
         <ResourceThread resource={resource}/>
     </ResourceViewParent>
   );

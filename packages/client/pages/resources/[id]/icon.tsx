@@ -6,6 +6,7 @@ import { Category } from "../../../types/Category";
 import { Resource } from "../../../types/Resource";
 import ResourceIcon from "../../../components/pages/resource/ResourceIcon";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
+import Head from "next/head";
 
 export default function ResourceId(props: { id: string }) {
   // For general resource info.
@@ -47,6 +48,9 @@ export default function ResourceId(props: { id: string }) {
       versions={versions}
       author={author}
     >
+      <Head>
+        <title>{resource?.name}: Edit Icon</title>
+      </Head>
       <ResourceIcon resource={resource} />
     </ResourceViewParent>
   );

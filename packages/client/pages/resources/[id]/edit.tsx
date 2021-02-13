@@ -5,8 +5,8 @@ import getAxios from "../../../util/AxiosInstance";
 import { Category } from "../../../types/Category";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
 import { Resource } from "../../../types/Resource";
-import ResourceUpdate from "../../../components/pages/resource/ResourceUpdate";
 import ResourceEdit from "../../../components/pages/resource/ResourceEdit";
+import Head from "next/head";
 
 export default function ResourceId(props: { id: string }) {
   // For general resource info.
@@ -43,12 +43,16 @@ export default function ResourceId(props: { id: string }) {
 
 
   return (
+    
     <ResourceViewParent
       resource={resource}
       category={category}
       versions={versions}
       author={author}
     >
+      <Head>
+        <title>{resource?.name}: Edit Resource</title>
+      </Head>
         <ResourceEdit resource={resource}/>
     </ResourceViewParent>
   );

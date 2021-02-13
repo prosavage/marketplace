@@ -6,7 +6,7 @@ import { Category } from "../../../types/Category";
 import { Resource } from "../../../types/Resource";
 import ResourceUpdate from "../../../components/pages/resource/ResourceUpdate";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
-
+import Head from "next/head";
 
 export default function ResourceId(props: { id: string }) {
   // For general resource info.
@@ -49,6 +49,9 @@ export default function ResourceId(props: { id: string }) {
       versions={versions}
       author={author}
     >
+      <Head>
+        <title>{resource?.name}: Update</title>
+      </Head>
         <ResourceUpdate
             resource={resource}
             onSubmit={() => {}}
