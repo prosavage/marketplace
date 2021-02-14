@@ -210,6 +210,14 @@ const ThreadContainer = styled.div`
   padding: 1em;
   border-radius: 4px;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+
+  img {
+    width: 100%;
+  }
+
+  * > img {
+    width: 100%;
+  }
 `;
 
 const HContainer = styled.div`

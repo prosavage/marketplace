@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { User, UserStats } from "../../../types/User";
+import useToast from "../../../util/hooks/useToast";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
@@ -8,6 +9,8 @@ export default function UserHeader(props: {
   user: User | undefined;
   stats: UserStats | undefined;
 }) {
+
+  const toast = useToast();
 
   return (
     <Wrapper>
@@ -23,25 +26,31 @@ export default function UserHeader(props: {
           <StatsContainer>
             <Stat>
               <h2>
-                {props.stats?.resourceCount}
+                {props.stats?.resourceCount
+                  ? new Intl.NumberFormat().format(props.stats?.resourceCount)
+                  : 0}
               </h2>
               <StatText>RESOURCES</StatText>
             </Stat>
             <Stat>
               <h2>
-                {props.stats?.downloads}
+                {props.stats?.downloads
+                  ? new Intl.NumberFormat().format(props.stats?.downloads)
+                  : 0}
               </h2>
               <StatText>DOWNLOADS</StatText>
             </Stat>
             <Stat>
               <h2>
-                {props.stats?.avgReviewScore}
+                {props.stats?.avgReviewScore
+                  ? props.stats?.avgReviewScore.toFixed(3)
+                  : 0}
               </h2>
               <StatText>RATING</StatText>
             </Stat>
           </StatsContainer>
         </MetaContainer>
-        <ReportButton>Report</ReportButton>
+        <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
       </TextContainer>
     </Wrapper>
   );

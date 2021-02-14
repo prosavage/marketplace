@@ -106,8 +106,10 @@ resourceRouter.put(
       return;
     }
 
+    const resourceId = shortid.generate();
+
     const resourceToAdd = {
-      _id: shortid.generate(),
+      _id: resourceId,
       name: resource.name,
       category: resource.category,
       description: resource.description,
@@ -119,14 +121,13 @@ resourceRouter.put(
       updated: resource.updated,
       type: category.type,
       downloads: 0,
-      resouceCount: 0,
+      reviewCount: 0,
     };
 
-    const result = await database
-      .collection(RESOURCES_COLLECTION)
-      .insertOne(resourceToAdd);
+    await database.collection(RESOURCES_COLLECTION).insertOne(resourceToAdd);
 
-    resource.version.resource = result.ops[0]._id
+    resource.version.resource = resourceId;
+    resource.version._id = shortid.generate();
     database.collection(VERSIONS_COLLECTION).insertOne(resource.version);
 
     res.success({ resource: resourceToAdd });

@@ -157,6 +157,16 @@ td, th {
     box-shadow: inset 0 1px 3px rgba(0,0,0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
   } */
 
+  /* .Toastify__toast-container {}
+  .Toastify__toast {}
+  .Toastify__toast--error {}
+  .Toastify__toast--warning {}
+  .Toastify__toast--success {}
+  .Toastify__toast-body {} */
+  .Toastify__progress-bar {
+    background-color: ${(props) => props.theme.accentColor};
+  }
+
 `;
 
 export default GlobalStyle;

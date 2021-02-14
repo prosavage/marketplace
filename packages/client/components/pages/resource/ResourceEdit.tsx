@@ -13,6 +13,7 @@ import {
   validateResourceDescription,
   validateResourceThread,
 } from "../../../util/Validation";
+import useToast from "../../../util/hooks/useToast";
 
 export default function ResourceEdit({ resource }: { resource: Resource }) {
   const [title, setTitle] = useState(resource?.name ? resource.name : "");
@@ -22,6 +23,8 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
   );
   const [err, setErr] = useState("");
 
+  const toast = useToast();
+
   useEffect(() => {
     if (!resource) return;
     setTitle(resource.name);
@@ -30,17 +33,17 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
   }, [resource]);
 
   const sendEdit = () => {
-    if (validateResourceTitle(title)) {
+    if (!validateResourceTitle(title)) {
       setErr("invalid title");
       return;
     }
 
-    if (validateResourceDescription(description)) {
+    if (!validateResourceDescription(description)) {
       setErr("invalid description");
       return;
     }
 
-    if (validateResourceThread(thread)) {
+    if (!validateResourceThread(thread)) {
       setErr("invalid thread");
       return;
     }
@@ -51,7 +54,7 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
         description,
         thread,
       })
-      .then((res) => console.log(res.data))
+      .then((res) => toast("successfully edited resource!"))
       .catch((err) => setErr(err.response.data.error));
   };
 

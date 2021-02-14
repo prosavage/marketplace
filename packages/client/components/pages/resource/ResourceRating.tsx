@@ -1,4 +1,3 @@
-import { count } from "console";
 import React, { useEffect, useState } from "react";
 import { Droplet } from "react-feather";
 import { useRecoilValue } from "recoil";

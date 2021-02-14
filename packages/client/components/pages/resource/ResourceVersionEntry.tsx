@@ -9,6 +9,7 @@ import { Resource } from "../../../types/Resource";
 import getAxios from "../../../util/AxiosInstance";
 import FileDownload from "js-file-download";
 import FadeDiv from "../../ui/FadeDiv";
+import useToast from "../../../util/hooks/useToast";
 
 export default function ResourceVersionEntry({
   resource,
@@ -19,13 +20,17 @@ export default function ResourceVersionEntry({
   onVersionSelect: (version: Version) => void;
   version: Version;
 }) {
+
+  const toast = useToast();
   
 
   const download = () => {
     getAxios()
       .get(`directory/versions/download/${version._id}`)
       .then((res) => FileDownload(res.data, `${resource.name}-${version.version}.jar`))
-      .catch((err) => console.log(err.response.data));
+      .catch((err) => {
+        toast(err.response.data.error)
+      });
   };
 
   return (
@@ -82,3 +87,5 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+
+

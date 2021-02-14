@@ -15,6 +15,7 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
+import { RESOURCES_COLLECTION } from "./constants";
 
 
 dotenv.config();
@@ -67,7 +68,6 @@ mongoClient.connect(async () => {
   await ensureIndexes();
   await readTokens();
 
-  
   app.listen(5000, () => console.log("started marketplace backend."));
 });
 

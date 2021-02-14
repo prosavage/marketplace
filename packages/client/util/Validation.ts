@@ -41,7 +41,7 @@ export const validateResourceTitle = (title: string) => {
 };
 
 export const validateResourceDescription = (desc: string) => {
-  return moreThanFourAndLessThenThirtyFive(desc);
+  return desc.length >= 4 && desc.length <= 50;
 };
 
 const moreThanFourAndLessThenThirtyFive = (str: string) => {
