@@ -23,7 +23,7 @@ export default function PluginInfo(props: {
     <ResourceWidget header={"PLUGIN INFO"}>
       <PluginInfoRow>
         <p>Author:</p>{" "}
-        <Link href={`/users/${props.author?._id}`}>
+        <Link href={`/users/[id]`} as={`/users/${props.author?._id}`}>
           <AuthorLink>{props.author?.username}</AuthorLink>
         </Link>
       </PluginInfoRow>
@@ -41,7 +41,7 @@ export default function PluginInfo(props: {
       </PluginInfoRow>
       <PluginInfoRow>
         <p>Rating:</p>
-        <DropletsContainer>{renderReviewDroplets(theme)}</DropletsContainer>
+        <DropletsContainer>{renderReviewDroplets(theme, props.resource?.rating)}</DropletsContainer>
       </PluginInfoRow>
     </ResourceWidget>
   );

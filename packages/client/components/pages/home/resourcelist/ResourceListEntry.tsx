@@ -20,10 +20,10 @@ function ResourceListEntry(props: { resource: DirectoryResource }) {
       <Metadata>
         <ResourceInfo>
           <TitleArea>
-            <Link href={`/resources/${props.resource._id}`}>
+            <Link href={`/resources/[id]`} as={`/resources/${props.resource._id}`}>
               <h2>{props.resource.name}</h2>
             </Link>
-            <Link href={`/users/${props.resource.owner?._id}`}>
+            <Link href={`/users/[id]`} as={`/users/${props.resource.owner?._id}`}>
               <AuthorLink>{props.resource.owner?.username}</AuthorLink>
             </Link>
           </TitleArea>

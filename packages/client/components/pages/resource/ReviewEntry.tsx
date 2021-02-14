@@ -44,7 +44,7 @@ export default function ReviewEntry({ review, onDelete }: { review: Review, onDe
       <AuthorIcon user={user} size={"96px"} />
       <Content>
         <BottomRow>
-          <Link href={`/users/${user?._id}`}>
+          <Link href={"/users/[id]"} as={`/users/${user?._id}`}>
             <AuthorLink>{user?.username}</AuthorLink>
           </Link>
           <ReviewDropsContainer>
