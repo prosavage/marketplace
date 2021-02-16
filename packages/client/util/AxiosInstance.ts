@@ -25,10 +25,10 @@ export const buildAxios = () => {
     (err) => {
       const message = err.response.data?.error
       if (message === "Not logged in.") {
-        window.location.href = "/login";
+        window.location.href = "/marketplace/login";
         return;
       } else if (message === "Invalid token.") {
-        window.location.href = "/login"
+        window.location.href = "/marketplace/login"
         return;
       }
 
