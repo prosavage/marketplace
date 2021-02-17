@@ -31,7 +31,7 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
             <RightWrapper>
                 <TextWrapper>
                     <h3>{props.resource.name}</h3>
-                    <DescText>pls add descriptions to resource api prosavage.</DescText>
+                    <DescText>{props.resource.description}</DescText>
                 </TextWrapper>
                 <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
                     {/* <AuthorIcon /> */}
