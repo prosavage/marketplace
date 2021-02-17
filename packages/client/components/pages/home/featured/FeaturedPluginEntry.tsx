@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { Resource } from "../../../../types/Resource";
+import { DirectoryResource, Resource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
+import AuthorIcon from "../../../ui/AuthorIcon";
 
-export default function FeaturedPluginEntry(props: { resource: Resource }) {
+export default function FeaturedPluginEntry(props: { resource: DirectoryResource }) {
 
     const router = useRouter();
 
@@ -34,8 +35,7 @@ export default function FeaturedPluginEntry(props: { resource: Resource }) {
                     <DescText>{props.resource.description}</DescText>
                 </TextWrapper>
                 <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
-                    {/* <AuthorIcon /> */}
-                    <TempAuthorIcon>X</TempAuthorIcon>
+                    <AuthorIcon size={"25px"} user={props.resource.owner}/>
                     <AuthorName>{author}</AuthorName>
                 </AuthorWrapper>
             </RightWrapper>

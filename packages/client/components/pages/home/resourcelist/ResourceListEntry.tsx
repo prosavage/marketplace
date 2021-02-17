@@ -2,12 +2,10 @@ import styled from "styled-components";
 import { DirectoryResource } from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { themeState } from "../../../../atoms/theme";
 import timeago from "time-ago";
 import { useRecoilValue } from "recoil";
 import renderReviewDroplets from "../../../../util/Review";
-import getAxios from "../../../../util/AxiosInstance";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import FadeDiv from "../../../ui/FadeDiv";
 
@@ -21,7 +19,7 @@ function ResourceListEntry(props: { resource: DirectoryResource }) {
         <ResourceInfo>
           <TitleArea>
             <Link href={`/resources/[id]`} as={`/resources/${props.resource._id}`}>
-              <h2>{props.resource.name}</h2>
+              <ResourceTitle>{props.resource.name}</ResourceTitle>
             </Link>
             <Link href={`/users/[id]`} as={`/users/${props.resource.owner?._id}`}>
               <AuthorLink>{props.resource.owner?.username}</AuthorLink>
@@ -64,6 +62,13 @@ const Wrapper = styled(FadeDiv)`
   align-items: center;
   padding: 1em;
 `;
+
+const ResourceTitle = styled.h2`
+  transition: 250ms ease-in-out;
+  &:hover {
+    color: ${(props: PropsTheme) => props.theme.accentColor};
+  }
+`
 
 const Metadata = styled.div`
   display: flex;

@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { Resource } from "../../../../types/Resource";
+import { DirectoryResource, Resource } from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import FeaturedPluginEntry from "./FeaturedPluginEntry";
 
 export default function FeaturedPlugins() {
-  const [resources, setResources] = useState<Resource[]>([]);
+  const [resources, setResources] = useState<DirectoryResource[]>([]);
 
   useEffect(() => {
     getAxios()
       .get(`/directory/featured`)
       .then((res) => {
         setResources(res.data.payload.resources);
+        console.log(res.data.payload.resources)
       })
       .catch((err) => console.log(err.response.data));
   }, []);
@@ -24,7 +25,7 @@ export default function FeaturedPlugins() {
       </Header>
       <ContentWrapper>
         {resources.map((entry) => (
-          <FeaturedPluginEntry key={entry._id} resource={entry as Resource} />
+          <FeaturedPluginEntry key={entry._id} resource={entry} />
         ))}
       </ContentWrapper>
     </Wrapper>

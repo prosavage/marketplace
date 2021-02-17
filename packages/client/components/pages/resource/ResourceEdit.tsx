@@ -54,12 +54,12 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
         description,
         thread,
       })
-      .then((res) => toast("successfully edited resource!"))
+      .then((res) => toast("Successfully edited resource!"))
       .catch((err) => setErr(err.response.data.error));
   };
 
   return (
-    <Wrapper>
+    <Wrapper> 
       <Content>
         {err}
         <Spacer>

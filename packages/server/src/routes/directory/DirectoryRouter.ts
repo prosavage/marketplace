@@ -23,14 +23,9 @@ directoryRouter.use("/versions", directoryVersionRouter);
 
 directoryRouter.get(
   "/reviews/:resource",
-  [
-    param("resource")
-      .custom(id => shortid.isValid(id))
-      ,
-    isValidBody,
-  ],
+  [param("resource").custom((id) => shortid.isValid(id)), isValidBody],
   async (req: Request, res: Response) => {
-    const resourceId = (req.params.resource as string);
+    const resourceId = req.params.resource as string;
     if (!resourceId || resourceId === null) {
       res.failure("invalid resource id");
       return;
@@ -45,23 +40,37 @@ directoryRouter.get(
   }
 );
 
-
 directoryRouter.get("/featured", async (_req: Request, res: Response) => {
   // static values for now...
   const featuredResource: string[] = [
     "CVE0kzSpW",
     "uknACi01f",
-    "kKcEZJ9U_eS-v"
+    "kKcEZJ9U_eS-v",
   ];
 
   const resources = await Promise.all(
     featuredResource.map((resourceId) => {
       return getDatabase()
         .collection<Resource>(RESOURCES_COLLECTION)
-        .findOne({ _id: resourceId });
+        .aggregate([
+          { $match: { _id: resourceId } },
+          {
+            $lookup: {
+              from: USERS_COLLECTION,
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+            },
+          },
+          { $unwind: "$owner" },
+          { $unset: ["owner.email", "owner.role", "owner.password"] }
+        ])
+        .toArray();
     })
   );
-  res.success({resources})
+  // flatten the array; since its an array of arrays lol.
+  const flatArray = Array.prototype.concat.apply([], resources)
+  res.success({ resources: flatArray });
 });
 
 directoryRouter.get(
@@ -84,16 +93,11 @@ directoryRouter.get(
 
 directoryRouter.get(
   "/user/:id",
-  [
-    param("id")
-      .custom(id => shortid.isValid(id))
-    ,
-    isValidBody,
-  ],
+  [param("id").custom((id) => shortid.isValid(id)), isValidBody],
   async (req: Request, res: Response) => {
     const user = await getDatabase()
       .collection<User>(USERS_COLLECTION)
-      .findOne({ _id: (req.params.id as string) });
+      .findOne({ _id: req.params.id as string });
 
     if (user === null) {
       res.failure("user not found");
@@ -113,16 +117,11 @@ directoryRouter.get(
 
 directoryRouter.get(
   "/user-stats/:id",
-  [
-    param("id")
-      .custom(id => shortid.isValid(id))
-   ,
-    isValidBody,
-  ],
+  [param("id").custom((id) => shortid.isValid(id)), isValidBody],
   async (req: Request, res: Response) => {
     const user = await getDatabase()
       .collection<User>(USERS_COLLECTION)
-      .findOne({ _id: (req.params.id as string) });
+      .findOne({ _id: req.params.id as string });
 
     if (user === null) {
       res.failure("user not found");
