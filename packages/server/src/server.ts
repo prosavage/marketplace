@@ -15,6 +15,7 @@ import { BunnyCDNStorage } from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
+import checkoutRouter from "./routes/checkout/CheckoutRouter";
 
 
 dotenv.config();
@@ -55,6 +56,7 @@ app.use("/category", categoryRouter);
 app.use("/directory", directoryRouter);
 app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
+app.use("/checkout", checkoutRouter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });

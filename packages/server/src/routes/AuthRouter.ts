@@ -43,12 +43,41 @@ authRouter.post(
   }
 );
 
+export const validatePassword = (password: string) => {
+  return (
+    hasPasswordLength(password) &&
+    containsSpecialCharacters(password) &&
+    containsNumbers(password) &&
+    containsUppercaseChar(password)
+  );
+};
+
+const hasPasswordLength = (str: string) => {
+  return str.length > 8;
+};
+
+const containsSpecialCharacters = (str: string) => {
+  return /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g.test(str);
+};
+
+const containsNumbers = (str: string) => {
+  return /\d/.test(str);
+};
+const containsUppercaseChar = (str: string) => {
+  let hasUppercase = false;
+  for (const char of str) {
+    if (containsSpecialCharacters(char)) continue;
+    if (char === char.toUpperCase()) hasUppercase = true;
+  }
+  return hasUppercase;
+};
+
 authRouter.post(
   "/signup",
   [
     body("username").isString().bail().isLength({ min: 4, max: 20 }),
     body("email").isEmail(),
-    body("password").isStrongPassword(),
+    body("password").custom(v => validatePassword(v)),
     isValidBody,
   ],
   async (req: Request, res: Response) => {

@@ -24,6 +24,11 @@ const links = [
     mobileOnly: false,
   },
   {
+    link: "/dashboard",
+    text: "DASHBOARD",
+    mobileOnly: false,
+  },
+  {
     link: "/login",
     text: "LOG IN",
     mobileOnly: true,
@@ -32,7 +37,7 @@ const links = [
     link: "/signup",
     text: "SIGN UP",
     mobileOnly: true,
-  },
+  }
 ];
 
 export default function Navbar(props) {

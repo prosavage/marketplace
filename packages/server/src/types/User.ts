@@ -11,3 +11,9 @@ export interface User {
     // this is a hash, not the actual password.
     password: string
 }
+
+export interface Seller {
+    _id: string,
+    user: User["_id"],
+    stripe_account: string
+}

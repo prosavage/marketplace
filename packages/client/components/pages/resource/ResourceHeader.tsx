@@ -4,8 +4,13 @@ import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
 import { Version } from "../../../types/Version";
+import getAxios from "../../../util/AxiosInstance";
+import getStripe from "../../../util/GetStripe";
 import Button from "../../ui/Button";
 import ResourceIcon from "../../ui/ResourceIcon";
+import FileDownload from "js-file-download";
+import useToast from "../../../util/hooks/useToast";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function ResourceHeader(props: {
   resource: Resource;
@@ -13,16 +18,55 @@ export default function ResourceHeader(props: {
   onVersionPress: () => void;
 }) {
   const renderButtons = () => {
+    let text;
+    if (props.resource?.price === 0) {
+      text = "Download";
+    } else {
+      text = `$${props.resource?.price}`;
+    }
+
     return (
       <>
-        <DownloadButton>
-          <p>Download</p>
+        <DownloadButton onClick={() => onDownload()}>
+          <p>{text}</p>
         </DownloadButton>
         <VersionButton onClick={() => props.onVersionPress()}>
           <p>Versions</p>
         </VersionButton>
       </>
     );
+  };
+
+  const toast = useToast();
+
+  const onDownload = async () => {
+    if (props.resource?.price > 0) {
+      getAxios()
+        .get(`/checkout/session/${props.resource?._id}`)
+        .then(async (res) => {
+          console.log(res.data)
+          const stripe = await loadStripe(
+            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+          );
+          stripe.redirectToCheckout({sessionId: res.data.payload.session.id}).then(res => console.log(res.error.message));
+        }).catch(err => console.log(err.response));
+    } else {
+      download();
+    }
+  };
+
+  const download = () => {
+    getAxios()
+      .get(`directory/versions/download/${props.version?._id}`)
+      .then((res) =>
+        FileDownload(
+          res.data,
+          `${props.resource?.name}-${props.version?.version}.jar`
+        )
+      )
+      .catch((err) => {
+        toast(err.response.data.error);
+      });
   };
 
   return (

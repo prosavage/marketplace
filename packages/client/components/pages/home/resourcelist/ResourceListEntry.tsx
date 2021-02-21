@@ -14,14 +14,20 @@ function ResourceListEntry(props: { resource: DirectoryResource }) {
 
   return (
     <Wrapper>
-      <ResourceIcon resource={props.resource} size={"75px"} />
+        <ResourceIcon resource={props.resource} size={"75px"} />
       <Metadata>
         <ResourceInfo>
           <TitleArea>
-            <Link href={`/resources/[id]`} as={`/resources/${props.resource._id}`}>
+            <Link
+              href={`/resources/[id]`}
+              as={`/resources/${props.resource._id}`}
+            >
               <ResourceTitle>{props.resource.name}</ResourceTitle>
             </Link>
-            <Link href={`/users/[id]`} as={`/users/${props.resource.owner?._id}`}>
+            <Link
+              href={`/users/[id]`}
+              as={`/users/${props.resource.owner?._id}`}
+            >
               <AuthorLink>{props.resource.owner?.username}</AuthorLink>
             </Link>
           </TitleArea>
@@ -33,7 +39,8 @@ function ResourceListEntry(props: { resource: DirectoryResource }) {
               {renderReviewDroplets(theme, props.resource.rating)}
             </ReviewDropsContainer>
             <ReviewCount>
-              {new Intl.NumberFormat().format(props.resource.reviewCount)} ratings
+              {new Intl.NumberFormat().format(props.resource.reviewCount)}{" "}
+              ratings
             </ReviewCount>
           </Review>
           <DataEntryBottom>
@@ -68,7 +75,7 @@ const ResourceTitle = styled.h2`
   &:hover {
     color: ${(props: PropsTheme) => props.theme.accentColor};
   }
-`
+`;
 
 const Metadata = styled.div`
   display: flex;

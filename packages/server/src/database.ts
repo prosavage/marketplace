@@ -1,6 +1,7 @@
 import {
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
+  SELLER_COLLECTION,
   TOKENS_COLLECTION,
   VERSIONS_COLLECTION,
 } from "./constants";
@@ -38,6 +39,10 @@ const ensureIndexes = async () => {
   // indexer for tokens so they can be searched?
   // we do not really use it but a useful one to have in prod.
   await getDatabase().collection(TOKENS_COLLECTION).createIndex({ token: 1 });
+
+
+  // indexer for searching sellers through user.
+  await getDatabase().collection(SELLER_COLLECTION).createIndex({ user: 1 });
 };
 
 export const pageSearchCollectionWithFilter = async (
@@ -72,7 +77,7 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
   const authors = new Set(reviews.map((review) => review.author));
   const calculatedReviews: Review[] = [];
   for (const author of authors) {
-    const authorReviews = reviews.filter((user) => user.author === (author));
+    const authorReviews = reviews.filter((user) => user.author === author);
     const latestReview = authorReviews.sort((a, b) =>
       a.timestamp < b.timestamp ? 1 : -1
     )[0];
@@ -83,9 +88,12 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
     calculatedReviews.push(latestReview);
   }
 
-  const sum = calculatedReviews.length > 0 ? calculatedReviews
-  .map((review) => review.rating)
-  .reduce((total, current) => total + current) : 0
+  const sum =
+    calculatedReviews.length > 0
+      ? calculatedReviews
+          .map((review) => review.rating)
+          .reduce((total, current) => total + current)
+      : 0;
   const avg = Math.round(sum / calculatedReviews.length);
   await getDatabase()
     .collection(RESOURCES_COLLECTION)
