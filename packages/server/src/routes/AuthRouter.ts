@@ -9,6 +9,7 @@ import { Role } from "../struct/Role";
 import { isValidBody } from "../middleware/BodyValidate";
 import { body } from "express-validator";
 import { Authorize } from "../middleware/Authenticate";
+import shortid from "shortid";
 
 const authRouter = express.Router();
 
@@ -75,7 +76,7 @@ const containsUppercaseChar = (str: string) => {
 authRouter.post(
   "/signup",
   [
-    body("username").isString().bail().isLength({ min: 4, max: 20 }),
+    body("username").isString().bail().isLength({ min: 3, max: 20 }),
     body("email").isEmail(),
     body("password").custom(v => validatePassword(v)),
     isValidBody,
@@ -84,6 +85,7 @@ authRouter.post(
     const user: User = req.body;
     user.role = Role.USER;
     user.discordServerId = undefined;
+    user._id = shortid.generate();
 
     let usersWithEmail = await getDatabase()
       .collection(USERS_COLLECTION)

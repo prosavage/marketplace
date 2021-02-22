@@ -1,44 +1,45 @@
-import express, { Request, Response } from "express";
+import express, {Request, Response} from "express";
 import morgan from "morgan";
 import mongodb from "mongodb";
 import dotenv from "dotenv";
-import { User } from "./types/User";
+import {User} from "./types/User";
 import authRouter from "./routes/AuthRouter";
 import resourceRouter from "./routes/resources/ResourceRouter";
 import categoryRouter from "./routes/CategoryRouter";
 import versionRouter from "./routes/VersionRouter";
 import betterResponse from "./middleware/ResponseFunctions";
 import directoryRouter from "./routes/directory/DirectoryRouter";
-import ensureIndexes, { readTokens } from "./database";
+import ensureIndexes, {readTokens} from "./database";
 import reviewRouter from "./routes/ReviewRouter";
-import { BunnyCDNStorage } from "./bunnycdn";
+import {BunnyCDNStorage} from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
+import stripeWebhookRouter from "./routes/checkout/StripeWebhookRouter";
 
 
 dotenv.config();
 
 const mongoClient = new mongodb.MongoClient(
-  process.env.MONGODB_URL || "mongodb://localhost:27017",
-  { useUnifiedTopology: true }
+    process.env.MONGODB_URL || "mongodb://localhost:27017",
+    {useUnifiedTopology: true}
 );
 export const getDatabase = () => {
-  return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
+    return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
 };
 
 export const tokenMap = new Map<string, User["_id"]>([
-  // temp perma token for dev
-  ["hehexddd", "xKEGocEfbz"],
+    // temp perma token for dev
+    ["hehexddd", "xKEGocEfbz"],
 ]);
 
 // clear dev tokens if running in prod.
 if (process.env.NODE_ENV === "production") {
-  tokenMap.clear();
-  console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
+    tokenMap.clear();
+    console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
 } else {
-  console.log("RUNNING IN DEVELOPEMNT MODE.");
+    console.log("RUNNING IN DEVELOPEMNT MODE.");
 }
 
 export const bunny = new BunnyCDNStorage();
@@ -46,9 +47,17 @@ export const bunny = new BunnyCDNStorage();
 const app = express();
 app.use(cors());
 app.use(fileUpload());
-app.use(express.json());
 app.use(morgan("tiny"));
 app.use(betterResponse);
+
+// stripe webhook router needs to use body parser for signatures
+// the rest of the stuff just uses express.json()
+// I cannot have it do express.json() -> bodyparser.raw
+// So we have to setup its own section then register our normal json parser.
+app.use("/webhooks", stripeWebhookRouter)
+
+app.use(express.json());
+
 app.use("/auth", authRouter);
 app.use("/users/icon", userIconRouter);
 app.use("/resources", resourceRouter);
@@ -58,18 +67,19 @@ app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
 app.use("/checkout", checkoutRouter);
 
+
 app.get("/", (_req: Request, res: Response) => {
-  res.success({ hello: "there!" });
+    res.success({hello: "there!"});
 });
 
 console.log("starting...");
 console.log("attemping database connection...");
 mongoClient.connect(async () => {
-  console.log("connected to database.");
-  await ensureIndexes();
-  await readTokens();
+    console.log("connected to database.");
+    await ensureIndexes();
+    await readTokens();
 
-  app.listen(5000, () => console.log("started marketplace backend."));
+    app.listen(5000, () => console.log("started marketplace backend."));
 });
 
 // const generateAndPutResource = async (

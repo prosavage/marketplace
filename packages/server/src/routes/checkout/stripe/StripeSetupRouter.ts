@@ -76,26 +76,6 @@ stripeSetupRouter.get(
   }
 );
 
-stripeSetupRouter.get(
-  "/link",
-  [Authorize, isValidBody],
-  async (req: Request, res: Response) => {
-    const seller = await getDatabase()
-      .collection<Seller>(SELLER_COLLECTION)
-      .findOne({ user: req.user!!._id });
 
-    if (seller === null) {
-      res.failure("seller not found.");
-      return;
-    }
-
-    const link = await stripeAPI.accounts.createLoginLink(
-      seller.stripe_account,
-      { apiKey: process.env.STRIPE_SECRET_KEY }
-    );
-
-    res.success({ link: link });
-  }
-);
 
 export default stripeSetupRouter;
