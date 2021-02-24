@@ -56,7 +56,7 @@ export default function Navbar(props) {
     };
 
     const checkSellerStatus = () => {
-        getAxios().get("/checkout/seller").then(res => setSellerStatus(res.data.payload.isSeller))
+        getAxios().get("/checkout/seller").then(res => setSellerStatus(res.data.payload.isSeller)).catch(err => console.log(err.response.data.error))
     }
 
     useEffect(() => {
