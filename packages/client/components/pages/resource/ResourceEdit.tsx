@@ -1,18 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import {Resource} from "../../../types/Resource";
 import Input from "../../ui/Input";
 import {highlight, languages} from "prismjs";
 import Editor from "react-simple-code-editor";
-import {useEffect} from "react";
 import Button from "../../ui/Button";
 import getAxios from "../../../util/AxiosInstance";
-import {
-    validateResourceTitle,
-    validateResourceDescription,
-    validateResourceThread,
-} from "../../../util/Validation";
+import {validateResourceDescription, validateResourceThread, validateResourceTitle,} from "../../../util/Validation";
 import useToast from "../../../util/hooks/useToast";
 import {useRouter} from "next/router";
 

@@ -1,23 +1,23 @@
-import React, { ReactFragment } from "react";
-import { TrendingUp } from "react-feather";
+import React, {ReactFragment} from "react";
+import {TrendingUp} from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 
 export default function ResourceWidget(props: {
-  header: string;
-  children: ReactFragment;
+    header: string;
+    children: ReactFragment;
 }) {
-  return (
-    <Wrapper>
-      <PluginInfoHeader>
-        <WidgetIcon />
-        <WidgetHeader>{props.header}</WidgetHeader>
-      </PluginInfoHeader>
-      <InfoDataContainer>
-        {props.children}
-      </InfoDataContainer>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <PluginInfoHeader>
+                <WidgetIcon/>
+                <WidgetHeader>{props.header}</WidgetHeader>
+            </PluginInfoHeader>
+            <InfoDataContainer>
+                {props.children}
+            </InfoDataContainer>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

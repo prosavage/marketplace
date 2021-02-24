@@ -1,53 +1,55 @@
-import { useState } from "react";
-import { ArrowDown, ChevronDown, ChevronUp } from "react-feather";
+import {useState} from "react";
+import {ChevronDown, ChevronUp} from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
 
 export interface Option {
-  value: string;
-  label: string;
+    value: string;
+    label: string;
 }
 
 export default function CategorySelect(props: {
-  selected: Option;
-  options: { label: string; options: Option[] }[];
-  handleChange: (option: Option) => void;
+    selected: Option;
+    options: { label: string; options: Option[] }[];
+    handleChange: (option: Option) => void;
 }) {
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-  return (
-    <>
-      <Wrapper onClick={() => setOpen(!open)}>
-        <SelectedWrapper>{props.selected?.label}</SelectedWrapper>
-        <DownWrapper>
-          {!open &&
-            <OpenDropdown size="24px" onClick={() => setOpen(!open)}/>
-            }
-            {open &&
-            <CloseDropdown size="24px" onClick={() => setOpen(false)}/>
-            }
-        </DownWrapper>
-      </Wrapper>
-      {open && (
-        <DropDownWrapper>
-          {props.options.map((option) => (
-            <Category key={option.label}>
-              <p>{option.label.toUpperCase()}</p>
-              {option.options.map((cat) => (
-                <CategoryEntry
-                  key={cat.value}
-                  onClick={() => {props.handleChange(cat)
-                setOpen(false)}}
-                >
-                  {cat.label}
-                </CategoryEntry>
-              ))}
-            </Category>
-          ))}
-        </DropDownWrapper>
-      )}
-    </>
-  );
+    return (
+        <>
+            <Wrapper onClick={() => setOpen(!open)}>
+                <SelectedWrapper>{props.selected?.label}</SelectedWrapper>
+                <DownWrapper>
+                    {!open &&
+                    <OpenDropdown size="24px" onClick={() => setOpen(!open)}/>
+                    }
+                    {open &&
+                    <CloseDropdown size="24px" onClick={() => setOpen(false)}/>
+                    }
+                </DownWrapper>
+            </Wrapper>
+            {open && (
+                <DropDownWrapper>
+                    {props.options.map((option) => (
+                        <Category key={option.label}>
+                            <p>{option.label.toUpperCase()}</p>
+                            {option.options.map((cat) => (
+                                <CategoryEntry
+                                    key={cat.value}
+                                    onClick={() => {
+                                        props.handleChange(cat)
+                                        setOpen(false)
+                                    }}
+                                >
+                                    {cat.label}
+                                </CategoryEntry>
+                            ))}
+                        </Category>
+                    ))}
+                </DropDownWrapper>
+            )}
+        </>
+    );
 }
 
 const Wrapper = styled.div`

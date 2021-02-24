@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export default function Profile() {
-  return (
-    <Wrapper>
-      <h2>Profile</h2>
-      <hr />
-      <p>Yeah</p>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <h2>Profile</h2>
+            <hr/>
+            <p>Yeah</p>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

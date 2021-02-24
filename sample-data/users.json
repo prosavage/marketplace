@@ -1,8 +1,91 @@
-{"_id":"xKEGocEfbz","email":"naman0311@gmail.com","username":"ProSavage","password":"$2b$10$cylUZzrJnQRPhcwWyRPig.4XQXXOUkmt.47qlbNwKCoWXe4HdgpGK","role":2,"discordServerId":"410507206648135681","hasIcon":true,"purchases":["eUyVEKcjm","eUyVEKcjm","eUyVEKcjm","eUyVEKcjm","eUyVEKcjm","eUyVEKcjm","eUyVEKcjm","eUyVEKcjm"]}
-{"_id":"4Byvp4Ggrz","email":"naman031122@gmail.com","username":"ProSavage22","password":"$2b$10$h5fe7L0v1tTGPN1lDEmC2ul.TD1La2S9X3IRjxyCG.LRYWoFdtRoK","role":0,"discordServerId":null,"purchases":[]}
-{"_id":"JkVAMyex0t","email":"naman03112@gmail.com","username":"ProSavage2","password":"$2b$10$GaI9zmpQDg/WoJRTFoXL2uVMlsSG0dF4IDohiT6ql72MvpAvkv1He","role":0,"discordServerId":null,"purchases":[]}
-{"_id":{"$oid":"60315dd4c54da60b64e77cf6"},"email":"estoniaescape@gmail.com","username":"braffolk","password":"$2b$10$Uf6.gN1xaDWbq3dj4hN7P.U4zBqQFOzm103h2DYvgDGMm8i9M7uZO","role":0,"discordServerId":null,"purchases":[]}
-{"_id":{"$oid":"6031614016fc6415e39c9f73"},"email":"estoniaescaepe@gmail.com","username":"braffoelk","password":"$2b$10$0JNWsNUWmBX7HQ6SZllVROnw.wRt/7G.h3w3YuNIg/A.Ma3lPiRqq","role":0,"discordServerId":null,"purchases":[]}
-{"_id":"4E0bExFDP","email":"tmegan@gmail.com","username":"tmegan98","password":"$2b$10$PnxQiupWy968.MroPqtn0uIGCJHT6v3RpDUF0fiMszYmGA.5izJ.q","role":0,"discordServerId":null,"hasIcon":true,"purchases":["eUyVEKcjm"]}
-{"_id":"TQhd9S2Ax","email":"bruh@gmail.com","username":"Arlind","password":"$2b$10$Tyb8XP098vH/USgrzG422eewpK74U80SHW0YB4b6NNAkQbRB3BmES","role":0,"discordServerId":null,"hasIcon":true,"purchases":[]}
-{"_id":"z-lWgoqWM","email":"zed@gmail.com","username":"Zed","password":"$2b$10$XiwbdiQNps6XQyepaAJgUeIsgWXu7kC.zMb21uur1SWs3YFoaDkXq","role":0,"discordServerId":null,"hasIcon":true,"purchases":[]}
+{
+  "_id": "xKEGocEfbz",
+  "email": "naman0311@gmail.com",
+  "username": "ProSavage",
+  "password": "$2b$10$cylUZzrJnQRPhcwWyRPig.4XQXXOUkmt.47qlbNwKCoWXe4HdgpGK",
+  "role": 2,
+  "discordServerId": "410507206648135681",
+  "hasIcon": true,
+  "purchases": [
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm",
+    "eUyVEKcjm"
+  ]
+}
+{
+  "_id": "4Byvp4Ggrz",
+  "email": "naman031122@gmail.com",
+  "username": "ProSavage22",
+  "password": "$2b$10$h5fe7L0v1tTGPN1lDEmC2ul.TD1La2S9X3IRjxyCG.LRYWoFdtRoK",
+  "role": 0,
+  "discordServerId": null,
+  "purchases": []
+}
+{
+  "_id": "JkVAMyex0t",
+  "email": "naman03112@gmail.com",
+  "username": "ProSavage2",
+  "password": "$2b$10$GaI9zmpQDg/WoJRTFoXL2uVMlsSG0dF4IDohiT6ql72MvpAvkv1He",
+  "role": 0,
+  "discordServerId": null,
+  "purchases": []
+}
+{
+  "_id": {
+    "$oid": "60315dd4c54da60b64e77cf6"
+  },
+  "email": "estoniaescape@gmail.com",
+  "username": "braffolk",
+  "password": "$2b$10$Uf6.gN1xaDWbq3dj4hN7P.U4zBqQFOzm103h2DYvgDGMm8i9M7uZO",
+  "role": 0,
+  "discordServerId": null,
+  "purchases": []
+}
+{
+  "_id": {
+    "$oid": "6031614016fc6415e39c9f73"
+  },
+  "email": "estoniaescaepe@gmail.com",
+  "username": "braffoelk",
+  "password": "$2b$10$0JNWsNUWmBX7HQ6SZllVROnw.wRt/7G.h3w3YuNIg/A.Ma3lPiRqq",
+  "role": 0,
+  "discordServerId": null,
+  "purchases": []
+}
+{
+  "_id": "4E0bExFDP",
+  "email": "tmegan@gmail.com",
+  "username": "tmegan98",
+  "password": "$2b$10$PnxQiupWy968.MroPqtn0uIGCJHT6v3RpDUF0fiMszYmGA.5izJ.q",
+  "role": 0,
+  "discordServerId": null,
+  "hasIcon": true,
+  "purchases": [
+    "eUyVEKcjm"
+  ]
+}
+{
+  "_id": "TQhd9S2Ax",
+  "email": "bruh@gmail.com",
+  "username": "Arlind",
+  "password": "$2b$10$Tyb8XP098vH/USgrzG422eewpK74U80SHW0YB4b6NNAkQbRB3BmES",
+  "role": 0,
+  "discordServerId": null,
+  "hasIcon": true,
+  "purchases": []
+}
+{
+  "_id": "z-lWgoqWM",
+  "email": "zed@gmail.com",
+  "username": "Zed",
+  "password": "$2b$10$XiwbdiQNps6XQyepaAJgUeIsgWXu7kC.zMb21uur1SWs3YFoaDkXq",
+  "role": 0,
+  "discordServerId": null,
+  "hasIcon": true,
+  "purchases": []
+}

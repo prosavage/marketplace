@@ -1,4 +1,3 @@
-
 import {ResourceType} from "./Resource"
 
 export interface Category {

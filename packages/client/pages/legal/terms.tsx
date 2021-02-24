@@ -1,69 +1,69 @@
 import Head from "next/head";
 import styled from "styled-components";
 import LegalNavbar from "../../components/pages/legal/LegalNavbar"
-import PropsTheme from "../../styles/theme/PropsTheme";
+
 export default function Terms() {
-  return (
-    <>
-    <Head>
-      <title>Legal - Terms & Conditions</title>
-      <meta name="description" content="Terms and Conditions" />
-    </Head>
-    <LegalNavbar />
-      <Wrapper>
-          <h1>Terms & Conditions</h1>
-          /*
-            Effective (date) // last Updated: (date)
+    return (
+        <>
+            <Head>
+                <title>Legal - Terms & Conditions</title>
+                <meta name="description" content="Terms and Conditions"/>
+            </Head>
+            <LegalNavbar/>
+            <Wrapper>
+                <h1>Terms & Conditions</h1>
+                /*
+                Effective (date) // last Updated: (date)
 
-            What is convered in these Terms
+                What is convered in these Terms
 
-            Age Requirments
+                Age Requirments
 
-            Privacy
-              View our privacy policy
+                Privacy
+                View our privacy policy
 
-            Our relationship
-              What you can expect from us
-              what we expect from you
+                Our relationship
+                What you can expect from us
+                what we expect from you
 
-            Using our platform
-              Your account
-              Organizations/Teams
+                Using our platform
+                Your account
+                Organizations/Teams
 
-            Content
-              our Content
-              your content
-              OWNERSHIP
-              others content
-              Downloads
-              Subscriptions
-              Copyright
-              Piracy
-              License Terms
-              Updates
-              Ratings/Reviews
+                Content
+                our Content
+                your content
+                OWNERSHIP
+                others content
+                Downloads
+                Subscriptions
+                Copyright
+                Piracy
+                License Terms
+                Updates
+                Ratings/Reviews
 
-            Purchases/Payment
-              Returns
-              Support
-              Disputes
+                Purchases/Payment
+                Returns
+                Support
+                Disputes
 
-            In case of problems or disagreements
-              Disclaimers
-              Liabilities
+                In case of problems or disagreements
+                Disclaimers
+                Liabilities
                 For Users
                 For Organizations
-              Taking Action
+                Taking Action
                 Removing your content
                 Suspending or termiating access to our platform
-              Settling diputes, govering law and courts
+                Settling diputes, govering law and courts
 
-              About These terms
+                About These terms
 
-           */
-      </Wrapper>
-    </>
-  );
+                */
+            </Wrapper>
+        </>
+    );
 }
 
 const Wrapper = styled.div`

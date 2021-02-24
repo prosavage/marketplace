@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import {createGlobalStyle} from "styled-components";
 import PropsTheme from "./theme/PropsTheme";
 
 const GlobalStyle = createGlobalStyle`
@@ -52,12 +52,12 @@ const GlobalStyle = createGlobalStyle`
         outline: none;
         border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
         border-bottom: 4px solid ${(props: PropsTheme) =>
-          props.theme.accentColor};
+    props.theme.accentColor};
         border-radius: 4px;    
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
             Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
          background-color: ${(props: PropsTheme) =>
-           props.theme.backgroundPrimary};  
+    props.theme.backgroundPrimary};  
            color: ${(props: PropsTheme) => props.theme.color}; 
     }
 

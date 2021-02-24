@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 
 export default function PayoutButton() {
-  return (
-    <Wrapper>
-        <PayButton>Pay out now</PayButton>
-      <p>You receieve payouts daily.</p>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <PayButton>Pay out now</PayButton>
+            <p>You receieve payouts daily.</p>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

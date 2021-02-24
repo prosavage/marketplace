@@ -1,35 +1,37 @@
 import styled from "styled-components";
-import { useState } from "react";
+import {useState} from "react";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { ChevronDown, ChevronUp } from "react-feather";
+import {ChevronDown, ChevronUp} from "react-feather";
 
 export default function faqDropdown(props) {
 
-  const [toggled, setToggled] = useState(false);
+    const [toggled, setToggled] = useState(false);
 
-  return (
-    <>
-      <Box>
-        <QuestionWrapper>
-          <Question>{props.question}</Question>
-          <ButtonWrapper>
-            {!toggled &&
-            <ChevronDown style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(!toggled)}/>
-            }
-            {toggled &&
-            <ChevronUp style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px" onClick={() => setToggled(false)}/>
-            }
-          </ButtonWrapper>
-        </QuestionWrapper>
-        {toggled &&
-        <AnswerWrapper>
-          <Answer>{props.answer}</Answer>
-        </AnswerWrapper>
-        }
-      </Box>
-      <br />
-    </>
-  );
+    return (
+        <>
+            <Box>
+                <QuestionWrapper>
+                    <Question>{props.question}</Question>
+                    <ButtonWrapper>
+                        {!toggled &&
+                        <ChevronDown style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px"
+                                     onClick={() => setToggled(!toggled)}/>
+                        }
+                        {toggled &&
+                        <ChevronUp style={{color: `${(props: PropsTheme) => props.theme.color}`}} size="24px"
+                                   onClick={() => setToggled(false)}/>
+                        }
+                    </ButtonWrapper>
+                </QuestionWrapper>
+                {toggled &&
+                <AnswerWrapper>
+                    <Answer>{props.answer}</Answer>
+                </AnswerWrapper>
+                }
+            </Box>
+            <br/>
+        </>
+    );
 }
 
 const Box = styled.div`

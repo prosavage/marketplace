@@ -1,14 +1,13 @@
-import styled, {css} from "styled-components";
-import {useState, useEffect} from "react";
+import styled from "styled-components";
+import {useEffect, useState} from "react";
 import DarkTheme from "../../styles/theme/DarkTheme";
 import LightTheme from "../../styles/theme/LightTheme";
 import PropsTheme from "../../styles/theme/PropsTheme";
 import ActiveLink from "./../ActiveLink";
-import {Moon, Sun, User, Menu, X} from "react-feather";
-import {useRecoilState} from "recoil";
+import {Menu, Moon, Sun, X} from "react-feather";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {themeState} from "../../atoms/theme";
 import Button from "./Button";
-import {useRecoilValue} from "recoil";
 import {userState} from "../../atoms/user";
 import useStoredTheme from "../../util/hooks/useStoredTheme";
 import getAxios from "../../util/AxiosInstance";
@@ -70,7 +69,6 @@ export default function Navbar(props) {
             if (isDesktop()) setToggled(false);
             setWidth(window.innerWidth);
         }
-
 
         // bind it to the resize event
         window.addEventListener("resize", updateWidth);

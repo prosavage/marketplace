@@ -1,6 +1,5 @@
-
-import { Category } from "./Category";
-import { User } from "./User";
+import {Category} from "./Category";
+import {User} from "./User";
 
 export enum ResourceType {
     PLUGIN = "plugin", MOD = "mod", SOFTWARE = "software"

@@ -1,24 +1,24 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 import styled from "styled-components";
 
 export default function Cancel() {
 
 
-  const router = useRouter();
+    const router = useRouter();
 
-  useEffect(() => {
-      router.push("/")
-  }, [])
+    useEffect(() => {
+        router.push("/")
+    }, [])
 
-  return (
-    <Wrapper>
-      <ImageContainer>
-      <Splash src={"/marketplace/static/splash/checkout_success_splash.svg"}/>
-      </ImageContainer>
-      <h1>Purchase Successful</h1>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <ImageContainer>
+                <Splash src={"/marketplace/static/splash/checkout_success_splash.svg"}/>
+            </ImageContainer>
+            <h1>Purchase Successful</h1>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`
@@ -39,7 +39,7 @@ const Splash = styled.img`
 
   max-width: 550px;
 
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     max-width: 200px;
   }
 `

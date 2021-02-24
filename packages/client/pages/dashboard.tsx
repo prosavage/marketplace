@@ -4,21 +4,20 @@ import AmountBalance from "../components/pages/dashboard/AmountBalance";
 import PayoutButton from "../components/pages/dashboard/PayoutButton";
 import RecentPurchases from "../components/pages/dashboard/RecentPurchases";
 import UserNameLink from "../components/pages/dashboard/UserNameLink";
-import Button from "../components/ui/Button";
 
 export default function Dashboard() {
-  return (
-    <Wrapper>
-      <Header>
-        <UserNameLink/>
-        <Balance>
-          <AmountBalance/>
-          <PayoutButton />
-        </Balance>
-      </Header>
-      <RecentPurchases/>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <Header>
+                <UserNameLink/>
+                <Balance>
+                    <AmountBalance/>
+                    <PayoutButton/>
+                </Balance>
+            </Header>
+            <RecentPurchases/>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

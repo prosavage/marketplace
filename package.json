@@ -1,10 +1,10 @@
 {
-    "name": "marketplace",
-    "private": true,
-    "scripts": {
-        "docker": "docker build -t prosavage/marketplace-server:latest . && docker push prosavage/marketplace-server:latest"
-    },
-    "workspaces": [
-        "packages/*"
-    ]
+  "name": "marketplace",
+  "private": true,
+  "scripts": {
+    "docker": "docker build -t prosavage/marketplace-server:latest . && docker push prosavage/marketplace-server:latest"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

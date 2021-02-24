@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
+import {Resource} from "../../../types/Resource";
 import parser from "./../../../util/parser/Parser";
 
 
 export default function ResourceThread(props: {
-  resource: Resource | undefined;
+    resource: Resource | undefined;
 }) {
 
-  return <Wrapper>{parser.toReact(props.resource?.thread ? props.resource?.thread : "")}</Wrapper>;
+    return <Wrapper>{parser.toReact(props.resource?.thread ? props.resource?.thread : "")}</Wrapper>;
 }
 
 const Wrapper = styled.div`

@@ -13,7 +13,6 @@ interface Payment {
 }
 
 
-
 export enum PaymentStatus {
     STARTED = "STARTED",
     CONFIRMED = "CONFIRMED",

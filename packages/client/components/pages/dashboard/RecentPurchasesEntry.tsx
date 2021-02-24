@@ -1,36 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { User } from "../../../types/User";
 import AuthorIcon from "../../ui/AuthorIcon";
 import {DirectoryPayment} from "../../../types/Resource";
 import timeago from "time-ago";
 import Link from "next/link";
 
 export default function RecentPurchasesEntry(props: {
-  purchase: DirectoryPayment
+    purchase: DirectoryPayment
 }) {
-  return (
-    <Wrapper>
-      <Name>
-        <AuthorIcon user={props.purchase.user} size={"48px"} />
-        <Link href={`/users/[id]`} as={`/users/${props.purchase.user._id}`}>
-            <Username>{props.purchase.user.username}</Username>
-        </Link>
-      </Name>
-      <Info>
-        <Link href={"/resources/[id]"} as={`/resources/${props.purchase.resource._id}`}>
-            <ProductLink>{props.purchase.resource.name}</ProductLink>
-        </Link>
-      </Info>
-      <Info>
-        <p>{timeago.ago(props.purchase.timestamp)}</p>
-      </Info>
-      <Price>
-          <p>${(props.purchase.amount / 100).toFixed(2)}</p>
-      </Price>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <Name>
+                <AuthorIcon user={props.purchase.user} size={"48px"}/>
+                <Link href={`/users/[id]`} as={`/users/${props.purchase.user._id}`}>
+                    <Username>{props.purchase.user.username}</Username>
+                </Link>
+            </Name>
+            <Info>
+                <Link href={"/resources/[id]"} as={`/resources/${props.purchase.resource._id}`}>
+                    <ProductLink>{props.purchase.resource.name}</ProductLink>
+                </Link>
+            </Info>
+            <Info>
+                <p>{timeago.ago(props.purchase.timestamp)}</p>
+            </Info>
+            <Price>
+                <p>${(props.purchase.amount / 100).toFixed(2)}</p>
+            </Price>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

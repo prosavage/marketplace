@@ -1,13 +1,14 @@
-import { Tag } from "bbcode-to-react";
-import styled, { css } from "styled-components";
+import {Tag} from "bbcode-to-react";
+import styled from "styled-components";
 
 class IndentTag extends Tag {
-  constructor(renderer, settings = {}) {
-    super(renderer, settings);
-  }
-  toReact() {
-    return <Wrapper>{this.getComponents()}</Wrapper>;
-  }
+    constructor(renderer, settings = {}) {
+        super(renderer, settings);
+    }
+
+    toReact() {
+        return <Wrapper>{this.getComponents()}</Wrapper>;
+    }
 }
 
 const Wrapper = styled.div`

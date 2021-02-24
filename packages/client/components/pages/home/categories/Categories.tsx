@@ -1,42 +1,41 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { Category } from "../../../../types/Category";
-import { ResourceType } from "../../../../types/Resource";
+import {ResourceType} from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import CategoryEntry from "./CategoryEntry";
 
 function Categories(props: {
-  type: ResourceType;
-  category: string | undefined;
+    type: ResourceType;
+    category: string | undefined;
 }) {
-  const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    let fetchURL = "/directory/categories/" + props.type;
+    useEffect(() => {
+        let fetchURL = "/directory/categories/" + props.type;
 
-    getAxios()
-      .get(fetchURL)
-      .then((res) => setCategories(res.data.payload.categories));
-  }, [props.type]);
+        getAxios()
+            .get(fetchURL)
+            .then((res) => setCategories(res.data.payload.categories));
+    }, [props.type]);
 
-  return (
-    <Wrapper>
-      <Header>
-        <TextBox>Categories</TextBox>
-      </Header>
-      <Content>
-        {categories.map((entry) => (
-          <CategoryEntry
-            key={entry._id}
-            type={props.type}
-            category={entry}
-            selected={props.category === entry.name}
-          />
-        ))}
-      </Content>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <Header>
+                <TextBox>Categories</TextBox>
+            </Header>
+            <Content>
+                {categories.map((entry) => (
+                    <CategoryEntry
+                        key={entry._id}
+                        type={props.type}
+                        category={entry}
+                        selected={props.category === entry.name}
+                    />
+                ))}
+            </Content>
+        </Wrapper>
+    );
 }
 
 export default Categories;

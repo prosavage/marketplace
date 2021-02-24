@@ -1,6 +1,5 @@
-
-import { Resource } from "./Resource";
-import { User } from "./User";
+import {Resource} from "./Resource";
+import {User} from "./User";
 
 export interface Version {
     _id: string

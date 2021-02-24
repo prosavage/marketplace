@@ -3,9 +3,7 @@ import {useRecoilValue} from "recoil";
 import styled from "styled-components";
 import {userState} from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {User} from "../../../types/User";
 import getAxios from "../../../util/AxiosInstance";
-import ResourceViewParent from "../resource/ResourceViewParent";
 import RecentPurchasesEntry from "./RecentPurchasesEntry";
 
 export default function RecentPurchases() {

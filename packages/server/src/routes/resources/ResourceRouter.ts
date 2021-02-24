@@ -1,17 +1,8 @@
 import express, {Request, Response} from "express";
 import {body, param} from "express-validator";
 
-import {
-    CATEGORIES_COLLECTION,
-    RESOURCES_COLLECTION,
-    REVIEWS_COLLECTION,
-    VERSIONS_COLLECTION,
-} from "../../constants";
-import {
-    atleastRole,
-    Authorize,
-    hasPermissionForResource,
-} from "../../middleware/Authenticate";
+import {CATEGORIES_COLLECTION, RESOURCES_COLLECTION, REVIEWS_COLLECTION, VERSIONS_COLLECTION,} from "../../constants";
+import {atleastRole, Authorize, hasPermissionForResource,} from "../../middleware/Authenticate";
 import {isValidBody} from "../../middleware/BodyValidate";
 import {getDatabase} from "../../server";
 import {Role} from "../../struct/Role";

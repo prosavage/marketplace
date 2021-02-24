@@ -1,31 +1,31 @@
 {
-    "presets": [
-        "next/babel"
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false,
+        "minify": false,
+        "transpileTemplateLiterals": false
+      }
     ],
-    "plugins": [
-        [
-            "styled-components",
-            {
-                "ssr": true,
-                "displayName": true,
-                "preprocess": false,
-                "minify": false,
-                "transpileTemplateLiterals": false
-            }
+    [
+      "prismjs",
+      {
+        "languages": [
+          "bbcode"
         ],
-        [
-            "prismjs",
-            {
-                "languages": [
-                    "bbcode"
-                ],
-                "plugins": [
-                    "line-numbers",
-                    "show-language"
-                ],
-                "theme": "funky",
-                "css": true
-            }
-        ]
+        "plugins": [
+          "line-numbers",
+          "show-language"
+        ],
+        "theme": "funky",
+        "css": true
+      }
     ]
+  ]
 }

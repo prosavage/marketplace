@@ -1,5 +1,4 @@
-
-import { Role } from "../struct/Role";
+import {Role} from "../struct/Role";
 import {Resource} from "./Resource";
 
 export interface User {

@@ -1,6 +1,6 @@
-import { Resource } from "./Resource";
-import { User } from "./User";
-import { Version } from "./Version";
+import {Resource} from "./Resource";
+import {User} from "./User";
+import {Version} from "./Version";
 
 export interface Review {
     _id: string,
@@ -9,5 +9,5 @@ export interface Review {
     rating: number,
     timestamp: Date,
     version: Version["_id"],
-    resource: Resource["_id"]   
+    resource: Resource["_id"]
 }
