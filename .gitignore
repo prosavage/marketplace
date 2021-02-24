@@ -5,3 +5,7 @@
 .vercel
 .DS_Store
 packages/.DS_Store
+.idea/
+*.iml
+packages/client/*.env
+packages/server/*.env
