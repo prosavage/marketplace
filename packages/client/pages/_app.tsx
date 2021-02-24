@@ -15,6 +15,7 @@ import useStoredTheme from "../util/hooks/useStoredTheme";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import NextNprogress from "nextjs-progressbar";
+import {useRouter} from "next/router";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -36,6 +37,8 @@ function WrappedApp({ Component, pageProps }) {
   useEffect(() => {
     setTheme(storedTheme);
   }, [storedTheme]);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {

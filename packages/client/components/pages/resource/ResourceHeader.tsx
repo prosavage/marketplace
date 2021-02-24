@@ -1,92 +1,96 @@
-import { versions } from "process";
+import {versions} from "process";
 import React from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
-import { Version } from "../../../types/Version";
+import {Resource} from "../../../types/Resource";
+import {Version} from "../../../types/Version";
 import getAxios from "../../../util/AxiosInstance";
 import getStripe from "../../../util/GetStripe";
 import Button from "../../ui/Button";
 import ResourceIcon from "../../ui/ResourceIcon";
 import FileDownload from "js-file-download";
 import useToast from "../../../util/hooks/useToast";
-import { loadStripe } from "@stripe/stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
+import {useRouter} from "next/router";
+import getBaseURL from "../../../util/urlUtil";
 
 export default function ResourceHeader(props: {
-  resource: Resource;
-  version: Version | undefined;
-  onVersionPress: () => void;
+    resource: Resource;
+    version: Version | undefined;
+    onVersionPress: () => void;
 }) {
-  const renderButtons = () => {
-    let text;
-    if (props.resource?.price === 0) {
-      text = "Download";
-    } else {
-      text = `$${props.resource?.price}`;
-    }
+    const renderButtons = () => {
+        let text;
+        if (props.resource?.price === 0) {
+            text = "Download";
+        } else {
+            text = `$${props.resource?.price}`;
+        }
+
+        return (
+            <>
+                <DownloadButton onClick={() => onDownload()}>
+                    <p>{text}</p>
+                </DownloadButton>
+                <VersionButton onClick={() => props.onVersionPress()}>
+                    <p>Versions</p>
+                </VersionButton>
+            </>
+        );
+    };
+
+    const toast = useToast();
+
+    const router = useRouter();
+
+    const onDownload = async () => {
+        if (props.resource?.price > 0) {
+            getAxios()
+                .post(`/checkout/session/${props.resource?._id}`, {baseurl: getBaseURL(router)})
+                .then(async (res) => {
+                    console.log(res.data)
+                    const stripe = await loadStripe(
+                        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+                    );
+                    stripe.redirectToCheckout({sessionId: res.data.payload.session.id}).then(res => console.log(res.error.message));
+                }).catch(err => console.log(err.response));
+        } else {
+            download();
+        }
+    };
+
+    const download = () => {
+        getAxios()
+            .get(`directory/versions/download/${props.version?._id}`)
+            .then((res) =>
+                FileDownload(
+                    res.data,
+                    `${props.resource?.name}-${props.version?.version}.jar`
+                )
+            )
+            .catch((err) => {
+                toast(err.response.data.error);
+            });
+    };
 
     return (
-      <>
-        <DownloadButton onClick={() => onDownload()}>
-          <p>{text}</p>
-        </DownloadButton>
-        <VersionButton onClick={() => props.onVersionPress()}>
-          <p>Versions</p>
-        </VersionButton>
-      </>
+        <>
+            <TitleContainer>
+                <ResourceIcon resource={props.resource} size={"100px"}/>
+                <ContentContainer>
+                    <TextContainer>
+                        <HeaderContainer>
+                            <h1>{props.resource?.name}</h1>
+                            <VersionText>v{props.version?.version}</VersionText>
+                        </HeaderContainer>
+                        <Description>{props.resource?.description}</Description>
+                    </TextContainer>
+                    <DesktopButtonContainer>{renderButtons()}</DesktopButtonContainer>
+                </ContentContainer>
+            </TitleContainer>
+            <MobileButtonContainer>{renderButtons()}</MobileButtonContainer>
+        </>
     );
-  };
-
-  const toast = useToast();
-
-  const onDownload = async () => {
-    if (props.resource?.price > 0) {
-      getAxios()
-        .get(`/checkout/session/${props.resource?._id}`)
-        .then(async (res) => {
-          console.log(res.data)
-          const stripe = await loadStripe(
-            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-          );
-          stripe.redirectToCheckout({sessionId: res.data.payload.session.id}).then(res => console.log(res.error.message));
-        }).catch(err => console.log(err.response));
-    } else {
-      download();
-    }
-  };
-
-  const download = () => {
-    getAxios()
-      .get(`directory/versions/download/${props.version?._id}`)
-      .then((res) =>
-        FileDownload(
-          res.data,
-          `${props.resource?.name}-${props.version?.version}.jar`
-        )
-      )
-      .catch((err) => {
-        toast(err.response.data.error);
-      });
-  };
-
-  return (
-    <>
-      <TitleContainer>
-        <ResourceIcon resource={props.resource} size={"100px"} />
-        <ContentContainer>
-          <TextContainer>
-            <HeaderContainer>
-              <h1>{props.resource?.name}</h1>
-              <VersionText>v{props.version?.version}</VersionText>
-            </HeaderContainer>
-            <Description>{props.resource?.description}</Description>
-          </TextContainer>
-          <DesktopButtonContainer>{renderButtons()}</DesktopButtonContainer>
-        </ContentContainer>
-      </TitleContainer>
-      <MobileButtonContainer>{renderButtons()}</MobileButtonContainer>
-    </>
-  );
 }
 
 const TitleContainer = styled.div`

@@ -1,5 +1,5 @@
 import express, {Request, Response} from "express";
-import {param} from "express-validator";
+import {body, param} from "express-validator";
 import {PAYMENTS_COLLECTION, RESOURCES_COLLECTION, SELLER_COLLECTION} from "../../constants";
 import {Authorize} from "../../middleware/Authenticate";
 import {isValidBody} from "../../middleware/BodyValidate";
@@ -16,9 +16,9 @@ const checkoutRouter = express.Router();
 
 checkoutRouter.use(checkoutInfoRouter)
 
-checkoutRouter.get(
+checkoutRouter.post(
     "/session/:resource",
-    [param("resource").isString(), Authorize, isValidBody],
+    [param("resource").isString(), body("baseurl").isString(), Authorize, isValidBody],
     async (req: Request, res: Response) => {
         const resource = await getDatabase()
             .collection<Resource>(RESOURCES_COLLECTION)
@@ -76,8 +76,8 @@ checkoutRouter.get(
                     destination: account.id,
                 },
             },
-            success_url: `${process.env.BASE_URL}/checkout/success`,
-            cancel_url: `${process.env.BASE_URL}/checkout/cancel`,
+            success_url: `${req.body.baseurl}/checkout/success`,
+            cancel_url: `${req.body.baseurl}/checkout/cancel`,
         });
 
         const payment: Payment = {

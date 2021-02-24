@@ -11,6 +11,7 @@ import Button from "./Button";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../atoms/user";
 import useStoredTheme from "../../util/hooks/useStoredTheme";
+import getAxios from "../../util/AxiosInstance";
 
 const links = [
   {
@@ -21,11 +22,6 @@ const links = [
   {
     link: "/directory/resources/plugin",
     text: "RESOURCES",
-    mobileOnly: false,
-  },
-  {
-    link: "/dashboard",
-    text: "DASHBOARD",
     mobileOnly: false,
   },
   {
@@ -49,6 +45,8 @@ export default function Navbar(props) {
   const [toggled, setToggled] = useState(false);
   const [width, setWidth] = useState(0);
 
+  const [isSeller, setSellerStatus] = useState(false)
+
   const isDesktop = () => {
     return width > 800;
   };
@@ -57,6 +55,10 @@ export default function Navbar(props) {
     return !isDesktop();
   };
 
+  const checkSellerStatus = () => {
+    getAxios().get("/checkout/seller").then(res => setSellerStatus(res.data.payload.isSeller))
+  }
+
   useEffect(() => {
     // function defined to update our width
     function updateWidth() {
@@ -64,15 +66,26 @@ export default function Navbar(props) {
       setWidth(window.innerWidth);
     }
 
+    checkSellerStatus()
     // bind it to the resize event
     window.addEventListener("resize", updateWidth);
     // our state has a 0 at beginning, so we need to run update once.
     updateWidth();
     return () => window.removeEventListener("resize", updateWidth);
-  });
+  }, []);
 
   const getLinks = () => {
-    return links.map((entry) => {
+    const linksToUse = [...links]
+
+    if (isSeller) {
+      linksToUse.push({
+        link: "/dashboard",
+        text: "DASHBOARD",
+        mobileOnly: false,
+      })
+    }
+
+    return linksToUse.map((entry) => {
       if (entry.mobileOnly && width > 500) return;
       return (
         <LinkWrapper key={entry.link}>

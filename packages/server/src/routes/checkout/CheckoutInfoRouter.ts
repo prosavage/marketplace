@@ -93,5 +93,16 @@ checkoutInfoRouter.get("/purchases/:page", [param("page").isNumeric(), Authorize
         res.success({payments})
     })
 
+checkoutInfoRouter.get(
+    "/seller",
+    [Authorize, isValidBody],
+    async (req: Request, res: Response) => {
+        const seller = await getDatabase()
+            .collection<Seller>(SELLER_COLLECTION)
+            .findOne({user: req.user!!._id});
+        res.success({isSeller: seller !== null});
+    }
+);
+
 
 export default checkoutInfoRouter

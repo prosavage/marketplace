@@ -16,7 +16,7 @@ stripeWebhookRouter.post('/finalize', bodyParser.raw({type: 'application/json'})
 
         try {
             const stripeAPI = getStripeAPI()
-            event = stripeAPI.webhooks.constructEvent(req.body, sig!!, "whsec_bXw3zIVagisIhlb4OPwtNS1kphHKFuMI");
+            event = stripeAPI.webhooks.constructEvent(req.body, sig!!, process.env.STRIPE_WEBHOOK_SECRET!!);
         } catch (err) {
             // On error, log and return the error message
             console.log(`Error message: ${err.message}`);
@@ -28,6 +28,7 @@ stripeWebhookRouter.post('/finalize', bodyParser.raw({type: 'application/json'})
         console.log('Webhook Event Success:', event.id, event.type);
         if (event.type === 'payment_intent.succeeded') {
             const paymentIntent: any = event.data.object;
+            console.log("PAYMENT INTENT")
             // We only put one item in cart so we can just use the first element of the charges array...
             const charge = paymentIntent.charges.data[0];
             const payment_intent = charge.payment_intent;
@@ -47,6 +48,7 @@ stripeWebhookRouter.post('/finalize', bodyParser.raw({type: 'application/json'})
 
 
             const recipient = await getDatabase().collection(USERS_COLLECTION).findOne({_id: payment.recipient})
+            console.log(recipient, payment.resource)
             // just in case...
             if (recipient.purchases.includes(payment.resource)) {
                 await getDatabase().collection<User>(USERS_COLLECTION)

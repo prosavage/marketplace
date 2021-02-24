@@ -11,6 +11,7 @@ import getAxios from "../util/AxiosInstance";
 import useToast from "../util/hooks/useToast";
 import { setToken } from "../util/TokenManager";
 import SecondaryButton from "./../components/ui/Secondarybutton";
+import getBaseURL from "../util/urlUtil";
 
 export default function Account(props) {
   const [user, setUser] = useRecoilState(userState);
@@ -23,7 +24,7 @@ export default function Account(props) {
 
   const connectStripe = () => {
     getAxios()
-      .get(`/checkout/stripe/setup/create`)
+      .post(`/checkout/stripe/setup/create`,{baseurl: getBaseURL(router)})
       .then((res) => {
         router.push(res.data.payload.accountLink.url);
       })

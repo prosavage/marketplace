@@ -7,7 +7,9 @@ export default function Cancel() {
 
   const router = useRouter();
 
-  
+  useEffect(() => {
+      router.push("/")
+  }, [])
 
   return (
     <Wrapper>
@@ -15,7 +17,6 @@ export default function Cancel() {
       <Splash src={"/marketplace/static/splash/checkout_success_splash.svg"}/>
       </ImageContainer>
       <h1>Purchase Successful</h1>
-      <h2>You have purchased ___</h2>
     </Wrapper>
   );
 }
