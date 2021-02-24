@@ -28,7 +28,7 @@ directoryVersionRouter.get("/download/:version", [
     Authorize,
     isValidBody
 ], async (req: Request, res: Response) => {
-    const versionId = req.params.version as string
+    const versionId = req.params.version as string;
 
     const version = await getDatabase().collection<Version>(VERSIONS_COLLECTION).findOne({ _id: versionId });
     
@@ -44,7 +44,7 @@ directoryVersionRouter.get("/download/:version", [
         return;
     }
     const file = await bunny.getVersionFile(resource, version)
-    
+
     res.send(file.data)
 })
 

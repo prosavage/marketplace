@@ -86,6 +86,7 @@ authRouter.post(
     user.role = Role.USER;
     user.discordServerId = undefined;
     user._id = shortid.generate();
+    user.purchases = []
 
     let usersWithEmail = await getDatabase()
       .collection(USERS_COLLECTION)

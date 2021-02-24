@@ -63,7 +63,7 @@ directoryRouter.get("/featured", async (_req: Request, res: Response) => {
             },
           },
           { $unwind: "$owner" },
-          { $unset: ["owner.email", "owner.role", "owner.password"] }
+          { $unset: ["owner.email", "owner.role", "owner.password", "owner.purchases"] }
         ])
         .toArray();
     })

@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express";
 import {param} from "express-validator";
-import {RESOURCES_COLLECTION, SELLER_COLLECTION} from "../../constants";
+import {PAYMENTS_COLLECTION, RESOURCES_COLLECTION, SELLER_COLLECTION} from "../../constants";
 import {Authorize} from "../../middleware/Authenticate";
 import {isValidBody} from "../../middleware/BodyValidate";
 import {getDatabase} from "../../server";
@@ -8,56 +8,13 @@ import {Resource} from "../../types/Resource";
 import {Seller} from "../../types/User";
 import getStripeAPI from "./stripe/StripeAPI";
 import stripeSetupRouter from "./stripe/StripeSetupRouter";
-import Axios from "axios";
+import Payment, {PaymentStatus} from "../../types/Payment";
+import shortid from "shortid";
+import checkoutInfoRouter from "./CheckoutInfoRouter";
 
 const checkoutRouter = express.Router();
 
-checkoutRouter.get(
-    "/link",
-    [Authorize, isValidBody],
-    async (req: Request, res: Response) => {
-        const seller = await getDatabase()
-            .collection<Seller>(SELLER_COLLECTION)
-            .findOne({user: req.user!!._id});
-
-        if (seller === null) {
-            res.failure("seller not found.");
-            return;
-        }
-        const stripeAPI = getStripeAPI();
-
-        const link = await stripeAPI.accounts.createLoginLink(
-            seller.stripe_account,
-            {apiKey: process.env.STRIPE_SECRET_KEY}
-        );
-
-        res.success({link: link});
-    }
-);
-
-checkoutRouter.get(
-    "/balance",
-    [Authorize, isValidBody],
-    async (req: Request, res: Response) => {
-        const seller = await getDatabase()
-            .collection<Seller>(SELLER_COLLECTION)
-            .findOne({user: req.user!!._id})
-
-        if (seller === null) {
-            res.failure("seller not found.")
-            return
-        }
-
-        const balance = await Axios.get("https://api.stripe.com/v1/balance", {
-            headers: {
-                Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-                "Stripe-Account": seller.stripe_account
-            }
-        })
-
-        res.success({balance: balance.data})
-    }
-)
+checkoutRouter.use(checkoutInfoRouter)
 
 checkoutRouter.get(
     "/session/:resource",
@@ -123,12 +80,23 @@ checkoutRouter.get(
             cancel_url: `${process.env.BASE_URL}/checkout/cancel`,
         });
 
-        await
+        const payment: Payment = {
+            _id: shortid.generate(),
+            timestamp: new Date(),
+            amount: price,
+            user: req.user!!._id,
+            payment_intent: session.payment_intent!!.toString(),
+            recipient: resource.owner,
+            resource: resource._id,
+            status: PaymentStatus.STARTED
+        }
 
+        await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertOne(payment)
+        console.log("made session:")
+        console.log({session: session.id, payment_intent: session.payment_intent})
         res.success({session});
     }
 );
-
 
 
 checkoutRouter.use("/stripe/setup", stripeSetupRouter);

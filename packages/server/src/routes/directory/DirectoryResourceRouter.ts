@@ -150,7 +150,7 @@ const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
       //     },
       //   },
       { $unwind: "$owner" },
-      { $unset: ["owner.email", "owner.role", "owner.password"] },
+      { $unset: ["owner.email", "owner.role", "owner.password", "owner.purchases"] },
     ])
     .toArray();
 };
