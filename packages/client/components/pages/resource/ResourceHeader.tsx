@@ -21,7 +21,7 @@ export default function ResourceHeader(props: {
 }) {
     const renderButtons = () => {
         let text;
-        if (props.resource?.price === 0 || user.purchases.includes(props.resource?._id)) {
+        if (props.resource?.price === 0 || user?.purchases.includes(props.resource?._id)) {
             text = "Download";
         } else {
             text = `$${props.resource?.price}`;
@@ -46,7 +46,7 @@ export default function ResourceHeader(props: {
     const user = useRecoilValue(userState)
 
     const onDownload = async () => {
-        if (props.resource?.price === 0 || user.purchases.includes(props.resource?._id)) {
+        if (props.resource?.price === 0 || user?.purchases.includes(props.resource?._id)) {
             download();
         } else {
             getAxios()
