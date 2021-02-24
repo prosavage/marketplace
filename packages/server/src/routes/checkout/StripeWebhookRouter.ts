@@ -50,7 +50,7 @@ stripeWebhookRouter.post('/finalize', bodyParser.raw({type: 'application/json'})
             const recipient = await getDatabase().collection(USERS_COLLECTION).findOne({_id: payment.recipient})
             console.log(recipient, payment.resource)
             // just in case...
-            if (recipient.purchases.includes(payment.resource)) {
+            if (!recipient.purchases.includes(payment.resource)) {
                 await getDatabase().collection<User>(USERS_COLLECTION)
                     .updateOne({_id: payment.user}, {$push: {purchases: payment.resource}})
             }
