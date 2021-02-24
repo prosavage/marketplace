@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import AmountBalance from "../components/pages/dashboard/AmountBalance";
 import PayoutButton from "../components/pages/dashboard/PayoutButton";
+import RecentPurchases from "../components/pages/dashboard/RecentPurchases";
 import UserNameLink from "../components/pages/dashboard/UserNameLink";
 import Button from "../components/ui/Button";
 
@@ -11,10 +12,11 @@ export default function Dashboard() {
       <Header>
         <UserNameLink/>
         <Balance>
-          <AmountBalance top={"Your balance"} amount={"$152.81"}/>
+          <AmountBalance/>
           <PayoutButton />
         </Balance>
       </Header>
+      <RecentPurchases/>
     </Wrapper>
   );
 }

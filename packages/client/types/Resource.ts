@@ -40,3 +40,20 @@ export interface DirectoryResource {
     reviews: Review[],
     reviewCount: number
 }
+
+export interface DirectoryPayment {
+    _id: string,
+    timestamp: Date,
+    amount: number,
+    recipient: User
+    status: PaymentStatus
+    resource: Resource
+    user: User,
+    payment_intent: string
+}
+
+export enum PaymentStatus {
+    STARTED = "STARTED",
+    CONFIRMED = "CONFIRMED",
+    CANCELLED = "CANCELLED"
+}

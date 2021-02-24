@@ -130,7 +130,7 @@ export default function Signup(props) {
               <RequirementEntry>
                 {renderStatus(validateUsername(username))}
                 <RequirementText>
-                  Username must be between 4 - 20 characters long.
+                  Username must be between 3 - 20 characters long.
                 </RequirementText>
               </RequirementEntry>
               <RequirementEntry>

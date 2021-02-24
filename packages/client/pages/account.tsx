@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../atoms/user";
+import ProfilePicture from "../components/pages/account/ProfilePicture";
 import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
 import getAxios from "../util/AxiosInstance";
 import useToast from "../util/hooks/useToast";
 import { setToken } from "../util/TokenManager";
@@ -41,7 +43,16 @@ export default function Account(props) {
   useEffect(() => {
     getAxios()
       .get("/checkout/stripe/setup/verify")
-      .then((res) => setAccount(res.data.payload.account));
+      .then((res) => {
+        if (res.data.payload.account!!.charges_enabled) {
+          setAccount("Payments are enabled.");
+        } else {
+          setAccount("Payments DISABLED, reconnect stripe.");
+        }
+      })
+      .catch((err) => {
+        setAccount(err.response.data.error);
+      });
   }, [user]);
 
   const getStripeIntegration = () => {
@@ -50,8 +61,8 @@ export default function Account(props) {
     } else {
       return (
         <>
-        <p>Payments Enabled:</p>
-        <p>{account!!.charges_enabled.toString()}</p>
+          <p>Stripe Integration:</p>
+          <p>{account}</p>
         </>
       );
     }
@@ -69,6 +80,9 @@ export default function Account(props) {
           <hr />
         </VSpace>
         <VSpace>
+          <Row>
+            <ProfilePicture/>
+          </Row>
           <Row>
             <SecondaryButton onClick={logout}>LOG OUT</SecondaryButton>
           </Row>
