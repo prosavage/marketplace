@@ -115,6 +115,7 @@ authRouter.post(
                 username: user.username,
                 discordServerId: user.discordServerId,
                 hasIcon: user.hasIcon,
+                purchases: user.purchases
             },
         });
     }
@@ -155,6 +156,7 @@ authRouter.post(
                 username: user.username,
                 discordServerId: user.discordServerId,
                 hasIcon: user.hasIcon,
+                purchases: user.purchases
             },
         });
     }

@@ -43,9 +43,20 @@ directoryVersionRouter.get("/download/:version", [
         res.failure("resource not found.")
         return;
     }
-    const file = await bunny.getVersionFile(resource, version)
 
-    res.send(file.data)
+    if (resource.price !== 0 && !req.user!!.purchases.includes(resource?._id)) {
+        res.failure("You do not own this resource.")
+        return
+    }
+
+    try {
+        const file = await bunny.getVersionFile(resource, version)
+        res.send(file.data)
+
+    } catch (err) {
+        res.failure(err.response.data.Message)
+    }
+
 })
 
 const pageSearchVersionsWithFilter = async (filter: object, page: number) => {

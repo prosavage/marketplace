@@ -11,6 +11,8 @@ import useToast from "../../../util/hooks/useToast";
 import {loadStripe} from "@stripe/stripe-js";
 import {useRouter} from "next/router";
 import getBaseURL from "../../../util/urlUtil";
+import {useRecoilValue} from "recoil";
+import {userState} from "../../../atoms/user";
 
 export default function ResourceHeader(props: {
     resource: Resource;
@@ -19,7 +21,7 @@ export default function ResourceHeader(props: {
 }) {
     const renderButtons = () => {
         let text;
-        if (props.resource?.price === 0) {
+        if (props.resource?.price === 0 || user.purchases.includes(props.resource?._id)) {
             text = "Download";
         } else {
             text = `$${props.resource?.price}`;
@@ -41,8 +43,12 @@ export default function ResourceHeader(props: {
 
     const router = useRouter();
 
+    const user = useRecoilValue(userState)
+
     const onDownload = async () => {
-        if (props.resource?.price > 0) {
+        if (props.resource?.price === 0 || user.purchases.includes(props.resource?._id)) {
+            download();
+        } else {
             getAxios()
                 .post(`/checkout/session/${props.resource?._id}`, {baseurl: getBaseURL(router)})
                 .then(async (res) => {
@@ -52,8 +58,6 @@ export default function ResourceHeader(props: {
                     );
                     stripe.redirectToCheckout({sessionId: res.data.payload.session.id}).then(res => console.log(res.error.message));
                 }).catch(err => console.log(err.response));
-        } else {
-            download();
         }
     };
 

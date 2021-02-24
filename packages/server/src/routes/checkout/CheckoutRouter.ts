@@ -57,7 +57,6 @@ checkoutRouter.post(
         }
 
         const price = resource.price * 100;
-
         const session = await stripeAPI.checkout.sessions.create({
             payment_method_types: ["card"],
             line_items: [
@@ -71,7 +70,7 @@ checkoutRouter.post(
             payment_intent_data: {
                 // 5 % + 50 cents fee static
                 // Stripe gets 2.9% + 30 cents of it. We get 2.1% + 20 cents
-                application_fee_amount: price * 0.05 + 50,
+                application_fee_amount: Math.ceil(price * 0.05 + 50),
                 transfer_data: {
                     destination: account.id,
                 },
@@ -79,7 +78,6 @@ checkoutRouter.post(
             success_url: `${req.body.baseurl}/checkout/success`,
             cancel_url: `${req.body.baseurl}/checkout/cancel`,
         });
-
         const payment: Payment = {
             _id: shortid.generate(),
             timestamp: new Date(),

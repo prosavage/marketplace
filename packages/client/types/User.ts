@@ -1,3 +1,5 @@
+import {Resource} from "./Resource";
+
 export interface User {
     _id: string,
     username: string,
@@ -7,6 +9,14 @@ export interface User {
     // email: string,
     // this is a hash, not the actual password.
     // password: string
+}
+
+export interface PersonalUser {
+    _id: string,
+    username: string,
+    discordServerId: number | undefined,
+    hasIcon: boolean
+    purchases: Resource["_id"][]
 }
 
 export enum Role {
