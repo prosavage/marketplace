@@ -5,7 +5,7 @@ import Button from "../../ui/Button";
 export default function PayoutButton() {
     return (
         <Wrapper>
-            <PayButton>Pay out now</PayButton>
+            <PayButton><h3>Payout Now</h3></PayButton>
             <p>You receieve payouts daily.</p>
         </Wrapper>
     );
@@ -19,8 +19,9 @@ const Wrapper = styled.div`
 `;
 
 const PayButton = styled(Button)`
-    padding: 15px !important;
-    width: 100%;
-    margin-bottom: 0.2em;
+  padding: 15px !important;
+  width: 100%;
+  margin-bottom: 0.2em;
 `
+
 

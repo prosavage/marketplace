@@ -22,7 +22,7 @@ export default function RecentPurchases() {
     return (
         <Wrapper>
             <Header>
-                <p>Recent Purchases</p>
+                <p>Recent Sales</p>
             </Header>
             {payments.map(payment => <RecentPurchasesEntry key={payment._id} purchase={payment}/>)}
         </Wrapper>

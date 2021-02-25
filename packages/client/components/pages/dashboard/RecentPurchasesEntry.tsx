@@ -23,11 +23,11 @@ export default function RecentPurchasesEntry(props: {
                 </Link>
             </Info>
             <Info>
+                <p>${(props.purchase.amount / 100).toFixed(2)}</p>
+            </Info>
+            <Info>
                 <p>{timeago.ago(props.purchase.timestamp)}</p>
             </Info>
-            <Price>
-                <p>${(props.purchase.amount / 100).toFixed(2)}</p>
-            </Price>
         </Wrapper>
     );
 }
@@ -35,14 +35,15 @@ export default function RecentPurchasesEntry(props: {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 1em;
-  margin-bottom: 0.5em;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+
 `;
 
 const Name = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: 30%;
+  flex-basis: 25%;
 `;
 
 const Username = styled.p`
@@ -53,8 +54,8 @@ const Username = styled.p`
 const Info = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-basis: 15%;
+  justify-content: flex-start;
+  flex-basis: 25%;
 `;
 
 const ProductLink = styled.p`
@@ -66,6 +67,5 @@ const ProductLink = styled.p`
 const Price = styled.div`
     display: flex;
     align-items: center;
-    flex-grow: 1;
     justify-content: flex-end;
 `

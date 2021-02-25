@@ -2,6 +2,7 @@ import styled from "styled-components"
 import {useEffect, useState} from "react";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
+import PropsTheme from "../../../styles/theme/PropsTheme";
 
 export default function AmountBalance() {
 
@@ -43,5 +44,5 @@ const Wrapper = styled.div`
 `
 
 const Balance = styled.p`
-  font-size: 30px;
+  font-size: 35px;
 `

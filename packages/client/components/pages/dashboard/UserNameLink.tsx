@@ -23,7 +23,7 @@ export default function UserNameLink() {
 
     return (
         <Wrapper>
-            <AuthorIcon user={user} size={"64px"}/>
+            <AuthorIcon user={user} size={"96px"}/>
             <Content>
                 <Name>{user?.username}</Name>
                 <ViewAccount onClick={generateLoginLink}>View Stripe Account</ViewAccount>
@@ -35,19 +35,19 @@ export default function UserNameLink() {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
 `;
 
-const Name = styled.p`
+const Name = styled.h2`
   font-size: 30px;
+  line-height: 18px;
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 1em;
-  justify-content: space-between;
-  height: 100%;
+  align-items: flex-start;
+  justify-content: center;
 `;
 
 const ViewAccount = styled.p`

@@ -4,6 +4,7 @@ import AmountBalance from "../components/pages/dashboard/AmountBalance";
 import PayoutButton from "../components/pages/dashboard/PayoutButton";
 import RecentPurchases from "../components/pages/dashboard/RecentPurchases";
 import UserNameLink from "../components/pages/dashboard/UserNameLink";
+import RecentSalesChart from "../components/pages/dashboard/RecentSalesChart";
 
 export default function Dashboard() {
     return (
@@ -15,6 +16,7 @@ export default function Dashboard() {
                     <PayoutButton/>
                 </Balance>
             </Header>
+            <RecentSalesChart/>
             <RecentPurchases/>
         </Wrapper>
     );

@@ -6,8 +6,9 @@ import {Seller} from "../../types/User";
 import {PAYMENTS_COLLECTION, RESOURCES_COLLECTION, SELLER_COLLECTION, USERS_COLLECTION} from "../../constants";
 import getStripeAPI from "./stripe/StripeAPI";
 import Axios from "axios";
-import {param} from "express-validator";
-import Payment from "../../types/Payment";
+import {body, param} from "express-validator";
+import Payment, {PaymentStatus} from "../../types/Payment";
+import shortid from "shortid";
 
 
 const checkoutInfoRouter = express.Router();
@@ -60,15 +61,18 @@ checkoutInfoRouter.get(
 )
 
 
-checkoutInfoRouter.get("/purchases/:page", [param("page").isNumeric(), Authorize, isValidBody],
+checkoutInfoRouter.get("/purchases/:page",
+    [param("page").isNumeric(), Authorize, isValidBody],
     async (req: Request, res: Response) => {
         const page = req.params.page as unknown as number;
 
+        const pageAmount = 5
+
         const payments = await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).aggregate([
-            {$match: {recipient: req.user!!._id}},
+            {$match: {recipient: req.user!!._id, status: PaymentStatus.CONFIRMED}},
             {$sort: {timestamp: -1}},
-            {$skip: (page - 1) * 10},
-            {$limit: 10},
+            {$skip: (page - 1) * pageAmount},
+            {$limit: pageAmount},
             {
                 $lookup: {
                     from: RESOURCES_COLLECTION,
@@ -92,6 +96,45 @@ checkoutInfoRouter.get("/purchases/:page", [param("page").isNumeric(), Authorize
 
         res.success({payments})
     })
+
+
+checkoutInfoRouter.post("/purchase-chart", [
+    body("resource").optional(),
+    body("start", "end").isNumeric().bail().customSanitizer(v => new Date(v)),
+    Authorize, isValidBody
+], async (req: Request, res: Response) => {
+
+    let resource = req.body.resource;
+
+    console.log(req.body.start, new Date(req.body.end))
+
+    const filter: any = {
+        recipient: req.user!!._id,
+        timestamp: {
+            $lte: new Date(req.body.end),
+            $gte: new Date(req.body.start)
+        }
+    }
+    if (resource) {
+        const result = shortid.isValid(resource)
+        if (!result) {
+            res.failure("invalid resource id.")
+            return
+        }
+        filter.resource = resource
+        console.log("resource was valid.")
+    }
+
+    
+
+    const payments =
+        await getDatabase().collection<Payment>(PAYMENTS_COLLECTION)
+            .find(filter)
+            .sort({timestamp: -1}).toArray()
+
+
+    res.success({payments})
+})
 
 checkoutInfoRouter.get(
     "/seller",
