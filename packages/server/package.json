@@ -17,7 +17,7 @@
     "rword": "^3.2.0",
     "shortid": "^2.2.16",
     "stripe": "^8.136.0",
-    "ts-node-dev": "^1.1.1"
+    "ts-node-dev": "^1.1.6"
   },
   "scripts": {
     "build": "tsc",
