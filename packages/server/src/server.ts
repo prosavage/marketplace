@@ -11,6 +11,7 @@ import betterResponse from "./middleware/ResponseFunctions";
 import directoryRouter from "./routes/directory/DirectoryRouter";
 import ensureIndexes, {readTokens} from "./database";
 import reviewRouter from "./routes/ReviewRouter";
+import webhookRouter from "./routes/WebhookRouter";
 import {BunnyCDNStorage} from "./bunnycdn";
 import fileUpload from "express-fileupload";
 import cors from "cors";
@@ -66,6 +67,7 @@ app.use("/directory", directoryRouter);
 app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
 app.use("/checkout", checkoutRouter);
+app.use("/userwebhooks", webhookRouter);
 
 
 app.get("/", (_req: Request, res: Response) => {
@@ -78,11 +80,6 @@ mongoClient.connect(async () => {
     console.log("connected to database.");
     await ensureIndexes();
     await readTokens();
-
-
-
-    // await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertOne(payment)
-
     app.listen(5000, () => console.log("started marketplace backend."));
 });
 
