@@ -79,7 +79,7 @@ export default function RecentSalesChart() {
           <option value={"eUyVEKcjm"}>SkyblockX</option>
           <option value={"CSMVL75iD"}>TestResource</option>
         </select>
-        <Input value={start} onChange={(e) => setStart(e.target.value)} />
+        <Input value={start} onChange={(e) => setStart(e.target.value)} invalid={false}/>
       </Controls>
       <PaddedResponsiveContainer width={"100%"} height={250}>
         <AreaChart
