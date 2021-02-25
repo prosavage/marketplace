@@ -17,9 +17,6 @@ import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
 import stripeWebhookRouter from "./routes/checkout/StripeWebhookRouter";
-import Payment, { PaymentStatus } from "./types/Payment";
-import { PAYMENTS_COLLECTION } from "./constants";
-import shortid from "shortid";
 
 
 dotenv.config();
@@ -82,18 +79,9 @@ mongoClient.connect(async () => {
     await ensureIndexes();
     await readTokens();
 
-    const payment: Payment = {
-        _id: shortid.generate(),
-        user: "TQhd9S2Ax",
-        recipient: "xKEGocEfbz",
-        payment_intent: "doesnt matter dummy data.",
-        status: PaymentStatus.CONFIRMED,
-        timestamp: new Date(2021, 1, 18),
-        amount: 100,
-        resource: "uknACi01f"
-    }
 
-    await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertOne(payment)
+
+    // await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertOne(payment)
 
     app.listen(5000, () => console.log("started marketplace backend."));
 });
