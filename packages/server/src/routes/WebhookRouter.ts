@@ -53,11 +53,69 @@ webhookRouter.put("/", [
 			last_called: undefined,
 		};
 
-		const result = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).insertOne(webhook);
-
-		console.log(result)
+		await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).insertOne(webhook);
 
 		res.success({webhook})
 })
+
+
+webhookRouter.delete("/:id", [param("id").custom(v => shortid.isValid(v)), Authorize, isValidBody],
+	async (req: Request, res: Response) => {
+		const id = req.params.id
+
+		const webhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
+
+		if(webhook === null) {
+			res.failure("webhook not found")
+			return
+		}
+
+		await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).deleteOne({_id: id})
+
+		res.success({
+			result: {
+				deletedWebhook: id
+			}
+		})
+	})
+
+
+webhookRouter.patch("/:id", [
+		body(["url", "secret"]).isString(),
+		body("name", "description").isString().bail().isLength({min: 4, max: 35}),
+		body(["active"]).isBoolean(),
+		body("events").isArray(),
+		param("id").custom(v => shortid.isValid(v)),
+		Authorize,
+		isValidBody],
+	async (req: Request, res: Response) => {
+		const body = req.body;
+		const id = req.params.id
+
+		const webhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
+
+		if(webhook === null) {
+			res.failure("webhook not found")
+			return
+		}
+
+		await getDatabase()
+			.collection<Webhook>(WEBHOOKS_COLLECTION)
+			.updateOne(
+				{_id: id},
+				{
+					$set: {
+						url: body.url,
+						events: body.events,
+						name: body.name,
+						secret: body.secret,
+						active: body.active,
+					},
+				}
+			);
+
+		res.success({webhook})
+	})
+
 
 export default webhookRouter;
