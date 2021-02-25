@@ -9,3 +9,4 @@ packages/.DS_Store
 *.iml
 packages/client/*.env
 packages/server/*.env
+**/yarn.lock
