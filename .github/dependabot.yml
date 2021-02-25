@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Maintain dependencies for client
+  - package-ecosystem: "npm"
+    directory: "/packages/client/"
+    schedule:
+      interval: "daily"
+      time: "12:00"
+      timezone: "America/New_York"
+    labels:
+      - "a: dependencies"
+      - "npm: client"
+    commit-message:
+      prefix: "npm(client)"
+  # Maintain dependencies for server
+  - package-ecosystem: "npm"
+    directory: "/packages/server/"
+    schedule:
+      interval: "daily"
+      time: "12:00"
+      timezone: "America/New_York"
+    labels:
+      - "a: dependencies"
+      - "npm: server"
+    commit-message:
+      prefix: "npm(server)"
