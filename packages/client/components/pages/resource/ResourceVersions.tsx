@@ -1,71 +1,71 @@
-import { useRouter } from "next/router";
-import { useEffect, useState, version } from "react";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
-import { Version } from "../../../types/Version";
+import {Resource} from "../../../types/Resource";
+import {Version} from "../../../types/Version";
 import getAxios from "../../../util/AxiosInstance";
-import { ArrowLeft, ArrowRight } from "react-feather";
+import {ArrowLeft, ArrowRight} from "react-feather";
 import ResourceVersionEntry from "./ResourceVersionEntry";
 
 export default function ResourceVersions({
-  resource,
-  onVersionSelect,
-}: {
-  onVersionSelect: (version: Version) => void;
-  resource: Resource | undefined;
+                                             resource,
+                                             onVersionSelect,
+                                         }: {
+    onVersionSelect: (version: Version) => void;
+    resource: Resource | undefined;
 }) {
-  const [versions, setVersions] = useState<Version[]>([]);
-  const [page, setPage] = useState(1);
-  const router = useRouter();
+    const [versions, setVersions] = useState<Version[]>([]);
+    const [page, setPage] = useState(1);
+    const router = useRouter();
 
-  useEffect(() => {
-    if (!resource) return;
-    getAxios()
-      .get(`/directory/versions/resource/${resource._id}/${page}`)
-      .then((res) => setVersions(res.data.payload.versions))
-      .catch((err) => console.log(err.response.data));
-  }, [page, resource]);
+    useEffect(() => {
+        if (!resource) return;
+        getAxios()
+            .get(`/directory/versions/resource/${resource._id}/${page}`)
+            .then((res) => setVersions(res.data.payload.versions))
+            .catch((err) => console.log(err.response.data));
+    }, [page, resource]);
 
-  const renderPageControls = () => {
+    const renderPageControls = () => {
+        return (
+            <PageControlsWrapper>
+                <BackArrow
+                    onClick={() => {
+                        if (page <= 1) {
+                            return;
+                        }
+                        setPage(page - 1);
+                    }}
+                >
+                    &larr;
+                </BackArrow>
+                <CenterContainer>{page}</CenterContainer>
+                <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
+            </PageControlsWrapper>
+        );
+    };
+
     return (
-      <PageControlsWrapper>
-        <BackArrow
-          onClick={() => {
-            if (page <= 1) {
-              return;
-            }
-            setPage(page - 1);
-          }}
-        >
-          &larr;
-        </BackArrow>
-        <CenterContainer>{page}</CenterContainer>
-        <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
-      </PageControlsWrapper>
+        <Wrapper>
+            <Header>
+                <h2>Versions</h2>
+                {renderPageControls()}
+            </Header>
+            {versions.length > 0 ? (
+                versions.map((entry) => (
+                    <ResourceVersionEntry
+                        resource={resource}
+                        onVersionSelect={onVersionSelect}
+                        key={entry._id}
+                        version={entry}
+                    />
+                ))
+            ) : (
+                <p>No versions found.</p>
+            )}
+        </Wrapper>
     );
-  };
-
-  return (
-    <Wrapper>
-      <Header>
-        <h2>Versions</h2>
-        {renderPageControls()}
-      </Header>
-      {versions.length > 0 ? (
-        versions.map((entry) => (
-          <ResourceVersionEntry
-            resource={resource}
-            onVersionSelect={onVersionSelect}
-            key={entry._id}
-            version={entry}
-          />
-        ))
-      ) : (
-        <p>No versions found.</p>
-      )}
-    </Wrapper>
-  );
 }
 
 const Wrapper = styled.div`

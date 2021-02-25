@@ -1,59 +1,59 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { User, UserStats } from "../../../types/User";
+import {User, UserStats} from "../../../types/User";
 import useToast from "../../../util/hooks/useToast";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
 export default function UserHeader(props: {
-  user: User | undefined;
-  stats: UserStats | undefined;
+    user: User | undefined;
+    stats: UserStats | undefined;
 }) {
 
-  const toast = useToast();
+    const toast = useToast();
 
-  return (
-    <Wrapper>
-      <ImgContainer>
-        <AuthorIcon user={props.user} size={"220px"} />
-      </ImgContainer>
-      <TextContainer>
-        <MetaContainer>
-          <MetaSubContainer>
-            <Header>{props.user?.username}</Header>
-            <Date>Member since April 1, 2020</Date>
-          </MetaSubContainer>
-          <StatsContainer>
-            <Stat>
-              <h2>
-                {props.stats?.resourceCount
-                  ? new Intl.NumberFormat().format(props.stats?.resourceCount)
-                  : 0}
-              </h2>
-              <StatText>RESOURCES</StatText>
-            </Stat>
-            <Stat>
-              <h2>
-                {props.stats?.downloads
-                  ? new Intl.NumberFormat().format(props.stats?.downloads)
-                  : 0}
-              </h2>
-              <StatText>DOWNLOADS</StatText>
-            </Stat>
-            <Stat>
-              <h2>
-                {props.stats?.avgReviewScore
-                  ? props.stats?.avgReviewScore.toFixed(3)
-                  : 0}
-              </h2>
-              <StatText>RATING</StatText>
-            </Stat>
-          </StatsContainer>
-        </MetaContainer>
-        <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
-      </TextContainer>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <ImgContainer>
+                <AuthorIcon user={props.user} size={"220px"}/>
+            </ImgContainer>
+            <TextContainer>
+                <MetaContainer>
+                    <MetaSubContainer>
+                        <Header>{props.user?.username}</Header>
+                        <Date>Member since April 1, 2020</Date>
+                    </MetaSubContainer>
+                    <StatsContainer>
+                        <Stat>
+                            <h2>
+                                {props.stats?.resourceCount
+                                    ? new Intl.NumberFormat().format(props.stats?.resourceCount)
+                                    : 0}
+                            </h2>
+                            <StatText>RESOURCES</StatText>
+                        </Stat>
+                        <Stat>
+                            <h2>
+                                {props.stats?.downloads
+                                    ? new Intl.NumberFormat().format(props.stats?.downloads)
+                                    : 0}
+                            </h2>
+                            <StatText>DOWNLOADS</StatText>
+                        </Stat>
+                        <Stat>
+                            <h2>
+                                {props.stats?.avgReviewScore
+                                    ? props.stats?.avgReviewScore.toFixed(3)
+                                    : 0}
+                            </h2>
+                            <StatText>RATING</StatText>
+                        </Stat>
+                    </StatsContainer>
+                </MetaContainer>
+                <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
+            </TextContainer>
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

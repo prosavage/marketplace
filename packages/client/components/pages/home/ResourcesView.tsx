@@ -1,20 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { Resource, ResourceType } from "../../../types/Resource";
+import {ResourceType} from "../../../types/Resource";
 import Categories from "./categories/Categories";
 import ResourceList from "./resourcelist/ResourceList";
 
 export default function ResourcesView(props: { type: ResourceType, category: string | undefined }) {
-  return (
-    <Content>
-      <CategoriesContainer>
-        <Categories type={props.type} category={props.category} />
-      </CategoriesContainer>
-      <ResourcesContainer>
-        <ResourceList type={props.type} category={props.category} author={undefined}/>
-      </ResourcesContainer>
-    </Content>
-  );
+    return (
+        <Content>
+            <CategoriesContainer>
+                <Categories type={props.type} category={props.category}/>
+            </CategoriesContainer>
+            <ResourcesContainer>
+                <ResourceList type={props.type} category={props.category} author={undefined}/>
+            </ResourcesContainer>
+        </Content>
+    );
 }
 
 const Content = styled.div`

@@ -1,9 +1,7 @@
-import styled from "styled-components";
-import { DirectoryResource, Resource } from "../../types/Resource";
-import { getResourceIconURL } from "../../util/cdn";
-import Image from "next/image";
+import {DirectoryResource, Resource} from "../../types/Resource";
+import {getResourceIconURL} from "../../util/cdn";
 import useFallbackImageInSSR from "../../util/UseFallbackImageInSRR";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 export default function ResourceIcon(props: { resource: Resource | DirectoryResource, size: string }) {
     const router = useRouter();
@@ -11,7 +9,9 @@ export default function ResourceIcon(props: { resource: Resource | DirectoryReso
     // const fallback = "https://marketplace-savagelabs.b-cdn.net/defaults/default-icon.svg"
     const fallback = `/marketplace/static/defaults/default-icon.svg`
     const fallbackImageProps = useFallbackImageInSSR(fallback)
-    return <img src={props.resource?.hasIcon ? getResourceIconURL(props.resource._id) : fallback} alt="" height={props.size} width={props.size}
-    {...fallbackImageProps}
+    return <img onClick={() => router.push(`/resources/icon/${props.resource._id}`)}
+                src={props.resource?.hasIcon ? getResourceIconURL(props.resource._id) : fallback} alt=""
+                height={props.size} width={props.size}
+                {...fallbackImageProps}
     />
 }

@@ -11,7 +11,7 @@ const LightTheme: ITheme = {
     borderColor: "#eaeaea",
     errorColor: "#e25c5c"
 }
-  
+
 export default LightTheme;
 
 //058ED9 - Classic Blue

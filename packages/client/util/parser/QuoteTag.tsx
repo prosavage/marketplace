@@ -1,11 +1,12 @@
-import { Tag } from "bbcode-to-react";
+import {Tag} from "bbcode-to-react";
 import styled from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
 
 class QuoteTag extends Tag {
     constructor(renderer, settings = {}) {
         super(renderer, settings);
-      }
+    }
+
     toReact() {
         return <Wrapper>
             {this.getComponents()}

@@ -1,147 +1,168 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import {useEffect, useState} from "react";
 import DarkTheme from "../../styles/theme/DarkTheme";
 import LightTheme from "../../styles/theme/LightTheme";
 import PropsTheme from "../../styles/theme/PropsTheme";
 import ActiveLink from "./../ActiveLink";
-import { Moon, Sun, User, Menu, X } from "react-feather";
-import { useRecoilState } from "recoil";
-import { themeState } from "../../atoms/theme";
+import {Menu, Moon, Sun, X} from "react-feather";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {themeState} from "../../atoms/theme";
 import Button from "./Button";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../atoms/user";
+import {userState} from "../../atoms/user";
 import useStoredTheme from "../../util/hooks/useStoredTheme";
+import getAxios from "../../util/AxiosInstance";
 
 const links = [
-  {
-    link: "/",
-    text: "HOME",
-    mobileOnly: false,
-  },
-  {
-    link: "/directory/resources/plugin",
-    text: "RESOURCES",
-    mobileOnly: false,
-  },
-  {
-    link: "/login",
-    text: "LOG IN",
-    mobileOnly: true,
-  },
-  {
-    link: "/signup",
-    text: "SIGN UP",
-    mobileOnly: true,
-  },
+    {
+        link: "/",
+        text: "HOME",
+        mobileOnly: false,
+    },
+    {
+        link: "/directory/resources/plugin",
+        text: "RESOURCES",
+        mobileOnly: false,
+    },
+    {
+        link: "/login",
+        text: "LOG IN",
+        mobileOnly: true,
+    },
+    {
+        link: "/signup",
+        text: "SIGN UP",
+        mobileOnly: true,
+    }
 ];
 
 export default function Navbar(props) {
-  const [theme, setTheme] = useRecoilState(themeState);
-  const user = useRecoilValue(userState);
+    const [theme, setTheme] = useRecoilState(themeState);
+    const user = useRecoilValue(userState);
 
-  const [storedTheme, setStoredTheme] = useStoredTheme();
+    const [storedTheme, setStoredTheme] = useStoredTheme();
 
-  const [toggled, setToggled] = useState(false);
-  const [width, setWidth] = useState(0);
+    const [toggled, setToggled] = useState(false);
+    const [width, setWidth] = useState(0);
 
-  const isDesktop = () => {
-    return width > 800;
-  };
+    const [isSeller, setSellerStatus] = useState(false)
 
-  const isMobile = () => {
-    return !isDesktop();
-  };
+    const isDesktop = () => {
+        return width > 800;
+    };
 
-  useEffect(() => {
-    // function defined to update our width
-    function updateWidth() {
-      if (isDesktop()) setToggled(false);
-      setWidth(window.innerWidth);
+    const isMobile = () => {
+        return !isDesktop();
+    };
+
+    const checkSellerStatus = () => {
+        getAxios().get("/checkout/seller").then(res => setSellerStatus(res.data.payload.isSeller)).catch(err => console.log(err.response.data.error))
     }
 
-    // bind it to the resize event
-    window.addEventListener("resize", updateWidth);
-    // our state has a 0 at beginning, so we need to run update once.
-    updateWidth();
-    return () => window.removeEventListener("resize", updateWidth);
-  });
+    useEffect(() => {
+        if (!user) return
+        checkSellerStatus()
+    }, [user])
 
-  const getLinks = () => {
-    return links.map((entry) => {
-      if (entry.mobileOnly && width > 500) return;
-      return (
-        <LinkWrapper key={entry.link}>
-          <ActiveLink href={entry.link}>
-            <LinkText>{entry.text}</LinkText>
-          </ActiveLink>
-        </LinkWrapper>
-      );
-    });
-  };
+    useEffect(() => {
+        // function defined to update our width
+        function updateWidth() {
+            if (isDesktop()) setToggled(false);
+            setWidth(window.innerWidth);
+        }
 
-  return (
-    <Wrapper>
-      <Content>
-        <LogoSection>
-          <LogoText>Marketplace</LogoText>
-          {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
-        </LogoSection>
-        <AccountSection>
-          {user ? (
-            <LinkWrapper>
-              <ActiveLink href={"/account"}>
-                <AccountText>{user.username}</AccountText>
-              </ActiveLink>
-            </LinkWrapper>
-          ) : (
-            <AccountLoginSignUp>
-              <LinkWrapper>
-                <ActiveLink href={"/login"}>
-                  <AccountText>Log In</AccountText>
-                </ActiveLink>
-              </LinkWrapper>
-              <LinkWrapper>
-                <ActiveLink href={"/signup"}>
-                  <SignUpButton>Sign Up</SignUpButton>
-                </ActiveLink>
-              </LinkWrapper>
-            </AccountLoginSignUp>
-          )}
+        // bind it to the resize event
+        window.addEventListener("resize", updateWidth);
+        // our state has a 0 at beginning, so we need to run update once.
+        updateWidth();
+        return () => window.removeEventListener("resize", updateWidth);
+    }, []);
 
-          <LinkWrapper
-            style={{ paddingRight: "1em", cursor: "pointer" }}
-            onClick={() => {
-              setStoredTheme(theme === DarkTheme ? LightTheme : DarkTheme);
-              setTheme(theme === DarkTheme ? LightTheme : DarkTheme);
-            }}
-          >
-            {theme === DarkTheme ? <Moon /> : <Sun />}
-          </LinkWrapper>
-          {!toggled && !isDesktop() && (
-            <Menu
-              style={{
-                color: `${(props: PropsTheme) => props.theme.color}`,
-                cursor: "pointer",
-              }}
-              size="24px"
-              onClick={() => setToggled(!toggled)}
-            />
-          )}
-          {toggled && !isDesktop() && (
-            <X
-              style={{
-                color: `${(props: PropsTheme) => props.theme.color}`,
-                cursor: "pointer",
-              }}
-              size="24px"
-              onClick={() => setToggled(false)}
-            />
-          )}
-        </AccountSection>
-      </Content>
-      {toggled && isMobile() && <div>{getLinks()}</div>}
-    </Wrapper>
-  );
+    const getLinks = () => {
+        const linksToUse = [...links]
+
+        if (isSeller) {
+            linksToUse.push({
+                link: "/dashboard",
+                text: "DASHBOARD",
+                mobileOnly: false,
+            })
+        }
+
+        return linksToUse.map((entry) => {
+            if (entry.mobileOnly && width > 500) return;
+            return (
+                <LinkWrapper key={entry.link}>
+                    <ActiveLink href={entry.link}>
+                        <LinkText>{entry.text}</LinkText>
+                    </ActiveLink>
+                </LinkWrapper>
+            );
+        });
+    };
+
+    return (
+        <Wrapper>
+            <Content>
+                <LogoSection>
+                    <LogoText>Marketplace</LogoText>
+                    {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
+                </LogoSection>
+                <AccountSection>
+                    {user ? (
+                        <LinkWrapper>
+                            <ActiveLink href={"/account"}>
+                                <AccountText>{user.username}</AccountText>
+                            </ActiveLink>
+                        </LinkWrapper>
+                    ) : (
+                        <AccountLoginSignUp>
+                            <LinkWrapper>
+                                <ActiveLink href={"/login"}>
+                                    <AccountText>Log In</AccountText>
+                                </ActiveLink>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <ActiveLink href={"/signup"}>
+                                    <SignUpButton>Sign Up</SignUpButton>
+                                </ActiveLink>
+                            </LinkWrapper>
+                        </AccountLoginSignUp>
+                    )}
+
+                    <LinkWrapper
+                        style={{paddingRight: "1em", cursor: "pointer"}}
+                        onClick={() => {
+                            setStoredTheme(theme === DarkTheme ? LightTheme : DarkTheme);
+                            setTheme(theme === DarkTheme ? LightTheme : DarkTheme);
+                        }}
+                    >
+                        {theme === DarkTheme ? <Moon/> : <Sun/>}
+                    </LinkWrapper>
+                    {!toggled && !isDesktop() && (
+                        <Menu
+                            style={{
+                                color: `${(props: PropsTheme) => props.theme.color}`,
+                                cursor: "pointer",
+                            }}
+                            size="24px"
+                            onClick={() => setToggled(!toggled)}
+                        />
+                    )}
+                    {toggled && !isDesktop() && (
+                        <X
+                            style={{
+                                color: `${(props: PropsTheme) => props.theme.color}`,
+                                cursor: "pointer",
+                            }}
+                            size="24px"
+                            onClick={() => setToggled(false)}
+                        />
+                    )}
+                </AccountSection>
+            </Content>
+            {toggled && isMobile() && <div>{getLinks()}</div>}
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`
@@ -220,6 +241,7 @@ const LinkText = styled.p`
   @media (min-width: 800px) {
     padding: 0 15px;
   }
+
   &:hover {
     color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   }
@@ -237,6 +259,7 @@ const AccountText = styled.p`
   font-size: 1.1em;
   display: flex;
   justify-content: center;
+
   &:hover {
     color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   }

@@ -1,87 +1,88 @@
-import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X } from "react-feather";
-import { useRecoilState } from "recoil";
+import styled, {css} from "styled-components";
+import {useEffect, useState} from "react";
+import {Menu, X} from "react-feather";
+import {useRecoilValue} from "recoil";
 import ActiveLink from "./../../ActiveLink";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { useRouter } from "next/router";
-import Button from "../../ui/Button";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../atoms/user";
+import {useRouter} from "next/router";
+import {userState} from "../../../atoms/user";
+
 const links = [
-  {
-    link: "/legal/terms",
-    text: "Terms & Conditions",
-  },
-  {
-    link: "/legal/privacy",
-    text: "Privacy Policy",
-  },
-  {
-    link: "/legal/rules",
-    text: "Rules",
-  },
+    {
+        link: "/legal/terms",
+        text: "Terms & Conditions",
+    },
+    {
+        link: "/legal/privacy",
+        text: "Privacy Policy",
+    },
+    {
+        link: "/legal/rules",
+        text: "Rules",
+    },
 ];
 
 export default function SubNavbar(props) {
-  const [toggled, setToggled] = useState(false);
-  const [width, setWidth] = useState(0);
+    const [toggled, setToggled] = useState(false);
+    const [width, setWidth] = useState(0);
 
-  const router = useRouter();
+    const router = useRouter();
 
-  const user = useRecoilValue(userState);
-  
-  const isDesktop = () => {
-    return width > 700;
-  };
+    const user = useRecoilValue(userState);
 
-  const isMobile = () => {
-    return !isDesktop();
-  };
+    const isDesktop = () => {
+        return width > 700;
+    };
 
-  useEffect(() => {
-    // function defined to update our width
-    function updateWidth() {
-      if (isDesktop()) setToggled(false);
-      setWidth(window.innerWidth);
-    }
+    const isMobile = () => {
+        return !isDesktop();
+    };
 
-    // bind it to the resize event
-    window.addEventListener("resize", updateWidth);
-    // our state has a 0 at beginning, so we need to run update once.
-    updateWidth();
-    return () => window.removeEventListener("resize", updateWidth);
-  });
+    useEffect(() => {
+        // function defined to update our width
+        function updateWidth() {
+            if (isDesktop()) setToggled(false);
+            setWidth(window.innerWidth);
+        }
 
-  const getLinks = () => {
-    return links.map((entry) => (
-      <LinkWrapper key={entry.link}>
-        <ActiveLink href={entry.link}>
-          <LinkText selected={window.location.pathname.startsWith(entry.link)}>
-            {entry.text}
-          </LinkText>
-        </ActiveLink>
-      </LinkWrapper>
-    ));
-  };
+        // bind it to the resize event
+        window.addEventListener("resize", updateWidth);
+        // our state has a 0 at beginning, so we need to run update once.
+        updateWidth();
+        return () => window.removeEventListener("resize", updateWidth);
+    });
 
-  return (
-    <Wrapper>
-      <Content>
-        <LogoSection>
-          <LogoText>Legal</LogoText>
-          {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
-        </LogoSection>
-        {!toggled && !isDesktop() && (
-            <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(!toggled)}/>
-          )}
-          {toggled && !isDesktop() && (
-            <X style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px" onClick={() => setToggled(false)}/>
-          )}
-      </Content>
-      {toggled && isMobile() && <div>{getLinks()}</div>}
-    </Wrapper>
-  );
+    const getLinks = () => {
+        return links.map((entry) => (
+            <LinkWrapper key={entry.link}>
+                <ActiveLink href={entry.link}>
+                    <LinkText selected={window.location.pathname.startsWith(entry.link)}>
+                        {entry.text}
+                    </LinkText>
+                </ActiveLink>
+            </LinkWrapper>
+        ));
+    };
+
+    return (
+        <Wrapper>
+            <Content>
+                <LogoSection>
+                    <LogoText>Legal</LogoText>
+                    {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
+                </LogoSection>
+                {!toggled && !isDesktop() && (
+                    <Menu style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px"
+                          onClick={() => setToggled(!toggled)}/>
+                )}
+                {toggled && !isDesktop() && (
+                    <X style={{color: `${(props: PropsTheme) => props.theme.color}`, cursor: "pointer"}} size="24px"
+                       onClick={() => setToggled(false)}/>
+                )}
+            </Content>
+            {toggled && isMobile() && <div>{getLinks()}</div>}
+        </Wrapper>
+    );
 }
 
 const Wrapper = styled.div`

@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import {useRouter} from "next/router";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { DirectoryResource, Resource } from "../../../../types/Resource";
+import {DirectoryResource} from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import AuthorIcon from "../../../ui/AuthorIcon";
 
@@ -16,30 +16,30 @@ export default function FeaturedPluginEntry(props: { resource: DirectoryResource
     useEffect(() => {
         setAuthor("ProSavage");
     }, [])
-    
+
     return (
-      <Tilt
-        tiltReverse={true}
-        tiltMaxAngleX={4}
-        tiltMaxAngleY={4}
-        transitionSpeed={2800}
-        scale={1.05}
-      >
-        <Wrapper onClick={() => router.push(`/resources/${props.resource._id}`)}>
-            <ResourceIconWrapper>
-                <ResourceIcon resource={props.resource} size={"75px"} />
-            </ResourceIconWrapper>
-            <RightWrapper>
-                <TextWrapper>
-                    <h3>{props.resource.name}</h3>
-                    <DescText>{props.resource.description}</DescText>
-                </TextWrapper>
-                <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
-                    <AuthorIcon size={"25px"} user={props.resource.owner}/>
-                    <AuthorName>{author}</AuthorName>
-                </AuthorWrapper>
-            </RightWrapper>
-        </Wrapper>
+        <Tilt
+            tiltReverse={true}
+            tiltMaxAngleX={4}
+            tiltMaxAngleY={4}
+            transitionSpeed={2800}
+            scale={1.05}
+        >
+            <Wrapper onClick={() => router.push(`/resources/${props.resource._id}`)}>
+                <ResourceIconWrapper>
+                    <ResourceIcon resource={props.resource} size={"75px"}/>
+                </ResourceIconWrapper>
+                <RightWrapper>
+                    <TextWrapper>
+                        <h3>{props.resource.name}</h3>
+                        <DescText>{props.resource.description}</DescText>
+                    </TextWrapper>
+                    <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
+                        <AuthorIcon size={"25px"} user={props.resource.owner}/>
+                        <AuthorName>{author}</AuthorName>
+                    </AuthorWrapper>
+                </RightWrapper>
+            </Wrapper>
         </Tilt>
     )
 }

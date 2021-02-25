@@ -1,8 +1,7 @@
-import { atom } from "recoil";
-import DarkTheme from "../styles/theme/DarkTheme";
-import { User } from "../types/User";
+import {atom} from "recoil";
+import {PersonalUser, User} from "../types/User";
 
-export const userState = atom<User | undefined>({
+export const userState = atom<PersonalUser | undefined>({
     key: "USER",
     default: undefined
 })

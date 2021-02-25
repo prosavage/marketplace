@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import {atom} from "recoil";
 import DarkTheme from "../styles/theme/DarkTheme";
 import ITheme from "../styles/theme/ITheme";
 

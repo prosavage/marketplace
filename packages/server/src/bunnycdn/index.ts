@@ -1,8 +1,8 @@
-import Axios, { AxiosInstance } from "axios";
-import { UploadedFile } from "express-fileupload";
+import Axios, {AxiosInstance} from "axios";
+import {UploadedFile} from "express-fileupload";
 
-import { Resource } from "../types/Resource";
-import { Version } from "../types/Version";
+import {Resource} from "../types/Resource";
+import {Version} from "../types/Version";
 
 
 export class BunnyCDNStorage {
@@ -12,7 +12,7 @@ export class BunnyCDNStorage {
     constructor() {
         this.bunnyAxios = Axios.create({
             baseURL: "https://storage.bunnycdn.com/marketplace/",
-            headers: { AccessKey: process.env.BUNNY_STORAGE_API_KEY }
+            headers: {AccessKey: process.env.BUNNY_STORAGE_API_KEY}
         });
     }
 

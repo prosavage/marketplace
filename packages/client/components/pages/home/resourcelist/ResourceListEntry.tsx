@@ -1,57 +1,64 @@
 import styled from "styled-components";
-import { DirectoryResource } from "../../../../types/Resource";
+import {DirectoryResource} from "../../../../types/Resource";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
-import { themeState } from "../../../../atoms/theme";
+import {themeState} from "../../../../atoms/theme";
 import timeago from "time-ago";
-import { useRecoilValue } from "recoil";
+import {useRecoilValue} from "recoil";
 import renderReviewDroplets from "../../../../util/Review";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import FadeDiv from "../../../ui/FadeDiv";
 
 function ResourceListEntry(props: { resource: DirectoryResource }) {
-  const theme = useRecoilValue(themeState);
+    const theme = useRecoilValue(themeState);
 
-  return (
-    <Wrapper>
-      <ResourceIcon resource={props.resource} size={"75px"} />
-      <Metadata>
-        <ResourceInfo>
-          <TitleArea>
-            <Link href={`/resources/[id]`} as={`/resources/${props.resource._id}`}>
-              <ResourceTitle>{props.resource.name}</ResourceTitle>
-            </Link>
-            <Link href={`/users/[id]`} as={`/users/${props.resource.owner?._id}`}>
-              <AuthorLink>{props.resource.owner?.username}</AuthorLink>
-            </Link>
-          </TitleArea>
-          <Description>{props.resource.description}</Description>
-        </ResourceInfo>
-        <ResourceStats>
-          <Review>
-            <ReviewDropsContainer>
-              {renderReviewDroplets(theme, props.resource.rating)}
-            </ReviewDropsContainer>
-            <ReviewCount>
-              {new Intl.NumberFormat().format(props.resource.reviewCount)} ratings
-            </ReviewCount>
-          </Review>
-          <DataEntryBottom>
-            <DataEntry>
-              <Label>Downloads:</Label>
-              <Label>
-                {new Intl.NumberFormat().format(props.resource.downloads)}
-              </Label>
-            </DataEntry>
-            <DataEntry>
-              <Label>Updated:</Label>
-              <Label>{timeago.ago(props.resource.updated)}</Label>
-            </DataEntry>
-          </DataEntryBottom>
-        </ResourceStats>
-      </Metadata>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <ResourceIcon resource={props.resource} size={"75px"}/>
+            <Metadata>
+                <ResourceInfo>
+                    <TitleArea>
+                        <Link
+                            href={`/resources/[id]`}
+                            as={`/resources/${props.resource._id}`}
+                        >
+                            <ResourceTitle>{props.resource.name}</ResourceTitle>
+                        </Link>
+                        <Link
+                            href={`/users/[id]`}
+                            as={`/users/${props.resource.owner?._id}`}
+                        >
+                            <AuthorLink>{props.resource.owner?.username}</AuthorLink>
+                        </Link>
+                    </TitleArea>
+                    <Description>{props.resource.description}</Description>
+                </ResourceInfo>
+                <ResourceStats>
+                    <Review>
+                        <ReviewDropsContainer>
+                            {renderReviewDroplets(theme, props.resource.rating)}
+                        </ReviewDropsContainer>
+                        <ReviewCount>
+                            {new Intl.NumberFormat().format(props.resource.reviewCount)}{" "}
+                            ratings
+                        </ReviewCount>
+                    </Review>
+                    <DataEntryBottom>
+                        <DataEntry>
+                            <Label>Downloads:</Label>
+                            <Label>
+                                {new Intl.NumberFormat().format(props.resource.downloads)}
+                            </Label>
+                        </DataEntry>
+                        <DataEntry>
+                            <Label>Updated:</Label>
+                            <Label>{timeago.ago(props.resource.updated)}</Label>
+                        </DataEntry>
+                    </DataEntryBottom>
+                </ResourceStats>
+            </Metadata>
+        </Wrapper>
+    );
 }
 
 export default ResourceListEntry;
@@ -68,7 +75,7 @@ const ResourceTitle = styled.h2`
   &:hover {
     color: ${(props: PropsTheme) => props.theme.accentColor};
   }
-`
+`;
 
 const Metadata = styled.div`
   display: flex;

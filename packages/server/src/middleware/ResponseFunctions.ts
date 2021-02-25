@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express"
+import {NextFunction, Request, Response} from "express"
 
 const betterResponse = (_req: Request, res: Response, next: NextFunction) => {
     res.success = (payload) => {

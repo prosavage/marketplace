@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express"
+import {NextFunction, Request, Response} from "express"
 
-import { RESOURCES_COLLECTION, USERS_COLLECTION } from "../constants";
-import { getDatabase, tokenMap } from "../server";
-import { Role } from "../struct/Role";
-import { Resource } from "../types/Resource";
+import {RESOURCES_COLLECTION, USERS_COLLECTION} from "../constants";
+import {getDatabase, tokenMap} from "../server";
+import {Role} from "../struct/Role";
+import {Resource} from "../types/Resource";
 
 export const Authorize = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
@@ -17,7 +17,7 @@ export const Authorize = async (req: Request, res: Response, next: NextFunction)
         return;
     }
 
-    const user = await getDatabase().collection(USERS_COLLECTION).findOne({ _id: userId })
+    const user = await getDatabase().collection(USERS_COLLECTION).findOne({_id: userId})
     if (!user) {
         res.failure("User was not found.")
         return;
@@ -52,7 +52,7 @@ export function hasPermissionForResource(pathToResourceId: string, bypassRole: R
             res.failure("Resource ID path does not exist, hence, permission access cannot be checked");
             return;
         }
-        
+
         if (!req.user) {
             res.failure("not logged in", 401);
             return;
@@ -65,7 +65,7 @@ export function hasPermissionForResource(pathToResourceId: string, bypassRole: R
             return;
         }
 
-        const resource = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).findOne({ _id: resourceId });
+        const resource = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).findOne({_id: resourceId});
         if (!resource) {
             res.failure("Resource does not exist, hence, permission to access cannot be checked.")
             return;

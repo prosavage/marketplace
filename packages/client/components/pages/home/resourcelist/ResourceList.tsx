@@ -1,88 +1,88 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { DirectoryResource, Resource, ResourceType } from "../../../../types/Resource";
+import {DirectoryResource, ResourceType} from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
-import { ArrowLeft, ArrowRight } from "react-feather";
-import { User } from "../../../../types/User";
+import {ArrowLeft, ArrowRight} from "react-feather";
+import {User} from "../../../../types/User";
 
 function ResourceList(props: {
-  type: ResourceType;
-  category: string | undefined;
-  author: User | undefined;
+    type: ResourceType;
+    category: string | undefined;
+    author: User | undefined;
 }) {
-  const [resources, setResources] = useState<DirectoryResource[]>([]);
-  const [page, setPage] = useState(1);
+    const [resources, setResources] = useState<DirectoryResource[]>([]);
+    const [page, setPage] = useState(1);
 
-  // component stays mounted...
-  // so we need to change page back to 1 if a category/type is changed
-  useEffect(() => {
-    setPage(1);
-  }, [props.category, props.type]);
+    // component stays mounted...
+    // so we need to change page back to 1 if a category/type is changed
+    useEffect(() => {
+        setPage(1);
+    }, [props.category, props.type]);
 
-  useEffect(() => {
-    let url = "/directory/resources/type/" + props.type + "/" + page;
+    useEffect(() => {
+        let url = "/directory/resources/type/" + props.type + "/" + page;
 
-    if (props.category) {
-      url =
-        "/directory/resources/category/" +
-        props.type +
-        "/" +
-        props.category +
-        "/" +
-        page;
-    }
+        if (props.category) {
+            url =
+                "/directory/resources/category/" +
+                props.type +
+                "/" +
+                props.category +
+                "/" +
+                page;
+        }
 
-    if (props.author) {
-      url = "/directory/resources/author/" + props.author?._id + "/" + page;
-    }
+        if (props.author) {
+            url = "/directory/resources/author/" + props.author?._id + "/" + page;
+        }
 
-    getAxios()
-      .get(url)
-      .then((res) => {
-        setResources(res.data.payload.resources);
-      });
-  }, [props.type, props.category, page, props.author]);
+        getAxios()
+            .get(url)
+            .then((res) => {
+                setResources(res.data.payload.resources);
+            });
+    }, [props.type, props.category, page, props.author]);
 
-  const renderPageControls = () => {
+    const renderPageControls = () => {
+        return (
+            <PageControlsWrapper>
+                <BackArrow
+                    onClick={() => {
+                        if (page <= 1) {
+                            return;
+                        }
+                        setPage(page - 1);
+                    }}
+                >
+                    &larr;
+                </BackArrow>
+                <CenterContainer>{page}</CenterContainer>
+                <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
+            </PageControlsWrapper>
+        );
+    };
+
     return (
-      <PageControlsWrapper>
-        <BackArrow
-          onClick={() => {
-            if (page <= 1) {
-              return;
-            }
-            setPage(page - 1);
-          }}
-        >
-          &larr;
-        </BackArrow>
-        <CenterContainer>{page}</CenterContainer>
-        <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
-      </PageControlsWrapper>
+        <>
+            <Wrapper>
+                <TitleContainer>
+                    <h2>{props.category} Resources</h2>
+                    {renderPageControls()}
+                </TitleContainer>
+                {resources.length > 0 ? (
+                    resources.map((entry) => (
+                        <ResourceListEntry key={entry._id} resource={entry}/>
+                    ))
+                ) : (
+                    <NoResourcesFoundContainer>
+                        <p>No resources found.</p>
+                    </NoResourcesFoundContainer>
+                )}
+            </Wrapper>
+        </>
     );
-  };
-
-  return (
-    <>
-      <Wrapper>
-        <TitleContainer>
-          <h2>{props.category} Resources</h2>
-          {renderPageControls()}
-        </TitleContainer>
-        {resources.length > 0 ? (
-          resources.map((entry) => (
-            <ResourceListEntry key={entry._id} resource={entry} />
-          ))
-        ) : (
-          <NoResourcesFoundContainer>
-            <p>No resources found.</p>
-          </NoResourcesFoundContainer>
-        )}
-      </Wrapper>
-    </>
-  );
 }
 
 export default ResourceList;
