@@ -18,7 +18,7 @@
     "prismjs": "^1.23.0",
     "react": "^17.0.1",
     "react-dom": "16.13.1",
-    "react-feather": "^2.0.8",
+    "react-feather": "^2.0.9",
     "react-parallax-tilt": "^1.4.90",
     "react-simple-code-editor": "^0.11.0",
     "react-toastify": "^7.0.3",
