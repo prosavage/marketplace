@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 import { themeState } from "../../../atoms/theme";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import getAxios from "../../../util/AxiosInstance";
+import Input from "../../ui/Input";
 
 interface ChartDataNode {
   sales: number;
@@ -17,12 +18,18 @@ export default function RecentSalesChart() {
 
   const [data, setData] = useState<ChartDataNode[]>(generateData());
 
-  const start = 1613537306882;
+  const startTime = 1613537306882;
   const end = new Date().getTime();
+
+  const [start, setStart] = useState(
+    new Date(
+      new Date().getTime() - 60 * 60 * 24 * 7 * 1000
+    ).toLocaleDateString()
+  );
 
   const aggregateData = (data): ChartDataNode[] => {
     const rawData = data.payload.payments;
-    const timeSorted = { };
+    const timeSorted = {};
 
     for (const payment of rawData) {
       payment.timestamp = new Date(payment.timestamp);
@@ -34,12 +41,12 @@ export default function RecentSalesChart() {
       }
     }
 
-    const nodes = []
+    const nodes = [];
 
     for (const date of Object.keys(timeSorted)) {
-        const sales = timeSorted[date]
-        const node: ChartDataNode = {sales, date}
-        nodes.push(node)
+      const sales = timeSorted[date];
+      const node: ChartDataNode = { sales, date };
+      nodes.push(node);
     }
 
     return nodes.reverse();
@@ -47,15 +54,12 @@ export default function RecentSalesChart() {
 
   useEffect(() => {
     const filter: any = {
-      start,
+      start: startTime,
       end,
     };
-
     if (select !== "All") {
       filter.resource = select;
     }
-
-    console.log(filter);
     getAxios()
       .post("/checkout/purchase-chart", filter)
       .then((res) => setData(aggregateData(res.data)));
@@ -75,6 +79,7 @@ export default function RecentSalesChart() {
           <option value={"eUyVEKcjm"}>SkyblockX</option>
           <option value={"CSMVL75iD"}>TestResource</option>
         </select>
+        <Input value={start} onChange={(e) => setStart(e.target.value)} />
       </Controls>
       <PaddedResponsiveContainer width={"100%"} height={250}>
         <AreaChart

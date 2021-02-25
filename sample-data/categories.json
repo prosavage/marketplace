@@ -1,25 +1,5 @@
-{
-  "_id": "mmxaY7hWPW",
-  "name": "Addons",
-  "type": "plugin"
-}
-{
-  "_id": "Fdn6wVTFV0",
-  "name": "Anticheat",
-  "type": "plugin"
-}
-{
-  "_id": "bP6j6EtFjW",
-  "name": "Misc",
-  "type": "plugin"
-}
-{
-  "_id": "zu7WFsfZ03",
-  "name": "Tweaks",
-  "type": "plugin"
-}
-{
-  "_id": "VOc9ziYJIW",
-  "name": "Gamemode",
-  "type": "plugin"
-}
+{"_id":"mmxaY7hWPW","name":"Addons","type":"plugin"}
+{"_id":"Fdn6wVTFV0","name":"Anticheat","type":"plugin"}
+{"_id":"bP6j6EtFjW","name":"Misc","type":"plugin"}
+{"_id":"zu7WFsfZ03","name":"Tweaks","type":"plugin"}
+{"_id":"VOc9ziYJIW","name":"Gamemode","type":"plugin"}
