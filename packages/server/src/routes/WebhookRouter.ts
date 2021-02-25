@@ -114,7 +114,9 @@ webhookRouter.patch("/:id", [
 				}
 			);
 
-		res.success({webhook})
+		const updatedWebhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
+
+		res.success({updatedWebhook})
 	})
 
 
