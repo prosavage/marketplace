@@ -24,7 +24,7 @@
     "react-toastify": "^7.0.3",
     "recharts": "^2.0.8",
     "recoil": "^0.1.2",
-    "styled-components": "^5.2.0",
+    "styled-components": "^5.2.1",
     "time-ago": "^0.2.1"
   },
   "devDependencies": {
