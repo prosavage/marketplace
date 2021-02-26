@@ -45,11 +45,7 @@ export default function RecentSalesChart() {
         for (const payment of rawData) {
             payment.timestamp = new Date(payment.timestamp);
             const dateKey = payment.timestamp.toLocaleDateString();
-            if (timeSorted[dateKey] === undefined) {
-                timeSorted[dateKey] = 1;
-            } else {
-                timeSorted[dateKey] = timeSorted[dateKey] + 1;
-            }
+            timeSorted[dateKey] = timeSorted[dateKey] + 1;
         }
 
         const nodes = [];
@@ -60,7 +56,7 @@ export default function RecentSalesChart() {
             nodes.push(node);
         }
 
-        return nodes.reverse();
+        return nodes
     };
 
     const toast = useToast()
