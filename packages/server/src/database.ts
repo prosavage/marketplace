@@ -47,6 +47,10 @@ const ensureIndexes = async () => {
 
     await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({recipient: 1})
     await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({payment_intent: 1})
+    await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({timestamp: -1, recipient: 1})
+    await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({timestamp: 1, recipient: 1, resource: 1})
+    await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({resource: 1})
+
 };
 
 export const pageSearchCollectionWithFilter = async (
