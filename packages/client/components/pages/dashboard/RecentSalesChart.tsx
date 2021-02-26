@@ -30,7 +30,6 @@ export default function RecentSalesChart() {
 
     const aggregateData = (data): ChartDataNode[] => {
         const rawData = data.payload.payments;
-        toast(rawData.length + " payments found...")
         const timeSorted = {};
 
         const startDate = parseISOString(start)
