@@ -106,8 +106,6 @@ checkoutInfoRouter.post("/purchase-chart", [
 
     let resource = req.body.resource;
 
-    console.log(req.body.start, new Date(req.body.end))
-
     const filter: any = {
         recipient: req.user!!._id,
         timestamp: {
@@ -122,10 +120,7 @@ checkoutInfoRouter.post("/purchase-chart", [
             return
         }
         filter.resource = resource
-        console.log("resource was valid.")
     }
-
-    
 
     const payments =
         await getDatabase().collection<Payment>(PAYMENTS_COLLECTION)
