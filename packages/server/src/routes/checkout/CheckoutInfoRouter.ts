@@ -120,10 +120,7 @@ checkoutInfoRouter.post("/purchase-chart", [
             return
         }
         filter.resource = resource
-        console.log("resource was valid.")
     }
-
-    
 
     const payments =
         await getDatabase().collection<Payment>(PAYMENTS_COLLECTION)
