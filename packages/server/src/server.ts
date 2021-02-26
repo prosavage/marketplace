@@ -83,6 +83,28 @@ mongoClient.connect(async () => {
     app.listen(5000, () => console.log("started marketplace backend."));
 });
 
+// generates payments
+// const resources = ["CVE0kzSpW", "eUyVEKcjm", "CSMVL75iD"]
+// const payments = []
+//
+// for (let i = 0; i < 10000; i++) {
+//     const variance = Math.floor(Math.random() * 250);
+//     const payment: Payment = {
+//         _id: shortid.generate(),
+//         user: "TQhd9S2Ax",
+//         recipient: "xKEGocEfbz",
+//         status: PaymentStatus.CONFIRMED,
+//         payment_intent: "debug payment - doesnt apply here",
+//         amount: Math.floor(Math.random() * 10000),
+//         timestamp: new Date(new Date().getTime() - (variance * 60 * 60 * 1000 * 24)),
+//         resource: resources[Math.floor(Math.random() * resources.length)]!!
+//     }
+//     payments.push(payment)
+// }
+//
+// await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertMany(payments)
+
+
 // const generateAndPutResource = async (
 //   file: any,
 //   resourceType: ResourceType,
