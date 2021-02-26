@@ -1,3 +1,5 @@
+import database from "server/dist/database";
+
 export const validateEmail = (email: string): boolean => {
     return /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email);
 };
@@ -31,6 +33,26 @@ export const containsUppercaseChar = (str: string) => {
     }
     return hasUppercase;
 };
+
+export function parseISOString(s) {
+   const split = s.split("/")
+    // normalize months since they start from fucking 0-11 instead of 1-12 in javascript
+    // this is because Java 1.0 had 0-11, - and they were told to copy.
+    const date =
+        new Date(Number.parseInt(split[2]), Number.parseInt(split[0]) - 1, Number.parseInt(split[1]))
+    return date
+}
+
+export const validateISODate = (dateStr: string) => {
+    try {
+        const date = parseISOString(dateStr)
+
+        return !isNaN(date.getTime()) && date.getTime() > 0
+    } catch (e) {
+        console.log("invalid")
+        return false
+    }
+}
 
 export const validateUsername = (username: string) => {
     return username.length >= 3 && username.length <= 20;
