@@ -7,6 +7,7 @@ import Input from "../../ui/Input";
 import styled from "styled-components";
 import {parseISOString, validateISODate} from "../../../util/Validation";
 import useToast from "../../../util/hooks/useToast";
+import PropsTheme from "../../../styles/theme/PropsTheme";
 
 interface ChartDataNode {
     sales: number;
@@ -86,7 +87,7 @@ export default function RecentSalesChart() {
             <h1>Daily Sales</h1>
             <Controls>
                 <ControlContainer>
-                    <select
+                    <Select
                         name={"resource"}
                         value={select}
                         onChange={(e) => setSelect(e.target.value)}
@@ -95,7 +96,7 @@ export default function RecentSalesChart() {
                         <option value={"CVE0kzSpW"}>FactionsX</option>
                         <option value={"eUyVEKcjm"}>SkyblockX</option>
                         <option value={"CSMVL75iD"}>TestResource</option>
-                    </select>
+                    </Select>
                 </ControlContainer>
                 <ControlGroup>
                     <ControlContainer>
@@ -173,6 +174,14 @@ const ChartContainer = styled.div`
   flex-direction: column;
   margin: 1em 0;
 `;
+
+const Select = styled.select`
+  padding: 10px 0;
+  border-radius: 5px;
+  border-color: ${(props: PropsTheme) => props.theme.accentColor};
+  background: transparent;
+  color: ${(props: PropsTheme) => props.theme.color}
+`
 
 const PaddedResponsiveContainer = styled(ResponsiveContainer)``;
 
