@@ -16,13 +16,13 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    runs-on: [ ubuntu-latest ]
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
         with:
           # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
-          node-version: ">=10.15.0"
+          node-version: "15.x"
           # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
           architecture: "x86"
       - name: Checkout
