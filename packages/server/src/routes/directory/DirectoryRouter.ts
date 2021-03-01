@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { param } from "express-validator";
+import { body, param } from "express-validator";
 
 import shortid from "shortid";
 import {
@@ -80,6 +80,23 @@ directoryRouter.get("/featured", async (_req: Request, res: Response) => {
   const flatArray = Array.prototype.concat.apply([], resources);
   res.success({ resources: flatArray });
 });
+
+directoryRouter.post(
+  "/sitemap-info",
+  [body("system-password").isString(), isValidBody],
+  async (req: Request, res: Response) => {
+      const password = req.body["system-password"];
+      if (password !== process.env.SYSTEM_PASSWORD) {
+          res.failure("incorrect system password.")
+          return;
+      }
+
+      const resources = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).find().toArray();
+      const users = await getDatabase().collection<User>(USERS_COLLECTION).find().toArray();
+
+      res.success({users, resources})
+  }
+);
 
 directoryRouter.get(
   "/categories/:type",
