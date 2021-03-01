@@ -10,6 +10,7 @@ import {getDatabase} from "../server";
 import {Role} from "../struct/Role";
 import {Review} from "../types/Review";
 import {Version} from "../types/Version";
+import {reviewWebhook} from "../webhooks";
 
 const reviewRouter = express.Router();
 
@@ -77,6 +78,9 @@ reviewRouter.put(
             .updateOne({_id: body.resource}, {$inc: {reviewCount: 1}});
         // update resource rating - ignore await for this as it's just a background task.
         updateResourceRating(body.resource);
+
+		reviewWebhook(req, review, resource)
+
         res.success({review});
     }
 );

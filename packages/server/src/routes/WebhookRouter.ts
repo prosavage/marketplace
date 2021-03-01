@@ -9,6 +9,16 @@ import {getDatabase} from "../server";
 
 const webhookRouter = express.Router();
 
+
+webhookRouter.get("/meta/event-list", [Authorize, isValidBody],
+	async (req: Request, res: Response) => {
+		res.success({
+			events: ["payment", "review", "version-update", "donation"],
+			user_id: req.user!!._id
+		})
+	})
+
+
 webhookRouter.get("/", [Authorize, isValidBody],
 	async (req: Request, res: Response) => {
 		const webhooks = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).find({user: req.user!!._id}).toArray()
@@ -37,6 +47,7 @@ webhookRouter.put("/", [
 		body("name", "description").isString().bail().isLength({min: 4, max: 35}),
 		body(["active"]).isBoolean(),
 		body("events").isArray(),
+		body("resource").custom(v => shortid.isValid(v)),
 		Authorize,
 		isValidBody],
 	async (req: Request, res: Response) => {
@@ -50,6 +61,7 @@ webhookRouter.put("/", [
 			secret: body.secret,
 			active: body.active,
 			user: req.user!!._id,
+			resource: body.resource,
 			last_called: undefined,
 		};
 
