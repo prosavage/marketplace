@@ -180,7 +180,11 @@ const Select = styled.select`
   border-radius: 5px;
   border-color: ${(props: PropsTheme) => props.theme.accentColor};
   background: transparent;
-  color: ${(props: PropsTheme) => props.theme.color}
+  color: ${(props: PropsTheme) => props.theme.color};
+
+  option {
+      color: black;
+  }
 `
 
 const PaddedResponsiveContainer = styled(ResponsiveContainer)``;
@@ -203,7 +207,6 @@ const ControlContainer = styled.div`
 const ControlGroup = styled.div`
   display: flex;
 `
-
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max)) + 20;
