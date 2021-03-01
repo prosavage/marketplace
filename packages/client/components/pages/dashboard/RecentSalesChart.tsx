@@ -36,13 +36,11 @@ export default function RecentSalesChart() {
 
   useEffect(() => {
     if (data.length === 0) return;
-    console.log('processing data.')
     transformDataToChartData();
   }, [data]);
 
   useEffect(() => {
     if (data.length === 0) return;
-    console.log('processing select triggered data...')
     transformDataToChartData();
   }, [select]);
 
@@ -50,8 +48,7 @@ export default function RecentSalesChart() {
     let rawData = data;
 
     if (select !== "All") {
-        console.log("filtering...")
-        rawData = rawData.filter(payment => payment.resource === select)
+      rawData = rawData.filter((payment) => payment.resource === select);
     }
 
     const timeSorted = {};
@@ -114,7 +111,7 @@ export default function RecentSalesChart() {
         );
         setResourceOptions(paidResources);
       })
-      .catch((err) => toast(err.response.data));
+      .catch((err) => toast(err.response.data.error));
   }, []);
 
   return (
@@ -154,7 +151,7 @@ export default function RecentSalesChart() {
           </ControlContainer>
         </ControlGroup>
       </Controls>
-      <PaddedResponsiveContainer width={"100%"} height={250}>
+      <ResponsiveContainer width={"100%"} height={250}>
         <AreaChart
           data={chartData}
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
@@ -184,7 +181,7 @@ export default function RecentSalesChart() {
             fill="url(#colorPv)"
           />
         </AreaChart>
-      </PaddedResponsiveContainer>
+      </ResponsiveContainer>
     </ChartContainer>
   );
 }
@@ -229,8 +226,6 @@ const Select = styled.select`
   }
 `;
 
-const PaddedResponsiveContainer = styled(ResponsiveContainer)``;
-
 const Controls = styled.div`
   display: flex;
   flex-direction: row;
@@ -249,13 +244,3 @@ const ControlContainer = styled.div`
 const ControlGroup = styled.div`
   display: flex;
 `;
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max)) + 20;
-}
-
-function date(subtract) {
-  return new Date(
-    new Date().getTime() - subtract * 60 * 60 * 24 * 1000
-  ).toLocaleDateString();
-}
