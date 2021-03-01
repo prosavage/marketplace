@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import AmountBalance from "../components/pages/dashboard/AmountBalance";
-import PayoutButton from "../components/pages/dashboard/PayoutButton";
-import RecentPurchases from "../components/pages/dashboard/RecentPurchases";
-import UserNameLink from "../components/pages/dashboard/UserNameLink";
-import RecentSalesChart from "../components/pages/dashboard/RecentSalesChart";
+import AmountBalance from "../../components/pages/dashboard/AmountBalance";
+import PayoutButton from "../../components/pages/dashboard/PayoutButton";
+import RecentPurchases from "../../components/pages/dashboard/RecentPurchases";
+import UserNameLink from "../../components/pages/dashboard/UserNameLink";
+import RecentSalesChart from "../../components/pages/dashboard/RecentSalesChart";
+import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
 
 export default function Dashboard() {
-    return (
+    return <>
+        <DashboardNavbar/>
         <Wrapper>
             <Header>
                 <UserNameLink/>
@@ -19,7 +21,7 @@ export default function Dashboard() {
             <RecentSalesChart/>
             <RecentPurchases/>
         </Wrapper>
-    );
+    </>
 }
 
 const Wrapper = styled.div`
