@@ -1,0 +1,8 @@
+version: "2"
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - "./data/database-files:/data/db"
+    ports:
+      - "127.0.0.1:27018:27017"
