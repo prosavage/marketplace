@@ -9,6 +9,8 @@ import {Role} from "../../struct/Role";
 import {Category} from "../../types/Category";
 import resourceIconRouter from "./ResourceIconRouter";
 import shortid from "shortid";
+import { Resource } from "../../types/Resource";
+import slugify from "slugify";
 
 const resourceRouter = express.Router();
 
@@ -73,6 +75,7 @@ resourceRouter.patch(
                 {
                     $set: {
                         name: req.body.name,
+                        slug: slugify(req.body.name),
                         description: req.body.description,
                         thread: req.body.thread,
                         price
@@ -116,9 +119,10 @@ resourceRouter.put(
 
         const resourceId = shortid.generate();
 
-        const resourceToAdd = {
+        const resourceToAdd: Resource = {
             _id: resourceId,
             name: resource.name,
+            slug: slugify(resource.name),
             category: resource.category,
             description: resource.description,
             rating: 0,

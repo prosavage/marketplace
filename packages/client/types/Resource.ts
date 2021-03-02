@@ -10,6 +10,7 @@ export enum ResourceType {
 export interface Resource {
     _id: string,
     name: string,
+    slug: string,
     description: string,
     hasIcon: boolean,
     price: number,
@@ -27,6 +28,7 @@ export interface Resource {
 export interface DirectoryResource {
     _id: string,
     name: string,
+    slug: string,
     description: string,
     price: number,
     hasIcon: boolean,

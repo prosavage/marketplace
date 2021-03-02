@@ -9,6 +9,7 @@ export enum ResourceType {
 export interface Resource {
     _id: string,
     name: string,
+    slug: string,
     description: string,
     price: number,
     hasIcon: boolean,

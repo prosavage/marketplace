@@ -7,6 +7,7 @@ import {Resource} from "../../../types/Resource";
 import ResourceUpdate from "../../../components/pages/resource/ResourceUpdate";
 import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function ResourceId(props: { id: string }) {
     // For general resource info.
@@ -29,8 +30,19 @@ export default function ResourceId(props: { id: string }) {
             });
     }, []);
 
+    const router = useRouter()
+
+
     useEffect(() => {
         if (!resource) return;
+
+
+        router.push(
+            "/resources/[id]/update",
+            `/resources/${resource._id}.${resource.slug}/update`,
+            {shallow: true}
+          );
+
         getAxios()
             .get(`/directory/user/${resource.owner}`)
             .then((res) => setAuthor(res.data.payload.user));
@@ -62,9 +74,7 @@ export default function ResourceId(props: { id: string }) {
 }
 
 export async function getServerSideProps({params}) {
-    const id = params.id as string;
+    const id = params.id.split(".")[0] as string;
 
     return {props: {id}};
 }
-
-

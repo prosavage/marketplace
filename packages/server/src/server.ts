@@ -18,6 +18,8 @@ import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
 import stripeWebhookRouter from "./routes/checkout/StripeWebhookRouter";
+import { RESOURCES_COLLECTION } from "./constants";
+import slugify from "slugify";
 
 
 dotenv.config();
@@ -80,6 +82,7 @@ mongoClient.connect(async () => {
     console.log("connected to database.");
     await ensureIndexes();
     await readTokens();
+
     app.listen(5000, () => console.log("started marketplace backend."));
 });
 
