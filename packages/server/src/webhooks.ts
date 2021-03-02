@@ -21,7 +21,7 @@ export const reviewWebhook = async (
 	for (const webhook of webhooks) {
 		axios.post(webhook.url, {
 			username: "SavageLabs Marketplace",
-			avatar_url: "https://savagelabs.b-cdn.net/savagelabs-icon.png",
+			avatar_url: "https://marketplace-savagelabs.b-cdn.net/defaults/savagelabs-icon.png",
 			embeds: [{
 				author: {
 					name: req.user!!.username,
