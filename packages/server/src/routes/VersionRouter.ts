@@ -10,6 +10,7 @@ import {Role} from "../struct/Role";
 import {Resource} from "../types/Resource";
 import {Review} from "../types/Review";
 import {Version} from "../types/Version";
+import {versionWebhook} from "../webhooks";
 
 const versionRouter = express.Router();
 
@@ -36,19 +37,19 @@ versionRouter.put(
                 .toArray()
         )[0];
 
-        if (lastVersion) {
-            const now = new Date();
-            const lastUpdated = lastVersion.timestamp;
-            // gets diff in seconds, rounded down.
-            const diff = Math.floor((now.getTime() - lastUpdated.getTime()) / 1000);
-            const TEN_MIN = 60 * 10;
-            if (diff < TEN_MIN) {
-                res.failure(
-                    "You updated the resource in the ten minutes, please wait."
-                );
-                return;
-            }
-        }
+		if (lastVersion) {
+			const now = new Date();
+			const lastUpdated = lastVersion.timestamp;
+			// gets diff in seconds, rounded down.
+			const diff = Math.floor((now.getTime() - lastUpdated.getTime()) / 1000);
+			const TEN_MIN = 60 * 10;
+			if (diff < TEN_MIN) {
+				res.failure(
+					"You updated the resource in the ten minutes, please wait."
+				);
+				return;
+			}
+		}
 
         const version = {
             _id: shortid.generate(),
@@ -61,6 +62,9 @@ versionRouter.put(
         };
 
         await getDatabase().collection(VERSIONS_COLLECTION).insertOne(version);
+
+        versionWebhook(req, version, body.resource)
+
         res.success({version});
     }
 );
