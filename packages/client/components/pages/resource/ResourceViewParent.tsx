@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import React, {ReactFragment} from "react";
+import React, {ReactFragment, useEffect} from "react";
 import {ArrowLeft} from "react-feather";
 import styled, {css} from "styled-components";
 import ResourceHeader from "./ResourceHeader";
