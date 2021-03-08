@@ -18,8 +18,6 @@ import cors from "cors";
 import userIconRouter from "./routes/UserRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
 import stripeWebhookRouter from "./routes/checkout/StripeWebhookRouter";
-import { RESOURCES_COLLECTION } from "./constants";
-import slugify from "slugify";
 
 
 dotenv.config();
