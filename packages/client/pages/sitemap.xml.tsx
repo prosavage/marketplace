@@ -81,6 +81,7 @@ class Sitemap extends React.Component {
       )
     );
     res.end();
+    return {revalidate: 60}
   }
 }
 
