@@ -15,6 +15,9 @@ const staticLinks = [
   "legal/rules",
   "legal/terms",
   "dashboard",
+  "directory/resources/plugin",
+  "directory/resources/mod",
+  "directory/resources/software",
   // "dashboard/coupons",
   // "dashboard/sales",
   // "dashboard/webhooks",
@@ -40,7 +43,7 @@ const createSitemap = (
             .map((resource) => {
               return `
                       <url>
-                          <loc>${baseURL}/resources/${resource._id}</loc>
+                          <loc>${baseURL}/resources/${resource._id}.${resource.slug}</loc>
                           <lastmod>${resource.updated}</lastmod>
                       </url>
                   `;
@@ -71,7 +74,12 @@ class Sitemap extends React.Component {
     );
 
     res.setHeader("Content-Type", "text/xml");
-    res.write(createSitemap(sitemapInfo.data.payload.resources, sitemapInfo.data.payload.users));
+    res.write(
+      createSitemap(
+        sitemapInfo.data.payload.resources,
+        sitemapInfo.data.payload.users
+      )
+    );
     res.end();
   }
 }
