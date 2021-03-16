@@ -105,6 +105,7 @@ mongoClient.connect(async () => {
     console.log("connected to database.");
     await ensureIndexes();
     await readTokens();
+
     app.listen(5000, () => console.log("started marketplace backend."));
 });
 

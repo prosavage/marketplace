@@ -6,6 +6,8 @@ echo "exporting data from current database."
 ./data-export.sh versions
 ./data-export.sh categories
 ./data-export.sh reviews
+./data-export.sh sellers
+./data-export.sh payments
 
 echo "sending sample-data to server."
 echo "SSH PASSWORD REQUIRED:"

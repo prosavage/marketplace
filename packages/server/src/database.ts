@@ -23,6 +23,11 @@ const ensureIndexes = async () => {
         .collection(RESOURCES_COLLECTION)
         .createIndex({type: 1, category: 1});
 
+    // for searching resources my author
+    await getDatabase()
+    .collection(RESOURCES_COLLECTION)
+    .createIndex({owner: 1});
+
     // resource indexer for reviews.
     await getDatabase()
         .collection(REVIEWS_COLLECTION)

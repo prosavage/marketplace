@@ -10,3 +10,4 @@ packages/.DS_Store
 packages/client/*.env
 packages/server/*.env
 **/yarn.lock
+dev-mongodb/data/*

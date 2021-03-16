@@ -30,8 +30,16 @@ export default function ResourceId(props: { id: string }) {
             });
     }, []);
 
+
     useEffect(() => {
         if (!resource) return;
+
+        router.push(
+            "/resources/[id]/versions",
+            `/resources/${resource._id}.${resource.slug}/versions`,
+            {shallow: true}
+          );
+
         getAxios()
             .get(`/directory/user/${resource.owner}`)
             .then((res) => setAuthor(res.data.payload.user));
@@ -68,7 +76,8 @@ export default function ResourceId(props: { id: string }) {
 }
 
 export async function getServerSideProps({params}) {
-    const id = params.id as string;
+    const id = params.id.split(".")[0] as string;
 
     return {props: {id}};
 }
+
