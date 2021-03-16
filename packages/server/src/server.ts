@@ -1,4 +1,6 @@
 import express, {Request, Response} from "express";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 import morgan from "morgan";
 import mongodb from "mongodb";
 import dotenv from "dotenv";
@@ -46,6 +48,27 @@ if (process.env.NODE_ENV === "production") {
 export const bunny = new BunnyCDNStorage();
 
 const app = express();
+
+Sentry.init({
+	dsn: "https://46a9ed183bc04d20acbe1ce42fad0cdf@sentry.savagelabs.net/2",
+	integrations: [
+		// enable HTTP calls tracing
+		new Sentry.Integrations.Http({ tracing: true }),
+		// enable Express.js middleware tracing
+		new Tracing.Integrations.Express({ app }),
+	],
+
+	// We recommend adjusting this value in production, or using tracesSampler
+	// for finer control
+	tracesSampleRate: 1.0,
+});
+
+// RequestHandler creates a separate execution context using domains, so that every
+// transaction/span/breadcrumb is attached to its own Hub instance
+app.use(Sentry.Handlers.requestHandler());
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
+
 app.use(cors());
 app.use(fileUpload());
 app.use(morgan("tiny"));
@@ -73,6 +96,8 @@ app.use("/userwebhooks", webhookRouter);
 app.get("/", (_req: Request, res: Response) => {
     res.success({hello: "there!"});
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 console.log("starting...");
 console.log("attemping database connection...");
