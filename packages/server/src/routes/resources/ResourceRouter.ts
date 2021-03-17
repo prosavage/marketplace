@@ -140,9 +140,9 @@ resourceRouter.put(
 
         resource.version.resource = resourceId;
         resource.version._id = shortid.generate();
-        database.collection(VERSIONS_COLLECTION).insertOne(resource.version);
-
-        res.success({resource: resourceToAdd});
+        const result = await database.collection(VERSIONS_COLLECTION).insertOne(resource.version);
+    
+        res.success({resource: resourceToAdd, version: result.ops[0]});
     }
 );
 
