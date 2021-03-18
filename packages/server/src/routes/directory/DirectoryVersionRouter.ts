@@ -60,7 +60,7 @@ directoryVersionRouter.get("/download/:version", [
 })
 
 const pageSearchVersionsWithFilter = async (filter: object, page: number) => {
-    const limit = 3
+    const limit = 5
     return await getDatabase().collection(VERSIONS_COLLECTION).find(filter)
         .sort({timestamp: -1})
         .skip((page - 1) * limit)
