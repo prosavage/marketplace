@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^1.13.1",
+    "@stripe/stripe-js": "^1.13.2",
     "axios": "^0.21.1",
     "bbcode-to-react": "^0.2.9",
     "js-file-download": "^0.4.12",
