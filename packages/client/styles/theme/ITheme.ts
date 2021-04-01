@@ -8,6 +8,8 @@ interface ITheme {
     buttonAccent: string;
     borderColor: string;
     errorColor: string;
+    stableVersionColor: string;
+    betaVersionColor: string;
 }
 
 export default ITheme;

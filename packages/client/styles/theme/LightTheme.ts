@@ -1,16 +1,18 @@
 import ITheme from "./ITheme";
 
 const LightTheme: ITheme = {
-    backgroundPrimary: "#FFFFFF",
-    backgroundSecondary: "white",
-    color: "black",
-    oppositeColor: "white",
-    accentColor: "#058ED9",
-    secondaryAccentColor: "#058ED9",
-    buttonAccent: "#0EFFB7",
-    borderColor: "#eaeaea",
-    errorColor: "#e25c5c"
-}
+  backgroundPrimary: "#FFFFFF",
+  backgroundSecondary: "white",
+  color: "black",
+  oppositeColor: "white",
+  accentColor: "#058ED9",
+  secondaryAccentColor: "#058ED9",
+  buttonAccent: "#0EFFB7",
+  borderColor: "#eaeaea",
+  errorColor: "#e25c5c",
+  stableVersionColor: "#52b788",
+  betaVersionColor: "#e9c46a",
+};
 
 export default LightTheme;
 

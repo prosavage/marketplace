@@ -9,7 +9,9 @@ const DarkTheme: ITheme = {
     secondaryAccentColor: "#2196F3",
     buttonAccent: "#2FB38B",
     borderColor: "#333",
-    errorColor: "#e25c5c"
+    errorColor: "#e25c5c",
+    stableVersionColor: "#52b788",
+    betaVersionColor: "#e9c46a"
 }
 
 export default DarkTheme;
