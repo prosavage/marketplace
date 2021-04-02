@@ -1,17 +1,19 @@
+import React, { useEffect, useState } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { useRecoilValue } from "recoil";
-import { themeState } from "../../../atoms/theme";
-import React, { useEffect, useState } from "react";
-import getAxios from "../../../util/AxiosInstance";
-import Input from "../../ui/Input";
 import styled from "styled-components";
-import { parseISOString, validateISODate } from "../../../util/Validation";
-import useToast from "../../../util/hooks/useToast";
+import { themeState } from "../../../atoms/theme";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import { Resource } from "../../../types/Resource";
+import getAxios from "../../../util/AxiosInstance";
+import { formatNumber } from "../../../util/Format";
+import useToast from "../../../util/hooks/useToast";
+import { parseISOString, validateISODate } from "../../../util/Validation";
+import Input from "../../ui/Input";
 
 interface ChartDataNode {
   sales: number;
+  amount: number;
   date: string;
 }
 
@@ -57,22 +59,30 @@ export default function RecentSalesChart() {
     const endDate = parseISOString(end);
 
     let timeLooper = startDate.getTime();
+    const oneDay = 1000 * 60 * 60 * 24;
     while (timeLooper < endDate.getTime()) {
-      timeSorted[new Date(timeLooper).toLocaleDateString()] = 0;
-      timeLooper = timeLooper + 1000 * 60 * 60 * 24;
+      timeSorted[new Date(timeLooper).toLocaleDateString()] = {
+        sales: 0,
+        amount: 0,
+      };
+      timeLooper = timeLooper + oneDay;
     }
 
     for (const payment of rawData) {
       payment.timestamp = new Date(payment.timestamp);
       const dateKey = payment.timestamp.toLocaleDateString();
-      timeSorted[dateKey] = timeSorted[dateKey] + 1;
+      timeSorted[dateKey] = {
+        sales: timeSorted[dateKey].sales + 1,
+        amount: timeSorted[dateKey].amount + payment.amount,
+      };
     }
 
     const nodes = [];
 
     for (const date of Object.keys(timeSorted)) {
-      const sales = timeSorted[date];
-      const node: ChartDataNode = { sales, date };
+      const sales = timeSorted[date].sales;
+      const amount = timeSorted[date].amount;
+      const node: ChartDataNode = { sales, amount, date };
       nodes.push(node);
     }
     setChartData(nodes);
@@ -151,6 +161,7 @@ export default function RecentSalesChart() {
           </ControlContainer>
         </ControlGroup>
       </Controls>
+
       <ResponsiveContainer width={"100%"} height={250}>
         <AreaChart
           data={chartData}
@@ -182,6 +193,35 @@ export default function RecentSalesChart() {
           />
         </AreaChart>
       </ResponsiveContainer>
+      <Controls>
+        <ControlGroup>
+          <ControlContainer>
+            <label>Total Profit</label>
+            <h2>
+              $
+              {chartData.length > 0
+                ? formatNumber(
+                    chartData
+                      .map((node) => node.amount)
+                      .reduce((v1, v2) => v1 + v2) / 100
+                  )
+                : 0}
+            </h2>
+          </ControlContainer>
+          <ControlContainer>
+            <label>Total Sales</label>
+            <h2>
+              {chartData.length > 0
+                ? formatNumber(
+                    chartData
+                      .map((node) => node.sales)
+                      .reduce((v1, v2) => v1 + v2)
+                  )
+                : 0}
+            </h2>
+          </ControlContainer>
+        </ControlGroup>
+      </Controls>
     </ChartContainer>
   );
 }
