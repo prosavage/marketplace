@@ -51,7 +51,7 @@ export default function ResourceHeader(props: {
   const onDownload = async () => {
     if (
       props.resource?.price === 0 ||
-      user?.purchases.includes(props.resource?._id)
+      user?.purchases?.includes(props.resource?._id)
     ) {
       download();
     } else {

@@ -1,32 +1,36 @@
-import React, {useEffect, useState} from "react";
-import {useRecoilValue} from "recoil";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {userState} from "../../../atoms/user";
+import { userState } from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import getAxios from "../../../util/AxiosInstance";
 import RecentPurchasesEntry from "./RecentPurchasesEntry";
 
 export default function RecentPurchases() {
-    const sampleids = ["4E0bExFDP", "TQhd9S2Ax", "z-lWgoqWM"];
+  const sampleids = ["4E0bExFDP", "TQhd9S2Ax", "z-lWgoqWM"];
 
-    const [payments, setPayments] = useState([]);
+  const [payments, setPayments] = useState([]);
 
-    const user = useRecoilValue(userState);
+  const user = useRecoilValue(userState);
 
-    useEffect(() => {
-        getAxios().get(`/checkout/purchases/1`).then(res => {
-            setPayments(res.data.payload.payments)
-        })
-    }, []);
+  useEffect(() => {
+    getAxios()
+      .get(`/checkout/purchases/1`)
+      .then((res) => {
+        setPayments(res.data.payload.payments);
+      });
+  }, []);
 
-    return (
-        <Wrapper>
-            <Header>
-                <p>Recent Sales</p>
-            </Header>
-            {payments.map(payment => <RecentPurchasesEntry key={payment._id} purchase={payment}/>)}
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <Header>
+        <p>Recent Sales</p>
+      </Header>
+      {payments.map((payment) => (
+        <RecentPurchasesEntry key={payment._id} purchase={payment} />
+      ))}
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
@@ -36,6 +40,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   border-radius: 5px;
   overflow: hidden;
+  margin-bottom: 2em;
 `;
 
 const Header = styled.div`

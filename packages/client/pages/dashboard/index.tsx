@@ -1,27 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import AmountBalance from "../../components/pages/dashboard/AmountBalance";
+import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
 import PayoutButton from "../../components/pages/dashboard/PayoutButton";
 import RecentPurchases from "../../components/pages/dashboard/RecentPurchases";
-import UserNameLink from "../../components/pages/dashboard/UserNameLink";
 import RecentSalesChart from "../../components/pages/dashboard/RecentSalesChart";
-import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
+import UserNameLink from "../../components/pages/dashboard/UserNameLink";
 
 export default function Dashboard() {
-    return <>
-        <DashboardNavbar/>
-        <Wrapper>
-            <Header>
-                <UserNameLink/>
-                <Balance>
-                    <AmountBalance/>
-                    <PayoutButton/>
-                </Balance>
-            </Header>
-            <RecentSalesChart/>
-            <RecentPurchases/>
-        </Wrapper>
+  return (
+    <>
+      <DashboardNavbar />
+      <Wrapper>
+        <Header>
+          <UserNameLink />
+          <Balance>
+            <AmountBalance />
+            <PayoutButton />
+          </Balance>
+        </Header>
+        <RecentSalesChart />
+        <RecentPurchases />
+      </Wrapper>
     </>
+  );
 }
 
 const Wrapper = styled.div`
@@ -37,6 +39,10 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 720px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Balance = styled.div`
@@ -44,6 +50,8 @@ const Balance = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  @media (max-width: 720px) {
+    margin: 1em 0;
+    flex-direction: column;
+  }
 `;
-
-

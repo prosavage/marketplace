@@ -252,6 +252,9 @@ const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 1em 0;
+  @media (max-width: 450px) {
+    display: none;
+  }
 `;
 
 const Select = styled.select`
