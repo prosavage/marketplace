@@ -1670,10 +1670,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-parallax-tilt@^1.4.93:
-  version "1.4.93"
-  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.4.93.tgz#05c5e37d42bc43a5052648ff8301f95de6403a60"
-  integrity sha512-KP/B97UkfrwXbqAO/HkjkQGonUAXHUQ81AcdadxRciiZbrpF+SJqmv7wCr2bnrS3iRGSDe5OZAUZJAmmiPkatQ==
+react-parallax-tilt@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.5.4.tgz#3744f0000b939e9de84410fdf436214f416b31d5"
+  integrity sha512-phinyUS7DYI92VihMhxks9Z4xKhd2fn4Bw1dcU+FtmX4PUAqirjOvHTUfR6At3YUpHhJEzXMHbUnSRKFod8PrQ==
 
 react-refresh@0.8.3:
   version "0.8.3"
