@@ -1,33 +1,34 @@
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { highlight, languages } from "prismjs";
 import React, { useEffect, useState } from "react";
+import Editor from "react-simple-code-editor";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import Input from "../components/ui/Input";
-import { Resource, ResourceType } from "../types/Resource";
-import getAxios from "../util/AxiosInstance";
 import { themeState } from "../atoms/theme";
-import CategorySelect, { Option } from "../components/ui/CategorySelect";
 import Button from "../components/ui/Button";
+import CategorySelect, { Option } from "../components/ui/CategorySelect";
+import Input from "../components/ui/Input";
+import DarkTheme from "../styles/theme/DarkTheme";
+import LightTheme from "../styles/theme/LightTheme";
+import PropsTheme from "../styles/theme/PropsTheme";
+import { Resource, ResourceType } from "../types/Resource";
+import { Version } from "../types/Version";
+import getAxios from "../util/AxiosInstance";
+import DefaultThread from "../util/DefaultThread";
+import useToast from "../util/hooks/useToast";
 import {
-  containsNumbers,
   validateResourceDescription,
   validateResourceThread,
   validateResourceTitle,
   validateResourceVersion,
 } from "../util/Validation";
-import { useRouter } from "next/router";
 import parser from "./../../client/util/parser/Parser";
-import PropsTheme from "../styles/theme/PropsTheme";
-import DarkTheme from "../styles/theme/DarkTheme";
-import { useRecoilState } from "recoil";
-import LightTheme from "../styles/theme/LightTheme";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs";
-import DefaultThread from "../util/DefaultThread";
-import Head from "next/head";
-import useToast from "../util/hooks/useToast";
-import { Version } from "../types/Version";
 
 export default function Create() {
   const [theme, setTheme] = useRecoilState(themeState);
+
+  const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -74,7 +75,12 @@ export default function Create() {
   };
 
   const createResource = () => {
+    if (!submitting) {
+      toast("Already creating resource...");
+      return;
+    }
     if (!validateInput()) return;
+    setSubmitting(true);
     getAxios()
       .put("/resources", {
         name: title,
@@ -98,7 +104,6 @@ export default function Create() {
   };
 
   const sendFile = (version: Version, resource: Resource) => {
-    console.log(version);
     const formData = new FormData();
     formData.append("resource", file);
     getAxios()

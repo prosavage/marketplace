@@ -4,6 +4,7 @@ import { User } from "./User";
 export interface Version {
   _id: string;
   version: string;
+  fileName: string;
   title: string;
   description: string;
   timestamp: Date;

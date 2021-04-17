@@ -124,9 +124,12 @@ export default function ResourceUpdate({
       </InputWrapper>
       <InputWrapper>
         <Input
-          onChange={(e) => setFile(e.target.files[0])}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            console.log(e.target.files[0]);
+          }}
           type={"file"}
-          accept={"application/java-archive"}
+          accept={".jar,.zip"}
           invalid={!file}
         />
       </InputWrapper>

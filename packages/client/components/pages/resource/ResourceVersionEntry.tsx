@@ -25,9 +25,10 @@ export default function ResourceVersionEntry({
   const download = () => {
     getAxios()
       .get(`directory/versions/download/${version._id}`)
-      .then((res) =>
-        FileDownload(res.data, `${resource.name}-${version.version}.jar`)
-      )
+      .then((res) => {
+        toast(version.fileName);
+        FileDownload(res.data, version.fileName);
+      })
       .catch((err) => {
         toast(err.response.data.error);
       });

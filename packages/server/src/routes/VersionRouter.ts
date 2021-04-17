@@ -61,6 +61,7 @@ versionRouter.put(
       _id: shortid.generate(),
       title: body.title,
       description: body.description,
+      fileName: "",
       version: body.version,
       timestamp: new Date(),
       resource: body.resource,
@@ -121,7 +122,11 @@ versionRouter.put(
     }
 
     const file = req.files!!.resource as any;
+
     const result = await bunny.putVersionFile(resource, version, file.data);
+    getDatabase()
+      .collection(VERSIONS_COLLECTION)
+      .updateOne({ _id: version._id }, { $set: { fileName: file.name } });
     // update timestamp for the resource. ( this will bump the resource on our listing. )
     getDatabase()
       .collection(RESOURCES_COLLECTION)
