@@ -33,9 +33,12 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
       .delete(`/resources/${resource._id}`)
       .then((res) => {
         toast("Successfully deleted resource!");
+        router.push("/");
         return;
       })
-      .catch((err) => toast(err.response.data));
+      .catch((err) => {
+        toast(err.response.data);
+      });
   };
 
   useEffect(() => {
@@ -155,6 +158,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   max-width: 500px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
