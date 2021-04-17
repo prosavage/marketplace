@@ -28,11 +28,20 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
 
   const router = useRouter();
 
+  const deleteResource = () => {
+    getAxios()
+      .delete(`/resources/${resource._id}`)
+      .then((res) => {
+        toast("Successfully deleted resource!");
+        return;
+      })
+      .catch((err) => toast(err.response.data));
+  };
+
   useEffect(() => {
     if (!resource) return;
     setTitle(resource.name);
     setThread(resource.thread);
-    ``;
     setDescription(resource.description);
     setPrice(resource.price);
   }, [resource]);
@@ -72,8 +81,6 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
     } else {
       bodyToUse = freeResourceBody;
     }
-
-    console.log(bodyToUse);
 
     getAxios()
       .patch(`/resources/${resource._id}`, bodyToUse)
@@ -129,6 +136,7 @@ export default function ResourceEdit({ resource }: { resource: Resource }) {
           />
         </Spacer>
         <UpdateButton onClick={() => sendEdit()}>UPDATE</UpdateButton>
+        <DeleteButton onClick={deleteResource}>DELETE RESOURCE</DeleteButton>
       </Content>
     </Wrapper>
   );
@@ -160,6 +168,14 @@ const ThreadEditor = styled(Editor)`
 
 const UpdateButton = styled(Button)`
   margin: 1em 0;
+`;
+
+const DeleteButton = styled(Button)`
+  margin: 1em 0;
+  color: ${(props: PropsTheme) => props.theme.errorColor} !important;
+  &:hover {
+    border-color: ${(props: PropsTheme) => props.theme.errorColor} !important;
+  }
 `;
 
 const Spacer = styled.div`

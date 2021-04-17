@@ -1,18 +1,18 @@
 import ITheme from "./ITheme";
 
 const DarkTheme: ITheme = {
-    backgroundPrimary: "#111",
-    backgroundSecondary: "black",
-    color: "white",
-    oppositeColor: "black",
-    accentColor: "#2196F3",
-    secondaryAccentColor: "#2196F3",
-    buttonAccent: "#2FB38B",
-    borderColor: "#333",
-    errorColor: "#e25c5c",
-    stableVersionColor: "#52b788",
-    betaVersionColor: "#e9c46a"
-}
+  backgroundPrimary: "#111",
+  backgroundSecondary: "black",
+  color: "white",
+  oppositeColor: "black",
+  accentColor: "#2196F3",
+  secondaryAccentColor: "#0069FF",
+  buttonAccent: "#2FB38B",
+  borderColor: "#333",
+  errorColor: "#e25c5c",
+  stableVersionColor: "#52b788",
+  betaVersionColor: "#e9c46a",
+};
 
 export default DarkTheme;
 
