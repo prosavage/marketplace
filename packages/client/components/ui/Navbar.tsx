@@ -11,6 +11,7 @@ import Button from "./Button";
 import {userState} from "../../atoms/user";
 import useStoredTheme from "../../util/hooks/useStoredTheme";
 import getAxios from "../../util/AxiosInstance";
+import Link from "next/link";
 
 const links = [
     {
@@ -100,11 +101,16 @@ export default function Navbar(props) {
         });
     };
 
+
+
+
     return (
         <Wrapper>
             <Content>
                 <LogoSection>
-                    <LogoText>Marketplace</LogoText>
+                    <Link href={"/"}>
+                        <LogoText>Marketplace</LogoText>
+                    </Link>
                     {!toggled && isDesktop() && <LinksWrapper>{getLinks()}</LinksWrapper>}
                 </LogoSection>
                 <AccountSection>
@@ -182,6 +188,7 @@ const Wrapper = styled.div`
 const LogoText = styled.p`
   font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
 `;
 
 const Content = styled.div`
