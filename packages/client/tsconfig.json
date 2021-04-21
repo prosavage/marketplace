@@ -27,7 +27,7 @@
     "util/parser/LeftTag.jsx",
     "util/parser/DarkTag.jsx",
     "util/parser/BreakTag.jsx"
-  ],
+, "components/ui/NextNProgress.jsx"  ],
   "exclude": [
     "node_modules"
   ]

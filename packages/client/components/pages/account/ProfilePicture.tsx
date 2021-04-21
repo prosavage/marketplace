@@ -7,6 +7,7 @@ import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
+import NProgress from "nprogress";
 
 export default function ProfilePicture() {
     const [file, setFile] = useState<File>();
@@ -22,6 +23,7 @@ export default function ProfilePicture() {
     const sendIcon = () => {
         const formData = new FormData();
         formData.append("icon", file);
+        NProgress.start();
         getAxios()
             .put(`/users/icon/${user._id}`, formData, {
                 headers: {"content-type": "multipart/form-data"},
@@ -29,21 +31,26 @@ export default function ProfilePicture() {
             .then((res) => {
                 console.log(res.data);
                 toast("profile updated!")
+                NProgress.done()
                 //   router.push(`/users/${user._id}/`);
             })
-            .catch((err) => setErr(err.response.data.error));
+            .catch((err) => {
+                setErr(err.response.data.error)
+            });
     };
 
     const deleteIcon = () => {
+        NProgress.start();
         getAxios()
             .delete(`/users/icon/${user._id}`)
             .then((res) => {
                 console.log(res.data);
                 toast("Icon deleted.");
+                NProgress.done()
             })
             .catch((err) => {
-                console.log(err.response.data);
                 toast(err.response.data.error);
+                NProgress.done()
             });
     };
 

@@ -24,6 +24,7 @@ import {
   validateResourceVersion,
 } from "../util/Validation";
 import parser from "./../../client/util/parser/Parser";
+import NProgress from "nprogress";
 
 export default function Create() {
   const [theme, setTheme] = useRecoilState(themeState);
@@ -75,12 +76,13 @@ export default function Create() {
   };
 
   const createResource = () => {
-    if (!submitting) {
+    if (submitting) {
       toast("Already creating resource...");
       return;
     }
     if (!validateInput()) return;
     setSubmitting(true);
+    NProgress.start()
     getAxios()
       .put("/resources", {
         name: title,
@@ -89,8 +91,8 @@ export default function Create() {
         thread,
         price,
         version: {
-          title: "Initial release",
-          description: "The first release!",
+          title,
+          description,
           version,
         },
       })
@@ -98,6 +100,7 @@ export default function Create() {
         const resource = res.data.payload.resource;
         const version = res.data.payload.version;
         // now we need to upload the file.
+        NProgress.set(0.5)
         sendFile(version, resource);
       })
       .catch((err) => console.log(err, err.response));
@@ -106,15 +109,21 @@ export default function Create() {
   const sendFile = (version: Version, resource: Resource) => {
     const formData = new FormData();
     formData.append("resource", file);
+    NProgress.inc()
     getAxios()
       .put(`/version/${version._id}`, formData, {
         headers: { "content-type": "multipart/form-data" },
       })
       .then((res) => {
+        NProgress.done()
         // Now that we are done we can redirect!
         router.push(`/resources/${resource._id}`);
+        
       })
-      .catch((err) => toast(err.response.data.error));
+      .catch((err) => {
+        NProgress.done()
+        toast(err.response.data.error)
+      });
   };
 
   const fetchOptions = () => {

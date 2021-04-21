@@ -11,6 +11,7 @@ import useToast from "../util/hooks/useToast";
 import { setToken } from "../util/TokenManager";
 import SecondaryButton from "./../components/ui/Secondarybutton";
 import getBaseURL from "../util/urlUtil";
+import NProgress from "nprogress";
 
 export default function Account(props) {
   const [user, setUser] = useRecoilState(userState);
@@ -22,12 +23,15 @@ export default function Account(props) {
   const toast = useToast();
 
   const connectStripe = () => {
+    NProgress.start()
     getAxios()
       .post(`/checkout/stripe/setup/create`, { baseurl: getBaseURL(router) })
       .then((res) => {
+        NProgress.done()
         router.push(res.data.payload.accountLink.url);
       })
       .catch((err) => {
+        NProgress.done()
         console.log(err.response.data);
         toast("Something went wrong...");
       });

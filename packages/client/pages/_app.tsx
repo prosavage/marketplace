@@ -13,8 +13,8 @@ import Head from "next/head";
 import useStoredTheme from "../util/hooks/useStoredTheme";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import NextNprogress from "nextjs-progressbar";
 import { useRouter } from "next/router";
+import NextNProgress from "../components/ui/NextNProgress";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -80,7 +80,7 @@ function WrappedApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <NextNprogress
+        <NextNProgress
           color={theme.accentColor}
           startPosition={0.3}
           stopDelayMs={10}

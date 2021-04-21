@@ -160,6 +160,7 @@ export default function ResourceUpdate({
           resource: resource?._id,
           author: user?._id,
           isDev: isDev,
+          fileName: file?.name
         }}
       />
     </Wrapper>

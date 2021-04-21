@@ -1,7 +1,7 @@
 import ITheme from "./ITheme";
 
 const LightTheme: ITheme = {
-  backgroundPrimary: "#FFFFFF",
+  backgroundPrimary: "#FCFCFC",
   backgroundSecondary: "white",
   color: "black",
   oppositeColor: "white",

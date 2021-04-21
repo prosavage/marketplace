@@ -16,7 +16,7 @@ import ResourceHeader from "./ResourceHeader";
 import ResourceRating from "./ResourceRating";
 
 const resourceViews = [
-  { label: "thread", href: "", admin: false },
+  { label: "overview", href: "", admin: false },
   { label: "versions", href: "versions", admin: false },
   { label: "update", href: "update", admin: true },
   { label: "icon", href: "icon", admin: true },
