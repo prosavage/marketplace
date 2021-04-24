@@ -16,7 +16,7 @@
     "next": "^10.0.9",
     "nprogress": "^0.2.0",
     "prismjs": "^1.23.0",
-    "react": "^17.0.1",
+    "react": "^17.0.2",
     "react-dom": "16.13.1",
     "react-feather": "^2.0.9",
     "react-parallax-tilt": "^1.5.4",
