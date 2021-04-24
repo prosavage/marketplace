@@ -24,12 +24,12 @@
     "react-toastify": "^7.0.3",
     "recharts": "^2.0.8",
     "recoil": "^0.1.3",
-    "styled-components": "^5.2.1",
+    "styled-components": "^5.2.3",
     "time-ago": "^0.2.1"
   },
   "devDependencies": {
     "@types/bbcode-to-react": "^0.2.0",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
     "@types/recoil": "^0.0.1",
     "@types/styled-components": "^5.1.9",
