@@ -44,6 +44,8 @@ export default function Create() {
 
   const [file, setFile] = useState<File>();
 
+  
+
   const toast = useToast();
 
   const validateInput = () => {
@@ -150,8 +152,11 @@ export default function Create() {
     setOptions(newOptions);
   };
 
+  
+
   useEffect(() => {
     fetchOptions();
+   
   }, []);
 
   return (
@@ -159,6 +164,9 @@ export default function Create() {
       <Head>
         <title>Create - Marketplace</title>
         <meta name="description" content="Create a Resource" />
+        <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/formats/bbcode.min.js"></script>
       </Head>
       <Wrapper>
         <h1>Create a Resource</h1>
@@ -221,18 +229,16 @@ export default function Create() {
         <HContainer>
           <InputContainer>
             <p>Be sure to optimize for dark and light themes.</p>
-            <label>LIGHT THEME THREAD</label>
             <ThreadEditor
               value={thread}
-              onValueChange={(code) => setThread(code)}
-              highlight={(code) => highlight(code, languages.bbcode, "bbcode")}
-              padding={15}
+              onChange={(e) => setThread(e.target.value)}
               style={{
+                padding: 15,
                 fontFamily: '"Fira code", "Fira Mono", monospace',
                 fontSize: 12,
               }}
             />
-            <VSpacedInputContainer>
+            {/* <VSpacedInputContainer>
               <Button
                 onClick={(e) => {
                   e.preventDefault();
@@ -241,15 +247,15 @@ export default function Create() {
               >
                 Toggle Theme: {theme === DarkTheme ? "dark" : "light"}
               </Button>
-            </VSpacedInputContainer>
+            </VSpacedInputContainer> */}
           </InputContainer>
         </HContainer>
-        <HContainer>
+        {/* <HContainer>
           <VSpacedInputContainer>
             <label>THREAD PREVIEW</label>
             <ThreadContainer>{parser.toReact(thread)}</ThreadContainer>
           </VSpacedInputContainer>
-        </HContainer>
+        </HContainer> */}
         <HContainer>
           <p>Resource File</p>
           <Input
@@ -324,7 +330,7 @@ const TitleContainer = styled.div`
 `;
 
 const ThreadEditor = styled(Editor)`
-  width: 100%;
+  overflow-y: allow;
   min-height: 150px;
   background: ${(props: PropsTheme) => props.theme.backgroundSecondary};
   color: ${(props: PropsTheme) => props.theme.color};

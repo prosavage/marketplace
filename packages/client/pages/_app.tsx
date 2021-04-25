@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { useRouter } from "next/router";
 import NextNProgress from "../components/ui/NextNProgress";
 
+
 function MyApp({ Component, pageProps }) {
   return (
     <Wrapper>

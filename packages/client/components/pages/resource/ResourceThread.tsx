@@ -18,10 +18,10 @@ const Wrapper = styled.div`
   border-radius: 4px;
 
   img {
-    width: 100%;
+    max-width: 100%;
   }
 
   * > img {
-    width: 100%;
+    max-width: 100%;
   }
 `;
