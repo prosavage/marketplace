@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import NProgress from "nprogress";
 import { highlight, languages } from "prismjs";
 import React, { useEffect, useState } from "react";
 import Editor from "react-simple-code-editor";
@@ -17,14 +18,13 @@ import { Version } from "../types/Version";
 import getAxios from "../util/AxiosInstance";
 import DefaultThread from "../util/DefaultThread";
 import useToast from "../util/hooks/useToast";
+import parser from "../util/parser/Parser";
 import {
   validateResourceDescription,
   validateResourceThread,
   validateResourceTitle,
   validateResourceVersion,
 } from "../util/Validation";
-import parser from "./../../client/util/parser/Parser";
-import NProgress from "nprogress";
 
 export default function Create() {
   const [theme, setTheme] = useRecoilState(themeState);
@@ -43,8 +43,6 @@ export default function Create() {
   const [thread, setThread] = useState(DefaultThread);
 
   const [file, setFile] = useState<File>();
-
-  
 
   const toast = useToast();
 
@@ -84,7 +82,7 @@ export default function Create() {
     }
     if (!validateInput()) return;
     setSubmitting(true);
-    NProgress.start()
+    NProgress.start();
     getAxios()
       .put("/resources", {
         name: title,
@@ -102,7 +100,7 @@ export default function Create() {
         const resource = res.data.payload.resource;
         const version = res.data.payload.version;
         // now we need to upload the file.
-        NProgress.set(0.5)
+        NProgress.set(0.5);
         sendFile(version, resource);
       })
       .catch((err) => console.log(err, err.response));
@@ -111,20 +109,19 @@ export default function Create() {
   const sendFile = (version: Version, resource: Resource) => {
     const formData = new FormData();
     formData.append("resource", file);
-    NProgress.inc()
+    NProgress.inc();
     getAxios()
       .put(`/version/${version._id}`, formData, {
         headers: { "content-type": "multipart/form-data" },
       })
       .then((res) => {
-        NProgress.done()
+        NProgress.done();
         // Now that we are done we can redirect!
         router.push(`/resources/${resource._id}`);
-        
       })
       .catch((err) => {
-        NProgress.done()
-        toast(err.response.data.error)
+        NProgress.done();
+        toast(err.response.data.error);
       });
   };
 
@@ -152,11 +149,8 @@ export default function Create() {
     setOptions(newOptions);
   };
 
-  
-
   useEffect(() => {
     fetchOptions();
-   
   }, []);
 
   return (
@@ -164,34 +158,27 @@ export default function Create() {
       <Head>
         <title>Create - Marketplace</title>
         <meta name="description" content="Create a Resource" />
-        <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
-        <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/formats/bbcode.min.js"></script>
       </Head>
       <Wrapper>
         <h1>Create a Resource</h1>
-        <HContainer>
-          <TitleContainer>
-            <label>RESOURCE TITLE</label>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              type={"text"}
-              placeholder={"Enter your resource's title."}
-              invalid={!validateResourceTitle(title)}
-            />
-          </TitleContainer>
-          <PriceContainer>
-            <label>PRICE</label>
-            <Input
-              value={price}
-              onChange={(e) => setPrice(Number.parseFloat(e.target.value))}
-              type={"number"}
-              placeholder={"Enter 0 if free."}
-              invalid={false}
-            />
-          </PriceContainer>
-        </HContainer>
+        <InputContainer>
+          <label>RESOURCE TITLE</label>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            type={"text"}
+            placeholder={"Enter your resource's title."}
+            invalid={!validateResourceTitle(title)}
+          />
+          <label>PRICE</label>
+          <Input
+            value={price}
+            onChange={(e) => setPrice(Number.parseFloat(e.target.value))}
+            type={"number"}
+            placeholder={"Enter 0 if free."}
+            invalid={false}
+          />
+        </InputContainer>
         <HContainer>
           <InputContainer>
             <label>DESCRIPTION</label>
@@ -231,14 +218,15 @@ export default function Create() {
             <p>Be sure to optimize for dark and light themes.</p>
             <ThreadEditor
               value={thread}
-              onChange={(e) => setThread(e.target.value)}
+              onValueChange={(code) => setThread(code)}
+              highlight={(code) => highlight(code, languages.bbcode, "bbcode")}
+              padding={15}
               style={{
-                padding: 15,
                 fontFamily: '"Fira code", "Fira Mono", monospace',
                 fontSize: 12,
               }}
             />
-            {/* <VSpacedInputContainer>
+            <VSpacedInputContainer>
               <Button
                 onClick={(e) => {
                   e.preventDefault();
@@ -247,15 +235,13 @@ export default function Create() {
               >
                 Toggle Theme: {theme === DarkTheme ? "dark" : "light"}
               </Button>
-            </VSpacedInputContainer> */}
+            </VSpacedInputContainer>
           </InputContainer>
-        </HContainer>
-        {/* <HContainer>
           <VSpacedInputContainer>
             <label>THREAD PREVIEW</label>
             <ThreadContainer>{parser.toReact(thread)}</ThreadContainer>
           </VSpacedInputContainer>
-        </HContainer> */}
+        </HContainer>
         <HContainer>
           <p>Resource File</p>
           <Input
@@ -286,7 +272,6 @@ const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 550px;
   padding: 1em 0;
 `;
 
@@ -296,11 +281,11 @@ const ThreadContainer = styled.div`
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 
   img {
-    width: 100%;
+    max-width: 100%;
   }
 
   * > img {
-    width: 100%;
+    max-width: 100%;
   }
 `;
 
@@ -314,6 +299,7 @@ const HContainer = styled.div`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 600px;
   width: 100%;
 `;
 
