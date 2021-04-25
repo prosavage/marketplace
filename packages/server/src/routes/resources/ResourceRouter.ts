@@ -40,10 +40,8 @@ resourceRouter.patch(
   "/:id",
   [
     param("id").custom((id) => shortid.isValid(id)),
-    body(["name", "description"])
-      .isString()
-      .bail()
-      .isLength({ min: 4, max: 35 }),
+    body("name").isString().bail().isLength({ min: 4, max: 35 }),
+    body("name").isString().bail().isLength({ min: 4, max: 50 }),
     body("thread").isString(),
     Authorize,
     hasPermissionForResource("id", Role.ADMIN),

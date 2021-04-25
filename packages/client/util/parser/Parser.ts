@@ -1,12 +1,12 @@
 import parser from "bbcode-to-react";
-import LightTag from "./LightTag";
 import BreakTag from "./BreakTag";
 import DarkTag from "./DarkTag";
-import LeftTag from "./LeftTag";
-import QuoteTag from "./QuoteTag";
-import IndentTag from "./IndentTag";
 import ImageTag from "./ImageTag";
-
+import IndentTag from "./IndentTag";
+import LeftTag from "./LeftTag";
+import LightTag from "./LightTag";
+import LinkTag from "./LinkTag";
+import QuoteTag from "./QuoteTag";
 
 parser.registerTag("quote", QuoteTag);
 parser.registerTag("left", LeftTag);
@@ -16,5 +16,6 @@ parser.registerTag("light", LightTag);
 parser.registerTag("indent", IndentTag);
 parser.registerTag("img", ImageTag);
 
+parser.registerTag("url", LinkTag);
 
 export default parser;

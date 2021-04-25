@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -26,9 +22,9 @@
     "util/parser/LightTag.jsx",
     "util/parser/LeftTag.jsx",
     "util/parser/DarkTag.jsx",
-    "util/parser/BreakTag.jsx"
-, "components/ui/NextNProgress.jsx"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "util/parser/BreakTag.jsx",
+    "components/ui/NextNProgress.jsx",
+    "util/parser/LinkTag.jsx"
+  ],
+  "exclude": ["node_modules"]
 }
