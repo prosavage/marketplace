@@ -98,10 +98,8 @@ resourceRouter.put(
   "/",
   [
     body(["thread", "category"]).isString(),
-    body(["name", "description"])
-      .isString()
-      .bail()
-      .isLength({ min: 4, max: 35 }),
+    body(["name"]).isString().bail().isLength({ min: 4, max: 35 }),
+    body(["description"]).isString().bail().isLength({ min: 4, max: 50 }),
     body("price").isNumeric(),
     body("category").custom((id) => shortid.isValid(id)),
     body([
