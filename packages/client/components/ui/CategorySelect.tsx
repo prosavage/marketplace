@@ -1,55 +1,51 @@
-import {useState} from "react";
-import {ChevronDown, ChevronUp} from "react-feather";
-import styled from "styled-components";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "react-feather";
+import styled, { css } from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
 
 export interface Option {
-    value: string;
-    label: string;
+  value: string;
+  label: string;
 }
 
 export default function CategorySelect(props: {
-    selected: Option;
-    options: { label: string; options: Option[] }[];
-    handleChange: (option: Option) => void;
+  selected: Option;
+  options: { label: string; options: Option[] }[];
+  handleChange: (option: Option) => void;
 }) {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    return (
-        <>
-            <Wrapper onClick={() => setOpen(!open)}>
-                <SelectedWrapper>{props.selected?.label}</SelectedWrapper>
-                <DownWrapper>
-                    {!open &&
-                    <OpenDropdown size="24px" onClick={() => setOpen(!open)}/>
-                    }
-                    {open &&
-                    <CloseDropdown size="24px" onClick={() => setOpen(false)}/>
-                    }
-                </DownWrapper>
-            </Wrapper>
-            {open && (
-                <DropDownWrapper>
-                    {props.options.map((option) => (
-                        <Category key={option.label}>
-                            <p>{option.label.toUpperCase()}</p>
-                            {option.options.map((cat) => (
-                                <CategoryEntry
-                                    key={cat.value}
-                                    onClick={() => {
-                                        props.handleChange(cat)
-                                        setOpen(false)
-                                    }}
-                                >
-                                    {cat.label}
-                                </CategoryEntry>
-                            ))}
-                        </Category>
-                    ))}
-                </DropDownWrapper>
-            )}
-        </>
-    );
+  return (
+    <>
+      <Wrapper onClick={() => setOpen(!open)}>
+        <SelectedWrapper>{props.selected?.label}</SelectedWrapper>
+        <DownWrapper selected={props.selected}>
+          {!open && <OpenDropdown size="24px" onClick={() => setOpen(!open)} />}
+          {open && <CloseDropdown size="24px" onClick={() => setOpen(false)} />}
+        </DownWrapper>
+      </Wrapper>
+      {open && (
+        <DropDownWrapper>
+          {props.options.map((option) => (
+            <Category key={option.label}>
+              <p>{option.label.toUpperCase()}</p>
+              {option.options.map((cat) => (
+                <CategoryEntry
+                  key={cat.value}
+                  onClick={() => {
+                    props.handleChange(cat);
+                    setOpen(false);
+                  }}
+                >
+                  {cat.label}
+                </CategoryEntry>
+              ))}
+            </Category>
+          ))}
+        </DropDownWrapper>
+      )}
+    </>
+  );
 }
 
 const Wrapper = styled.div`
@@ -67,11 +63,11 @@ const Wrapper = styled.div`
 
 const OpenDropdown = styled(ChevronDown)`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
-`
+`;
 
 const CloseDropdown = styled(ChevronUp)`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
-`
+`;
 
 const SelectedWrapper = styled.div`
   height: 100%;
@@ -86,7 +82,14 @@ const DownWrapper = styled.div`
   padding: 0.5em;
   border-left: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   background-color: ${(props: PropsTheme) => props.theme.accentColor};
+
   border-radius: 0 4px 4px 0;
+
+  ${(props: any) =>
+    !props.selected &&
+    css`
+      background: ${(props: PropsTheme) => props.theme.errorColor};
+    `};
 `;
 
 const DropDownWrapper = styled.div`

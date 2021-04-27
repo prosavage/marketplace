@@ -1,24 +1,23 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
-import { highlight, languages } from "prismjs";
-import React, { useEffect, useState } from "react";
-import Editor from "react-simple-code-editor";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { themeState } from "../atoms/theme";
+import BBCodeEditor from "../components/pages/create/BBCodeEditor";
+import ResourceExtraMetadata from "../components/pages/create/ResourceExtraMetadata";
+import ResourceMetadataForm, {
+  ResourceMetadata,
+} from "../components/pages/create/ResourceMetadata";
 import Button from "../components/ui/Button";
-import CategorySelect, { Option } from "../components/ui/CategorySelect";
+import { Option } from "../components/ui/CategorySelect";
 import Input from "../components/ui/Input";
-import DarkTheme from "../styles/theme/DarkTheme";
-import LightTheme from "../styles/theme/LightTheme";
-import PropsTheme from "../styles/theme/PropsTheme";
-import { Resource, ResourceType } from "../types/Resource";
+import { Resource } from "../types/Resource";
 import { Version } from "../types/Version";
 import getAxios from "../util/AxiosInstance";
 import DefaultThread from "../util/DefaultThread";
 import useToast from "../util/hooks/useToast";
-import parser from "../util/parser/Parser";
 import {
   validateResourceDescription,
   validateResourceThread,
@@ -33,12 +32,13 @@ export default function Create() {
 
   const router = useRouter();
 
-  const [options, setOptions] = useState([]);
   const [category, setCategory] = useState<Option>();
 
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [description, setDescription] = useState("");
+  const [resourceMetadata, setResourceMetadata] = useState<ResourceMetadata>({
+    title: "",
+    description: "",
+    price: 0,
+  });
   const [version, setVersion] = useState("");
   const [thread, setThread] = useState(DefaultThread);
 
@@ -47,12 +47,12 @@ export default function Create() {
   const toast = useToast();
 
   const validateInput = () => {
-    if (!validateResourceTitle(title)) {
+    if (!validateResourceTitle(resourceMetadata.title)) {
       toast("invalid title.");
       return false;
     }
 
-    if (!validateResourceDescription(description)) {
+    if (!validateResourceDescription(resourceMetadata.description)) {
       toast("invalid description.");
       return false;
     }
@@ -85,15 +85,15 @@ export default function Create() {
     NProgress.start();
     getAxios()
       .put("/resources", {
-        name: title,
-        description,
+        name: resourceMetadata.title,
+        description: resourceMetadata.description,
         category: category.value,
         thread,
-        price,
+        price: resourceMetadata.price,
         version: {
-          title,
-          description,
-          version,
+          title: resourceMetadata.title,
+          description: resourceMetadata.description,
+          version: version,
         },
       })
       .then((res) => {
@@ -125,34 +125,6 @@ export default function Create() {
       });
   };
 
-  const fetchOptions = () => {
-    const newOptions = [];
-    [ResourceType.MOD, ResourceType.SOFTWARE, ResourceType.PLUGIN].forEach(
-      (category) => {
-        getAxios()
-          .get(`/directory/categories/${category}`)
-          .then((res) => {
-            const categories = res.data.payload.categories;
-            newOptions.push({
-              value: category,
-              label: category,
-              options: categories.map((entry) => {
-                return {
-                  value: entry._id,
-                  label: entry.name,
-                };
-              }),
-            });
-          });
-      }
-    );
-    setOptions(newOptions);
-  };
-
-  useEffect(() => {
-    fetchOptions();
-  }, []);
-
   return (
     <>
       <Head>
@@ -161,97 +133,30 @@ export default function Create() {
       </Head>
       <Wrapper>
         <h1>Create a Resource</h1>
-        <InputContainer>
-          <label>RESOURCE TITLE</label>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            type={"text"}
-            placeholder={"Enter your resource's title."}
-            invalid={!validateResourceTitle(title)}
+        <MetadataWrapper>
+          <ResourceMetadataForm
+            metadata={resourceMetadata}
+            onMetaChange={(meta) => setResourceMetadata(meta)}
           />
-          <label>PRICE</label>
-          <Input
-            value={price}
-            onChange={(e) => setPrice(Number.parseFloat(e.target.value))}
-            type={"number"}
-            placeholder={"Enter 0 if free."}
-            invalid={false}
+          <ResourceExtraMetadata
+            version={version}
+            category={category}
+            onCatChange={(cat) => setCategory(cat)}
+            onVerChange={(ver) => setVersion(ver)}
           />
-        </InputContainer>
-        <HContainer>
+        </MetadataWrapper>
+        <PaddedHContainer>
           <InputContainer>
-            <label>DESCRIPTION</label>
+            <p>Resource File</p>
             <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              type={"text"}
-              placeholder={"A short description of what your resource does"}
-              invalid={!validateResourceDescription(description)}
+              onChange={(e) => setFile(e.target.files[0])}
+              type={"file"}
+              accept={"application/java-archive"}
+              invalid={!file}
             />
           </InputContainer>
-        </HContainer>
-        <HContainer>
-          <InputContainer>
-            <label>VERSION</label>
-            <Input
-              value={version}
-              onChange={(e) => setVersion(e.target.value)}
-              type={"text"}
-              placeholder={"We highly reccomend semantic versioning."}
-              invalid={!validateResourceVersion(version)}
-            />
-          </InputContainer>
-        </HContainer>
-        <HContainer>
-          <InputContainer>
-            <label>CATEGORY</label>
-            <CategorySelect
-              options={options}
-              selected={category}
-              handleChange={(opt) => setCategory(opt)}
-            />
-          </InputContainer>
-        </HContainer>
-        <HContainer>
-          <InputContainer>
-            <p>Be sure to optimize for dark and light themes.</p>
-            <ThreadEditor
-              value={thread}
-              onValueChange={(code) => setThread(code)}
-              highlight={(code) => highlight(code, languages.bbcode, "bbcode")}
-              padding={15}
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 12,
-              }}
-            />
-            <VSpacedInputContainer>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setTheme(theme === LightTheme ? DarkTheme : LightTheme);
-                }}
-              >
-                Toggle Theme: {theme === DarkTheme ? "dark" : "light"}
-              </Button>
-            </VSpacedInputContainer>
-          </InputContainer>
-          <VSpacedInputContainer>
-            <label>THREAD PREVIEW</label>
-            <ThreadContainer>{parser.toReact(thread)}</ThreadContainer>
-          </VSpacedInputContainer>
-        </HContainer>
-        <HContainer>
-          <p>Resource File</p>
-          <Input
-            onChange={(e) => setFile(e.target.files[0])}
-            type={"file"}
-            accept={"application/java-archive"}
-            invalid={!file}
-          />
-        </HContainer>
-        <VSpacedInputContainer>
+        </PaddedHContainer>
+        <PaddedHContainer>
           <Button
             style={{ margin: "1em 0" }}
             type={"submit"}
@@ -262,7 +167,13 @@ export default function Create() {
           >
             CREATE RESOURCE
           </Button>
-        </VSpacedInputContainer>
+        </PaddedHContainer>
+        <HContainer>
+          <BBCodeEditor
+            content={thread}
+            onChange={(newThread) => setThread(newThread)}
+          />
+        </HContainer>
       </Wrapper>
     </>
   );
@@ -275,20 +186,6 @@ const Wrapper = styled.form`
   padding: 1em 0;
 `;
 
-const ThreadContainer = styled.div`
-  padding: 1em;
-  border-radius: 4px;
-  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
-
-  img {
-    max-width: 100%;
-  }
-
-  * > img {
-    max-width: 100%;
-  }
-`;
-
 const HContainer = styled.div`
   display: flex;
   width: 100%;
@@ -296,30 +193,25 @@ const HContainer = styled.div`
   justify-content: space-between;
 `;
 
+const PaddedHContainer = styled(HContainer)`
+  margin: 0 0.5em;
+`;
+
+const MetadataWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  max-width: 350px;
   width: 100%;
-`;
-
-const PriceContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 25%;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-`;
-
-const ThreadEditor = styled(Editor)`
-  overflow-y: allow;
-  min-height: 150px;
-  background: ${(props: PropsTheme) => props.theme.backgroundSecondary};
-  color: ${(props: PropsTheme) => props.theme.color};
+  margin: 0.5em 0;
 `;
 
 const VSpacedInputContainer = styled(InputContainer)`

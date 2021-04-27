@@ -16,10 +16,9 @@ export default class LinkTag extends Tag {
       return this.getComponents();
     }
 
-    if (this.name === "email") {
-      url = `mailto:${url}`;
-    }
-
+    // strip fn putting ` ` around the URL, i dont give a fuck just remove.
+    url = url.substring(1);
+    url = url.substring(0, url.length - 1);
     return (
       <a href={url} target="_blank" rel="noopener noreferrer">
         {this.getComponents()}

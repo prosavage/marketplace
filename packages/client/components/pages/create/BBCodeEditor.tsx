@@ -1,23 +1,140 @@
-import React, { useState, useRef } from "react";
-import parser from './../../../util/parser/Parser'
+import { highlight, languages } from "prismjs";
+import React, { useState } from "react";
+import { Maximize2, Minimize2 } from "react-feather";
+import Editor from "react-simple-code-editor";
+import styled from "styled-components";
+import PropsTheme from "../../../styles/theme/PropsTheme";
+import parser from "./../../../util/parser/Parser";
 
-const CodeInput: React.FC = ({}) => {
-  const [code, setCode] = useState(defaultCode);
+enum MaximizedState {
+  NONE = "NONE",
+  EDITOR = "EDITOR",
+  PREVIEW = "PREVIEW",
+}
 
-  
+const BBCodeEditor = (props: {
+  content: string;
+  onChange: (newContent: string) => void;
+}) => {
+  const [maximized, setMaximized] = useState(MaximizedState.NONE);
+
+  const showEditor = () => {
+    return (
+      maximized === MaximizedState.NONE || maximized === MaximizedState.EDITOR
+    );
+  };
+
+  const showPreview = () => {
+    return (
+      maximized === MaximizedState.NONE || maximized === MaximizedState.PREVIEW
+    );
+  };
 
   return (
-    <>
-      <textarea id={"editor"} value={code} onChange={(e) => setCode(e.target.value)} />
-      {parser.toReact(code)}
-    </>
+    <Wrapper>
+      {showEditor() && (
+        <Container>
+          <Header>
+            <label>EDITOR</label>
+            {maximized === MaximizedState.NONE && (
+              <Maximize2 onClick={() => setMaximized(MaximizedState.EDITOR)} />
+            )}
+            {maximized === MaximizedState.EDITOR && (
+              <Minimize2 onClick={() => setMaximized(MaximizedState.NONE)} />
+            )}
+          </Header>
+          <ThreadEditor
+            value={props.content}
+            onValueChange={(code) => {
+              props.onChange(code);
+            }}
+            highlight={(code) => highlight(code, languages.bbcode, "bbcode")}
+            padding={15}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              fontSize: 12,
+            }}
+          />
+        </Container>
+      )}
+
+      {showPreview() && (
+        <Container>
+          <Header>
+            <label>PREVIEW</label>
+            {maximized === MaximizedState.NONE && (
+              <Maximize2 onClick={() => setMaximized(MaximizedState.PREVIEW)} />
+            )}
+            {maximized === MaximizedState.PREVIEW && (
+              <Minimize2 onClick={() => setMaximized(MaximizedState.NONE)} />
+            )}
+          </Header>
+          <ThreadContainer>{parser.toReact(props.content)}</ThreadContainer>
+        </Container>
+      )}
+    </Wrapper>
   );
 };
 
-export default CodeInput;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 0.5em;
+`;
+
+const EditorContainer = styled(Container)`
+  margin-right: 0.5em;
+`;
+
+const PreviewContainer = styled(Container)`
+  margin-left: 0.5em;
+`;
+
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  background: ${(props: PropsTheme) => props.theme.accentColor};
+  border-radius: 4px 4px 0 0;
+  padding: 0.5em;
+
+  justify-content: space-between;
+`;
+
+const ThreadContainer = styled.div`
+  padding: 1em;
+  border-radius: 4px;
+  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+
+  img {
+    max-width: 100%;
+  }
+
+  * > img {
+    max-width: 100%;
+  }
+`;
+
+const ThreadEditor = styled(Editor)`
+  overflow-y: allow;
+  min-height: 150px;
+  background: ${(props: PropsTheme) => props.theme.backgroundSecondary};
+  color: ${(props: PropsTheme) => props.theme.color};
+  border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+`;
+
+export default BBCodeEditor;
 
 const defaultCode = `
-[FONT=Tahoma]
 [CENTER][IMG]https://i.imgur.com/yaf617t.png[/IMG][/CENTER]
 
 [CENTER][SIZE=5][B][COLOR=#f72d40]WildInspect[/COLOR][/B] is an alternative for CoreProtect's inspect-mode. You can set required role for factions and it can be used only inside player's territories.[/SIZE][/CENTER]
@@ -58,5 +175,4 @@ const defaultCode = `
 
 
 [CENTER][URL='http://bg-software.com/discord'][IMG]https://i.imgur.com/6SEpbWv.png[/IMG][/URL][/CENTER]
-[/FONT]
 `;
