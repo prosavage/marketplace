@@ -76,11 +76,9 @@ export default function ResourceId({
     <Wrapper>
       <div>
         <BackButton
-          onClick={() =>
-            router.push(
-              `/directory/resources/${category.type}/${category.name}`
-            )
-          }
+          onClick={() => {
+            router.push(`/directory/resources/${category.type}`);
+          }}
         >
           <BackArrow size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
         </BackButton>
