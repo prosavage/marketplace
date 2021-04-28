@@ -1,16 +1,15 @@
-import {Tag} from "bbcode-to-react";
+import { Tag } from "bbcode-to-react";
 
 class BreakTag extends Tag {
+  constructor(renderer, settings = {}) {
+    super(renderer, settings);
+    this.SELF_CLOSE = true;
+    this.STRIP_OUTER = true;
+  }
 
-    constructor(renderer, settings = {}) {
-        super(renderer, settings);
-        this.SELF_CLOSE = true;
-        this.STRIP_OUTER = true;
-    }
-
-    toReact() {
-        return <br/>;
-    }
+  toReact() {
+    return <br />;
+  }
 }
 
 export default BreakTag;
