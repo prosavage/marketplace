@@ -39,7 +39,7 @@ function ResourceList(props: {
     if (props.author) {
       url = "/directory/resources/author/" + props.author?._id + "/" + page;
     }
-
+    setLoading(true);
     getAxios()
       .get(url)
       .then((res) => {
