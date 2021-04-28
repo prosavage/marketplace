@@ -1,64 +1,99 @@
-import styled from "styled-components";
-import {DirectoryResource} from "../../../../types/Resource";
-import ResourceIcon from "../../../ui/ResourceIcon";
 import Link from "next/link";
-import {themeState} from "../../../../atoms/theme";
+import Skeleton from "react-loading-skeleton";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import timeago from "time-ago";
-import {useRecoilValue} from "recoil";
-import renderReviewDroplets from "../../../../util/Review";
+import { themeState } from "../../../../atoms/theme";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
+import { DirectoryResource } from "../../../../types/Resource";
+import renderReviewDroplets from "../../../../util/Review";
 import FadeDiv from "../../../ui/FadeDiv";
+import ResourceIcon from "../../../ui/ResourceIcon";
 
-function ResourceListEntry(props: { resource: DirectoryResource }) {
-    const theme = useRecoilValue(themeState);
+function ResourceListEntry(props: { resource?: DirectoryResource }) {
+  const theme = useRecoilValue(themeState);
 
-    return (
-        <Wrapper>
-            <ResourceIcon resource={props.resource} size={"75px"}/>
-            <Metadata>
-                <ResourceInfo>
-                    <TitleArea>
-                        <Link
-                            href={`/resources/[id]`}
-                            as={`/resources/${props.resource._id}`}
-                        >
-                            <ResourceTitle>{props.resource.name}</ResourceTitle>
-                        </Link>
-                        <Link
-                            href={`/users/[id]`}
-                            as={`/users/${props.resource.owner?._id}`}
-                        >
-                            <AuthorLink>{props.resource.owner?.username}</AuthorLink>
-                        </Link>
-                    </TitleArea>
-                    <Description>{props.resource.description}</Description>
-                </ResourceInfo>
-                <ResourceStats>
-                    <Review>
-                        <ReviewDropsContainer>
-                            {renderReviewDroplets(theme, props.resource.rating)}
-                        </ReviewDropsContainer>
-                        <ReviewCount>
-                            {new Intl.NumberFormat().format(props.resource.reviewCount)}{" "}
-                            ratings
-                        </ReviewCount>
-                    </Review>
-                    <DataEntryBottom>
-                        <DataEntry>
-                            <Label>Downloads:</Label>
-                            <Label>
-                                {new Intl.NumberFormat().format(props.resource.downloads)}
-                            </Label>
-                        </DataEntry>
-                        <DataEntry>
-                            <Label>Updated:</Label>
-                            <Label>{timeago.ago(props.resource.updated)}</Label>
-                        </DataEntry>
-                    </DataEntryBottom>
-                </ResourceStats>
-            </Metadata>
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      {props.resource ? (
+        <ResourceIcon resource={props.resource} size={"75px"} />
+      ) : (
+        <Skeleton circle={true} height={75} width={75} />
+      )}
+      <Metadata>
+        <ResourceInfo>
+          <TitleArea>
+            <Link
+              href={`/resources/[id]`}
+              as={`/resources/${props.resource?._id}`}
+            >
+              {props.resource ? (
+                <ResourceTitle>{props.resource.name}</ResourceTitle>
+              ) : (
+                <Skeleton height={24} width={"15em"} />
+              )}
+            </Link>
+            <Link
+              href={`/users/[id]`}
+              as={`/users/${props.resource?.owner?._id}`}
+            >
+              {props.resource ? (
+                <AuthorLink>{props.resource.owner?.username}</AuthorLink>
+              ) : (
+                <Skeleton height={10} width={"8em"} />
+              )}
+            </Link>
+          </TitleArea>
+          {props.resource ? (
+            <Description>{props.resource.description}</Description>
+          ) : (
+            <Skeleton height={16} width={300} />
+          )}
+        </ResourceInfo>
+        <ResourceStats>
+          <Review>
+            <ReviewDropsContainer>
+              {renderReviewDroplets(theme, props.resource?.rating)}
+            </ReviewDropsContainer>
+            <ReviewCount>
+              {props.resource ? (
+                <>
+                  {new Intl.NumberFormat().format(props.resource?.reviewCount)}{" "}
+                  ratings
+                </>
+              ) : (
+                <Skeleton height={14} width={"5em"} />
+              )}
+            </ReviewCount>
+          </Review>
+          <DataEntryBottom>
+            <DataEntry>
+              <Label>Downloads:</Label>
+              <Label>
+                {props.resource ? (
+                  new Intl.NumberFormat().format(props.resource?.downloads)
+                ) : (
+                  <Skeleton height={16} width={"3em"} />
+                )}
+              </Label>
+            </DataEntry>
+            <DataEntry>
+              <>
+                <Label>Updated:</Label>
+                <Label>
+                  {props.resource ? (
+                    timeago.ago(props.resource?.updated)
+                  ) : (
+                    <Skeleton height={16} width={"5em"} />
+                  )}
+                </Label>
+              </>
+            </DataEntry>
+          </DataEntryBottom>
+        </ResourceStats>
+      </Metadata>
+    </Wrapper>
+  );
 }
 
 export default ResourceListEntry;
@@ -83,6 +118,7 @@ const Metadata = styled.div`
   width: 100%;
   margin: 0 1em;
   justify-content: space-between;
+  width: 100%;
 
   @media (max-width: 650px) {
     flex-direction: column;
@@ -93,6 +129,7 @@ const ResourceInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  width: 100%;
 `;
 
 const AuthorLink = styled.p`
@@ -109,6 +146,7 @@ const TitleArea = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  width: 100%;
 `;
 
 const ResourceStats = styled.div`

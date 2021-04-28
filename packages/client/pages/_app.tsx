@@ -1,21 +1,21 @@
-import styled, { ThemeProvider } from "styled-components";
-import Navbar from "./../components/ui/Navbar";
-import GlobalStyle from "../styles/GlobalStyle";
-import { RecoilRoot, useRecoilState } from "recoil";
-import { themeState } from "../atoms/theme";
-import Footer from "../components/ui/Footer";
-import { userState } from "../atoms/user";
-import { useEffect } from "react";
-import getToken, { setToken } from "../util/TokenManager";
-import getAxios, { buildAxios } from "../util/AxiosInstance";
 import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
-import useStoredTheme from "../util/hooks/useStoredTheme";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import { useRouter } from "next/router";
+import { RecoilRoot, useRecoilState } from "recoil";
+import styled, { ThemeProvider } from "styled-components";
+import { themeState } from "../atoms/theme";
+import { userState } from "../atoms/user";
+import Footer from "../components/ui/Footer";
 import NextNProgress from "../components/ui/NextNProgress";
-
+import GlobalStyle from "../styles/GlobalStyle";
+import getAxios, { buildAxios } from "../util/AxiosInstance";
+import useStoredTheme from "../util/hooks/useStoredTheme";
+import getToken, { setToken } from "../util/TokenManager";
+import Navbar from "./../components/ui/Navbar";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -87,12 +87,14 @@ function WrappedApp({ Component, pageProps }) {
           stopDelayMs={10}
           height={3}
         />
-        <PageContainer>
-          <Navbar />
-          <Component {...pageProps} />
-          <Footer />
-        </PageContainer>
-        <ToastContainer position={"bottom-right"} />
+        <SkeletonTheme color={"#202020"} highlightColor={theme.accentColor}>
+          <PageContainer>
+            <Navbar />
+            <Component {...pageProps} />
+            <Footer />
+          </PageContainer>
+          <ToastContainer position={"bottom-right"} />
+        </SkeletonTheme>
       </ThemeProvider>
     </>
   );

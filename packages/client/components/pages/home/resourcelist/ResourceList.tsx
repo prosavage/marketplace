@@ -1,88 +1,103 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight } from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import {DirectoryResource, ResourceType} from "../../../../types/Resource";
+import { DirectoryResource, ResourceType } from "../../../../types/Resource";
+import { User } from "../../../../types/User";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
-import {ArrowLeft, ArrowRight} from "react-feather";
-import {User} from "../../../../types/User";
 
 function ResourceList(props: {
-    type: ResourceType;
-    category: string | undefined;
-    author: User | undefined;
+  type: ResourceType;
+  category: string | undefined;
+  author: User | undefined;
 }) {
-    const [resources, setResources] = useState<DirectoryResource[]>([]);
-    const [page, setPage] = useState(1);
+  const [resources, setResources] = useState<DirectoryResource[]>([]);
+  const [page, setPage] = useState(1);
 
-    // component stays mounted...
-    // so we need to change page back to 1 if a category/type is changed
-    useEffect(() => {
-        setPage(1);
-    }, [props.category, props.type]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        let url = "/directory/resources/type/" + props.type + "/" + page;
+  // component stays mounted...
+  // so we need to change page back to 1 if a category/type is changed
+  useEffect(() => {
+    setPage(1);
+  }, [props.category, props.type]);
 
-        if (props.category) {
-            url =
-                "/directory/resources/category/" +
-                props.type +
-                "/" +
-                props.category +
-                "/" +
-                page;
-        }
+  useEffect(() => {
+    let url = "/directory/resources/type/" + props.type + "/" + page;
 
-        if (props.author) {
-            url = "/directory/resources/author/" + props.author?._id + "/" + page;
-        }
+    if (props.category) {
+      url =
+        "/directory/resources/category/" +
+        props.type +
+        "/" +
+        props.category +
+        "/" +
+        page;
+    }
 
-        getAxios()
-            .get(url)
-            .then((res) => {
-                setResources(res.data.payload.resources);
-            });
-    }, [props.type, props.category, page, props.author]);
+    if (props.author) {
+      url = "/directory/resources/author/" + props.author?._id + "/" + page;
+    }
 
-    const renderPageControls = () => {
-        return (
-            <PageControlsWrapper>
-                <BackArrow
-                    onClick={() => {
-                        if (page <= 1) {
-                            return;
-                        }
-                        setPage(page - 1);
-                    }}
-                >
-                    &larr;
-                </BackArrow>
-                <CenterContainer>{page}</CenterContainer>
-                <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
-            </PageControlsWrapper>
-        );
-    };
+    getAxios()
+      .get(url)
+      .then((res) => {
+        setLoading(false);
+        setResources(res.data.payload.resources);
+      });
+  }, [props.type, props.category, page, props.author]);
 
+  const renderPageControls = () => {
     return (
-        <>
-            <Wrapper>
-                <TitleContainer>
-                    <h2>{props.category} Resources</h2>
-                    {renderPageControls()}
-                </TitleContainer>
-                {resources.length > 0 ? (
-                    resources.map((entry) => (
-                        <ResourceListEntry key={entry._id} resource={entry}/>
-                    ))
-                ) : (
-                    <NoResourcesFoundContainer>
-                        <p>No resources found.</p>
-                    </NoResourcesFoundContainer>
-                )}
-            </Wrapper>
-        </>
+      <PageControlsWrapper>
+        <BackArrow
+          onClick={() => {
+            if (page <= 1) {
+              return;
+            }
+            setPage(page - 1);
+          }}
+        >
+          &larr;
+        </BackArrow>
+        <CenterContainer>{page}</CenterContainer>
+        <ForwardArrow onClick={() => setPage(page + 1)}>&rarr;</ForwardArrow>
+      </PageControlsWrapper>
     );
+  };
+
+  const renderResources = () => {
+    if (loading) {
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
+        <ResourceListEntry key={id} resource={undefined} />
+      ));
+    } else {
+      if (resources.length === 0) {
+        return (
+          <NoResourcesFoundContainer>
+            <p>No resources found.</p>
+          </NoResourcesFoundContainer>
+        );
+      } else {
+        return resources.map((entry) => (
+          <ResourceListEntry key={entry._id} resource={entry} />
+        ));
+      }
+    }
+  };
+
+  return (
+    <>
+      <Wrapper>
+        <TitleContainer>
+          <h2>{props.category} Resources</h2>
+          {renderPageControls()}
+        </TitleContainer>
+        {renderResources()}
+      </Wrapper>
+    </>
+  );
 }
 
 export default ResourceList;
@@ -106,16 +121,16 @@ const BackArrow = styled(ArrowLeft)`
   cursor: pointer;
   transition: 250ms ease-in-out;
   &:hover {
-    stroke-width: 3; 
+    stroke-width: 3;
   }
-`
+`;
 const ForwardArrow = styled(ArrowRight)`
   cursor: pointer;
   transition: 250ms ease-in-out;
   &:hover {
-    stroke-width: 3; 
+    stroke-width: 3;
   }
-`
+`;
 
 const CenterContainer = styled.div`
   margin: 0 1em;

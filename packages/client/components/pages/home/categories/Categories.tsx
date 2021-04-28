@@ -1,41 +1,56 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import {ResourceType} from "../../../../types/Resource";
+import { ResourceType } from "../../../../types/Resource";
 import getAxios from "../../../../util/AxiosInstance";
 import CategoryEntry from "./CategoryEntry";
 
 function Categories(props: {
-    type: ResourceType;
-    category: string | undefined;
+  type: ResourceType;
+  category: string | undefined;
 }) {
-    const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        let fetchURL = "/directory/categories/" + props.type;
+  useEffect(() => {
+    let fetchURL = "/directory/categories/" + props.type;
 
-        getAxios()
-            .get(fetchURL)
-            .then((res) => setCategories(res.data.payload.categories));
-    }, [props.type]);
+    getAxios()
+      .get(fetchURL)
+      .then((res) => {
+        setLoading(false);
+        setCategories(res.data.payload.categories);
+      });
+  }, [props.type]);
 
-    return (
-        <Wrapper>
-            <Header>
-                <TextBox>Categories</TextBox>
-            </Header>
-            <Content>
-                {categories.map((entry) => (
-                    <CategoryEntry
-                        key={entry._id}
-                        type={props.type}
-                        category={entry}
-                        selected={props.category === entry.name}
-                    />
-                ))}
-            </Content>
-        </Wrapper>
-    );
+  const renderCategories = () => {
+    if (loading)
+      return [1, 2, 3, 4, 5].map((id) => (
+        <Skeleton
+          key={id}
+          height={18}
+          width={Math.floor(Math.random() * 120) + 50}
+        />
+      ));
+    return categories.map((entry) => (
+      <CategoryEntry
+        key={entry._id}
+        type={props.type}
+        category={entry}
+        selected={props.category === entry.name}
+      />
+    ));
+  };
+
+  return (
+    <Wrapper>
+      <Header>
+        <TextBox>Categories</TextBox>
+      </Header>
+      <Content>{renderCategories()}</Content>
+    </Wrapper>
+  );
 }
 
 export default Categories;
@@ -51,7 +66,7 @@ const Wrapper = styled.div`
 const TextBox = styled.p`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
   font-weight: 600;
-`
+`;
 const Header = styled.div`
   background: ${(props: PropsTheme) => props.theme.accentColor};
   padding: 0.5em;
