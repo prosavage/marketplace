@@ -26,7 +26,7 @@ function Categories(props: {
 
   const renderCategories = () => {
     if (loading)
-      return [1, 2, 3, 4, 5].map((id) => (
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
         <Skeleton
           key={id}
           height={18}
