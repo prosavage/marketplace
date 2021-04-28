@@ -6,7 +6,8 @@ function Footer() {
   return (
     <Wrapper>
       <Code>
-        {process.env.NEXT_PUBLIC_GIT_BRANCH}-{process.env.NEXT_PUBLIC_GIT_SHA}
+        Marketplace Beta {process.env.NEXT_PUBLIC_GIT_BRANCH}-
+        {process.env.NEXT_PUBLIC_GIT_SHA}
       </Code>
       <LinkWrapper>
         <Link href={"https://prosavage.net"}>By ProSavage</Link>
