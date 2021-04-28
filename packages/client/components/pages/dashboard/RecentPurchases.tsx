@@ -7,8 +7,6 @@ import getAxios from "../../../util/AxiosInstance";
 import RecentPurchasesEntry from "./RecentPurchasesEntry";
 
 export default function RecentPurchases() {
-  const sampleids = ["4E0bExFDP", "TQhd9S2Ax", "z-lWgoqWM"];
-
   const [payments, setPayments] = useState([]);
 
   const user = useRecoilValue(userState);
@@ -21,14 +19,26 @@ export default function RecentPurchases() {
       });
   }, []);
 
+  const renderPayments = () => {
+    if (payments.length > 0) {
+      return payments.map((payment) => (
+        <RecentPurchasesEntry key={payment._id} purchase={payment} />
+      ));
+    } else {
+      return (
+        <Container>
+          <p>No sales found.</p>
+        </Container>
+      );
+    }
+  };
+
   return (
     <Wrapper>
       <Header>
         <p>Recent Sales</p>
       </Header>
-      {payments.map((payment) => (
-        <RecentPurchasesEntry key={payment._id} purchase={payment} />
-      ))}
+      {renderPayments()}
     </Wrapper>
   );
 }
@@ -46,4 +56,10 @@ const Wrapper = styled.div`
 const Header = styled.div`
   padding: 0.5em 0.5em;
   background: ${(props: PropsTheme) => props.theme.accentColor};
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0.5em;
 `;
