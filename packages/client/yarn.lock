@@ -2109,10 +2109,10 @@ react-loading-skeleton@^2.2.0:
   dependencies:
     "@emotion/core" "^10.0.22"
 
-react-parallax-tilt@^1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.5.5.tgz#c0c07084befb9d8bee6837ad729f39dd00f5979b"
-  integrity sha512-+cVRYAYJ0YwQb3K8K99Rua6T4+EfYV3BEVQPy1q49rhqio11gG2nIOTU3eMTtoBL36unQOqWPm5VyuTdogxKDA==
+react-parallax-tilt@^1.5.7:
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.5.7.tgz#3521816bb0f32ac2498f190f65da87c1e48742fd"
+  integrity sha512-Z7lE1kkQlulPQ0cmEoB6mgFk3BAzEvHlMgTEAwNEyF2g1XTpiVKS8bwK48Zbdbwg8HY82pKhlTmlgkXI4Yok/A==
 
 react-refresh@0.8.3:
   version "0.8.3"
