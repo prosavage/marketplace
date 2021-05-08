@@ -7,3 +7,4 @@ export const TOKENS_COLLECTION = "tokens";
 export const SELLER_COLLECTION = "sellers";
 export const PAYMENTS_COLLECTION = "payments";
 export const WEBHOOKS_COLLECTION = "webhooks";
+export const DOWNLOADS_COLLECTION = "downloads";

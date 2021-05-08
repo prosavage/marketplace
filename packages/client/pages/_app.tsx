@@ -87,7 +87,7 @@ function WrappedApp({ Component, pageProps }) {
           stopDelayMs={10}
           height={3}
         />
-        <SkeletonTheme color={"#202020"} highlightColor={theme.accentColor}>
+        <SkeletonTheme color={""} highlightColor={theme.accentColor}>
           <PageContainer>
             <Navbar />
             <Component {...pageProps} />

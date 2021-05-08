@@ -1,4 +1,5 @@
 import {
+    DOWNLOADS_COLLECTION,
     PAYMENTS_COLLECTION,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION,
@@ -7,6 +8,7 @@ import {
     VERSIONS_COLLECTION,
 } from "./constants";
 import {getDatabase, tokenMap} from "./server";
+import Download from "./types/Download";
 import {Resource} from "./types/Resource";
 import {Review} from "./types/Review";
 
@@ -55,6 +57,10 @@ const ensureIndexes = async () => {
     await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({timestamp: -1, recipient: 1})
     await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({timestamp: 1, recipient: 1, resource: 1})
     await getDatabase().collection(PAYMENTS_COLLECTION).createIndex({resource: 1})
+
+
+    // indexer for searching by user + version for downloads
+    await getDatabase().collection<Download>(DOWNLOADS_COLLECTION).createIndex({user: 1, version: 1})
 
 };
 

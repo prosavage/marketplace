@@ -10,6 +10,7 @@ interface ITheme {
     errorColor: string;
     stableVersionColor: string;
     betaVersionColor: string;
+    skeletonColor: string;
 }
 
 export default ITheme;
