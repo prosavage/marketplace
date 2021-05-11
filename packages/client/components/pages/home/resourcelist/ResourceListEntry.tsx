@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Skeleton from "react-loading-skeleton";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import timeago from "time-ago";
@@ -15,11 +14,7 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
 
   return (
     <Wrapper>
-      {props.resource ? (
         <ResourceIcon resource={props.resource} size={"75px"} />
-      ) : (
-        <Skeleton circle={true} height={75} width={75} />
-      )}
       <Metadata>
         <ResourceInfo>
           <TitleArea>

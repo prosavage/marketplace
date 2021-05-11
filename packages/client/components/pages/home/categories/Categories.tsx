@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { ResourceType } from "../../../../types/Resource";

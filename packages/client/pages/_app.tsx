@@ -2,7 +2,6 @@ import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { SkeletonTheme } from "react-loading-skeleton";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { RecoilRoot, useRecoilState } from "recoil";
@@ -87,14 +86,12 @@ function WrappedApp({ Component, pageProps }) {
           stopDelayMs={10}
           height={3}
         />
-        <SkeletonTheme color={""} highlightColor={theme.accentColor}>
           <PageContainer>
             <Navbar />
             <Component {...pageProps} />
             <Footer />
           </PageContainer>
           <ToastContainer position={"bottom-right"} />
-        </SkeletonTheme>
       </ThemeProvider>
     </>
   );
