@@ -12,7 +12,6 @@ const LightTheme: ITheme = {
   errorColor: "#e25c5c",
   stableVersionColor: "#52b788",
   betaVersionColor: "#e9c46a",
-  skeletonColor: "#202020"
 };
 
 export default LightTheme;
