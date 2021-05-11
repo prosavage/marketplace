@@ -69,9 +69,7 @@ function ResourceList(props: {
 
   const renderResources = () => {
     if (loading) {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
-        <ResourceListEntry key={id} resource={undefined} />
-      ));
+     return <></>
     } else {
       if (resources.length === 0) {
         return (

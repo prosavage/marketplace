@@ -25,14 +25,10 @@ function Categories(props: {
   }, [props.type]);
 
   const renderCategories = () => {
-    if (loading)
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((id) => (
-        <Skeleton
-          key={id}
-          height={18}
-          width={Math.floor(Math.random() * 120) + 50}
-        />
-      ));
+    if (loading) {
+      return <></>
+    }
+     
     return categories.map((entry) => (
       <CategoryEntry
         key={entry._id}

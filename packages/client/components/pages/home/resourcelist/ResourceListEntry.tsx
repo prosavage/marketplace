@@ -27,28 +27,18 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
               href={`/resources/[id]`}
               as={`/resources/${props.resource?._id}`}
             >
-              {props.resource ? (
-                <ResourceTitle>{props.resource.name}</ResourceTitle>
-              ) : (
-                <Skeleton height={24} width={"15em"} />
-              )}
+              
+                <ResourceTitle>{props.resource?.name}</ResourceTitle>
             </Link>
             <Link
               href={`/users/[id]`}
               as={`/users/${props.resource?.owner?._id}`}
             >
-              {props.resource ? (
-                <AuthorLink>{props.resource.owner?.username}</AuthorLink>
-              ) : (
-                <Skeleton height={10} width={"8em"} />
-              )}
+             
+                <AuthorLink>{props.resource?.owner?.username}</AuthorLink>
             </Link>
           </TitleArea>
-          {props.resource ? (
-            <Description>{props.resource.description}</Description>
-          ) : (
-            <Skeleton height={16} width={300} />
-          )}
+            <Description>{props.resource?.description}</Description>
         </ResourceInfo>
         <ResourceStats>
           <Review>
@@ -56,36 +46,22 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
               {renderReviewDroplets(theme, props.resource?.rating)}
             </ReviewDropsContainer>
             <ReviewCount>
-              {props.resource ? (
-                <>
                   {new Intl.NumberFormat().format(props.resource?.reviewCount)}{" "}
                   ratings
-                </>
-              ) : (
-                <Skeleton height={14} width={"5em"} />
-              )}
             </ReviewCount>
           </Review>
           <DataEntryBottom>
             <DataEntry>
               <Label>Downloads:</Label>
               <Label>
-                {props.resource ? (
-                  new Intl.NumberFormat().format(props.resource?.downloads)
-                ) : (
-                  <Skeleton height={16} width={"3em"} />
-                )}
+                  {new Intl.NumberFormat().format(props.resource?.downloads)}
               </Label>
             </DataEntry>
             <DataEntry>
               <>
                 <Label>Updated:</Label>
                 <Label>
-                  {props.resource ? (
-                    timeago.ago(props.resource?.updated)
-                  ) : (
-                    <Skeleton height={16} width={"5em"} />
-                  )}
+                    {timeago.ago(props.resource?.updated)}
                 </Label>
               </>
             </DataEntry>
