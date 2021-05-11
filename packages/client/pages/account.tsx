@@ -1,17 +1,18 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import NProgress from "nprogress";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../atoms/user";
+import DiscordIntegration from "../components/pages/account/DiscordIntegration";
 import ProfilePicture from "../components/pages/account/ProfilePicture";
 import Button from "../components/ui/Button";
 import getAxios from "../util/AxiosInstance";
 import useToast from "../util/hooks/useToast";
 import { setToken } from "../util/TokenManager";
-import SecondaryButton from "./../components/ui/Secondarybutton";
 import getBaseURL from "../util/urlUtil";
-import NProgress from "nprogress";
+import SecondaryButton from "./../components/ui/Secondarybutton";
 
 export default function Account(props) {
   const [user, setUser] = useRecoilState(userState);
@@ -23,15 +24,15 @@ export default function Account(props) {
   const toast = useToast();
 
   const connectStripe = () => {
-    NProgress.start()
+    NProgress.start();
     getAxios()
       .post(`/checkout/stripe/setup/create`, { baseurl: getBaseURL(router) })
       .then((res) => {
-        NProgress.done()
+        NProgress.done();
         router.push(res.data.payload.accountLink.url);
       })
       .catch((err) => {
-        NProgress.done()
+        NProgress.done();
         console.log(err.response.data);
         toast("Something went wrong...");
       });
@@ -101,6 +102,11 @@ export default function Account(props) {
             <Button onClick={connectStripe}>Connect Stripe</Button>
           </Row>
           <Row>{getStripeIntegration()}</Row>
+        </VSpace>
+        <VSpace>
+          <h1>Integration</h1>
+          <hr />
+          <DiscordIntegration />
         </VSpace>
       </Wrapper>
     </>
