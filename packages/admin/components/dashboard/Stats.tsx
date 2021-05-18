@@ -10,29 +10,6 @@ import {
 
 export default function Stats() {
   return (
-    // <Wrap spacing={{ base: 4, lg: 10 }}>
-    //   <WrapItem>
-    //     <Statistic name={"Total Users"} value={"10,000"} />
-    //   </WrapItem>
-
-    //   <WrapItem>
-    //     <Statistic name={"Today's Revenue"} value={"$542,675"} />
-    //   </WrapItem>
-
-    //   <WrapItem>
-    //     <Statistic name={"Logins Today"} value={"1,156"} />
-    //   </WrapItem>
-
-    //   <WrapItem>
-    //     <Statistic name={"Downloads Today"} value={"600"} />
-    //   </WrapItem>
-    // </Wrap>
-    // <SimpleGrid p={3} minChildWidth="10em" spacing={10}>
-    //   <Statistic name={"Total Users"} value={"10,000"} />
-    //   <Statistic name={"Today's Revenue"} value={"$542,675"} />
-    //   <Statistic name={"Logins Today"} value={"1,156"} />
-    //   <Statistic name={"Downloads Today"} value={"600"} />
-    // </SimpleGrid>
     <Flex flexWrap={"wrap"}>
       <Statistic name={"Total Users"} value={"10,000"} />
       <Statistic name={"Today's Revenue"} value={"$542,675"} />

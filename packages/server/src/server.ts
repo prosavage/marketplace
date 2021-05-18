@@ -1,48 +1,48 @@
-import express, {Request, Response} from "express";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
-import morgan from "morgan";
-import mongodb from "mongodb";
-import dotenv from "dotenv";
-import {User} from "./types/User";
-import authRouter from "./routes/AuthRouter";
-import resourceRouter from "./routes/resources/ResourceRouter";
-import categoryRouter from "./routes/CategoryRouter";
-import versionRouter from "./routes/VersionRouter";
-import betterResponse from "./middleware/ResponseFunctions";
-import directoryRouter from "./routes/directory/DirectoryRouter";
-import ensureIndexes, {readTokens} from "./database";
-import reviewRouter from "./routes/ReviewRouter";
-import webhookRouter from "./routes/WebhookRouter";
-import {BunnyCDNStorage} from "./bunnycdn";
-import fileUpload from "express-fileupload";
 import cors from "cors";
-import userIconRouter from "./routes/UserRouter";
+import dotenv from "dotenv";
+import express, { Request, Response } from "express";
+import fileUpload from "express-fileupload";
+import mongodb from "mongodb";
+import morgan from "morgan";
+import { BunnyCDNStorage } from "./bunnycdn";
+import ensureIndexes, { readTokens } from "./database";
+import betterResponse from "./middleware/ResponseFunctions";
+import userIconRouter from "./routes/account/UserIconRouter";
+import userSettingsRouter from "./routes/account/UserSettingsRouter";
+import authRouter from "./routes/AuthRouter";
+import categoryRouter from "./routes/CategoryRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
 import stripeWebhookRouter from "./routes/checkout/StripeWebhookRouter";
-
+import directoryRouter from "./routes/directory/DirectoryRouter";
+import resourceRouter from "./routes/resources/ResourceRouter";
+import reviewRouter from "./routes/ReviewRouter";
+import versionRouter from "./routes/VersionRouter";
+import webhookRouter from "./routes/WebhookRouter";
+import { User } from "./types/User";
 
 dotenv.config();
 
 const mongoClient = new mongodb.MongoClient(
-    process.env.MONGODB_URL || "mongodb://localhost:27017",
-    {useUnifiedTopology: true}
+  process.env.MONGODB_URL || "mongodb://localhost:27017",
+  { useUnifiedTopology: true }
 );
 export const getDatabase = () => {
-    return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
+  return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
 };
 
 export const tokenMap = new Map<string, User["_id"]>([
-    // temp perma token for dev
-    ["hehexddd", "xKEGocEfbz"],
+  // temp perma token for dev
+  ["hehexddd", "xKEGocEfbz"],
 ]);
 
 // clear dev tokens if running in prod.
 if (process.env.NODE_ENV === "production") {
-    tokenMap.clear();
-    console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
+  tokenMap.clear();
+  console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
 } else {
-    console.log("RUNNING IN DEVELOPEMNT MODE.");
+  console.log("RUNNING IN DEVELOPEMNT MODE.");
 }
 
 export const bunny = new BunnyCDNStorage();
@@ -50,17 +50,17 @@ export const bunny = new BunnyCDNStorage();
 const app = express();
 
 Sentry.init({
-	dsn: "https://46a9ed183bc04d20acbe1ce42fad0cdf@sentry.savagelabs.net/2",
-	integrations: [
-		// enable HTTP calls tracing
-		new Sentry.Integrations.Http({ tracing: true }),
-		// enable Express.js middleware tracing
-		new Tracing.Integrations.Express({ app }),
-	],
+  dsn: "https://46a9ed183bc04d20acbe1ce42fad0cdf@sentry.savagelabs.net/2",
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
 
-	// We recommend adjusting this value in production, or using tracesSampler
-	// for finer control
-	tracesSampleRate: 1.0,
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
 });
 
 // RequestHandler creates a separate execution context using domains, so that every
@@ -78,12 +78,11 @@ app.use(betterResponse);
 // the rest of the stuff just uses express.json()
 // I cannot have it do express.json() -> bodyparser.raw
 // So we have to setup its own section then register our normal json parser.
-app.use("/webhooks", stripeWebhookRouter)
+app.use("/webhooks", stripeWebhookRouter);
 
 app.use(express.json());
 
 app.use("/auth", authRouter);
-app.use("/users/icon", userIconRouter);
 app.use("/resources", resourceRouter);
 app.use("/category", categoryRouter);
 app.use("/directory", directoryRouter);
@@ -91,10 +90,11 @@ app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
 app.use("/checkout", checkoutRouter);
 app.use("/userwebhooks", webhookRouter);
-
+app.use("/account/icon", userIconRouter);
+app.use("/account/settings", userSettingsRouter);
 
 app.get("/", (_req: Request, res: Response) => {
-    res.success({hello: "there!"});
+  res.success({ hello: "there!" });
 });
 
 app.use(Sentry.Handlers.errorHandler());
@@ -102,11 +102,11 @@ app.use(Sentry.Handlers.errorHandler());
 console.log("starting...");
 console.log("attemping database connection...");
 mongoClient.connect(async () => {
-    console.log("connected to database.");
-    await ensureIndexes();
-    await readTokens();
+  console.log("connected to database.");
+  await ensureIndexes();
+  await readTokens();
 
-    app.listen(5000, () => console.log("started marketplace backend."));
+  app.listen(5000, () => console.log("started marketplace backend."));
 });
 
 // generates payments
@@ -129,7 +129,6 @@ mongoClient.connect(async () => {
 // }
 //
 // await getDatabase().collection<Payment>(PAYMENTS_COLLECTION).insertMany(payments)
-
 
 // const generateAndPutResource = async (
 //   file: any,

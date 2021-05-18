@@ -1,21 +1,14 @@
-import { Flex, Text } from "@chakra-ui/react";
-import RecentDownloads from "../components/dashboard/RecentDownloads";
-import Stats from "../components/dashboard/Stats";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import React from "react";
 
-const IndexPage = () => (
-  <Flex flexDirection={"column"}>
-    <Text px={3} fontWeight={"bold"} fontSize={"4xl"} mb={6}>
-      Overview
-    </Text>
-    <Flex width={"100%"}>
-      <Flex direction={"column"}>
-        <Stats />
-      </Flex>
-      <Flex maxWidth={"350px"} width={"100%"}>
-        <RecentDownloads />
-      </Flex>
+function IndexPage() {
+  return (
+    <Flex maxW={"800px"} flexDirection={"column"}>
+      <Box p={5}>
+        <Heading>Dashboard here lmao</Heading>
+      </Box>
     </Flex>
-  </Flex>
-);
+  );
+}
 
 export default IndexPage;

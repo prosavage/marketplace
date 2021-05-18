@@ -1,19 +1,37 @@
-import { useEffect, useState } from "react";
+import NProgress from "nprogress";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { themeState } from "../../../atoms/theme";
 import { userState } from "../../../atoms/user";
 import DarkTheme from "../../../styles/theme/DarkTheme";
+import getAxios from "../../../util/AxiosInstance";
+import useToast from "../../../util/hooks/useToast";
+import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 
 export default function DiscordIntegration() {
   const user = useRecoilValue(userState);
 
+  const toast = useToast();
+
+  const setDiscordServer = () => {
+    NProgress.start();
+    getAxios()
+      .post("/account/settings/discord-server", {
+        serverID,
+      })
+      .then((res) => {
+        NProgress.done();
+        toast("Set discord server id: " + res.data.payload.serverID);
+      });
+  };
+
   useEffect(() => {
-    setServerID(user.discordServerId);
+    setServerID(user?.discordServerId + "");
   }, [user]);
 
-  const [serverID, setServerID] = useState(0);
+  const [serverID, setServerID] = useState("");
 
   const theme = useRecoilValue(themeState);
   return (
@@ -23,11 +41,12 @@ export default function DiscordIntegration() {
       <ServerIDInput>
         <p>Server ID:</p>
         <Input
-          invalid={serverID === 0}
+          invalid={serverID.length === 0}
           value={serverID}
-          onChange={(e) => setServerID(Number.parseInt(e.target.value))}
+          onChange={(e) => setServerID(e.target.value)}
         />
       </ServerIDInput>
+      <Button onClick={setDiscordServer}>Set Discord Server</Button>
       <object
         key={serverID}
         style={{ marginTop: "1em" }}

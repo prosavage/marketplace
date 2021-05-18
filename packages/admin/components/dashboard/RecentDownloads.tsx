@@ -27,7 +27,7 @@ export default function RecentDownloads() {
       </Box>
       <Flex flexDirection={"column"}>
         {[1, 2, 3, 4, 5].map((entry) => (
-          <RecentDownloadsEntry />
+          <RecentDownloadsEntry key={entry} />
         ))}
       </Flex>
     </Flex>
