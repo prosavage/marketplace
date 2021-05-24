@@ -5,6 +5,7 @@ import timeago from "time-ago";
 import { themeState } from "../../../../atoms/theme";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { DirectoryResource } from "../../../../types/Resource";
+import { formatPrice } from "../../../../util/Format";
 import renderReviewDroplets from "../../../../util/Review";
 import FadeDiv from "../../../ui/FadeDiv";
 import ResourceIcon from "../../../ui/ResourceIcon";
@@ -14,26 +15,29 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
 
   return (
     <Wrapper>
-        <ResourceIcon resource={props.resource} size={"75px"} />
+      <ResourceIcon resource={props.resource} size={"75px"} />
       <Metadata>
         <ResourceInfo>
           <TitleArea>
-            <Link
-              href={`/resources/[id]`}
-              as={`/resources/${props.resource?._id}`}
-            >
-              
+            <TitleRow>
+              <Link
+                href={`/resources/[id]`}
+                as={`/resources/${props.resource?._id}`}
+              >
                 <ResourceTitle>{props.resource?.name}</ResourceTitle>
-            </Link>
+              </Link>
+              {props.resource?.price !== 0 ? (<div>
+                <PriceBadge>{formatPrice(props.resource?.price)}</PriceBadge>
+              </div>) : null}
+            </TitleRow>
             <Link
               href={`/users/[id]`}
               as={`/users/${props.resource?.owner?._id}`}
             >
-             
-                <AuthorLink>{props.resource?.owner?.username}</AuthorLink>
+              <AuthorLink>{props.resource?.owner?.username}</AuthorLink>
             </Link>
           </TitleArea>
-            <Description>{props.resource?.description}</Description>
+          <Description>{props.resource?.description}</Description>
         </ResourceInfo>
         <ResourceStats>
           <Review>
@@ -41,23 +45,21 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
               {renderReviewDroplets(theme, props.resource?.rating)}
             </ReviewDropsContainer>
             <ReviewCount>
-                  {new Intl.NumberFormat().format(props.resource?.reviewCount)}{" "}
-                  ratings
+              {new Intl.NumberFormat().format(props.resource?.reviewCount)}{" "}
+              ratings
             </ReviewCount>
           </Review>
           <DataEntryBottom>
             <DataEntry>
               <Label>Downloads:</Label>
               <Label>
-                  {new Intl.NumberFormat().format(props.resource?.downloads)}
+                {new Intl.NumberFormat().format(props.resource?.downloads)}
               </Label>
             </DataEntry>
             <DataEntry>
               <>
                 <Label>Updated:</Label>
-                <Label>
-                    {timeago.ago(props.resource?.updated)}
-                </Label>
+                <Label>{timeago.ago(props.resource?.updated)}</Label>
               </>
             </DataEntry>
           </DataEntryBottom>
@@ -118,6 +120,23 @@ const TitleArea = styled.div`
   flex-direction: column;
   cursor: pointer;
   width: 100%;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding-right: 0.5em;
+`;
+
+const PriceBadge = styled.div`
+  background-color: ${(props: PropsTheme) => props.theme.backgroundSecondary};
+  color: ${(props: PropsTheme) => props.theme.accentColor};
+  padding: .2em;
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: ${(props: PropsTheme) => props.theme.accentColor};
 `;
 
 const ResourceStats = styled.div`
