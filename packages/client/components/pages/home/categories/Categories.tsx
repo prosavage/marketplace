@@ -58,13 +58,12 @@ const Wrapper = styled.div`
   overflow: hidden;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
 `;
-const TextBox = styled.p`
+const TextBox = styled.h2`
   color: ${(props: PropsTheme) => props.theme.oppositeColor};
-  font-weight: 600;
 `;
 const Header = styled.div`
   background: ${(props: PropsTheme) => props.theme.accentColor};
-  padding: 0.5em;
+  padding: .5em 1em;
   color: black;
 `;
 
