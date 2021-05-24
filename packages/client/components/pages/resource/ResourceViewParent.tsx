@@ -16,11 +16,12 @@ import ResourceHeader from "./ResourceHeader";
 import ResourceRating from "./ResourceRating";
 
 const resourceViews = [
-  { label: "overview", href: "", admin: false },
-  { label: "versions", href: "versions", admin: false },
-  { label: "update", href: "update", admin: true },
-  { label: "icon", href: "icon", admin: true },
-  { label: "edit", href: "edit", admin: true },
+  { label: "overview", href: "", owner: false, staff: false },
+  { label: "versions", href: "versions", owner: false, staff: false },
+  { label: "update", href: "update", owner: true, staff: false },
+  { label: "icon", href: "icon", owner: true, staff: false },
+  { label: "edit", href: "edit", owner: true, staff: false },
+  { label: "admin", href: "admin", owner: false, staff: true}
 ];
 
 export default function ResourceId({
@@ -47,6 +48,11 @@ export default function ResourceId({
     return resource?.owner === user?._id;
   };
 
+  const viewerIsStaff = () => {
+    if (!resource || !user) return false;
+    if (user.role !== Role.USER) return true;
+  }
+
   const getFirstVersion = () => {
     return versions[versions.length - 1];
   };
@@ -55,7 +61,8 @@ export default function ResourceId({
     return (
       <ViewController>
         {resourceViews
-          .filter((entry) => !(!viewerOwnsResource() && entry.admin))
+          .filter((entry) => !(!viewerOwnsResource() && entry.owner))
+          .filter(entry => !(!viewerIsStaff() && entry.staff))
           .map((entry) => (
             <ViewEntry
               key={entry.label}
