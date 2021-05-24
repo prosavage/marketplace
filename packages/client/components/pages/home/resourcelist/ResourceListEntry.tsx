@@ -126,18 +126,21 @@ const TitleRow = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
-  padding-right: 0.5em;
+  align-items: center;
+  /* justify-content: space-between; */
 `;
 
 const PriceBadge = styled.div`
-  background-color: ${(props: PropsTheme) => props.theme.backgroundSecondary};
-  color: ${(props: PropsTheme) => props.theme.accentColor};
-  padding: .2em;
-  border: 1px solid;
+  background-color: ${(props: PropsTheme) => props.theme.accentColor};
+  color: white;
+  padding: .2em .75em;
+  /* border: 1px solid; */
   border-radius: 5px;
+  font-size: 14px;
+  margin-left: 1em;
   border-color: ${(props: PropsTheme) => props.theme.accentColor};
-`;
+  filter: drop-shadow(0px 3px 6px rgba(0, 178, 255, 0.25));
+  `
 
 const ResourceStats = styled.div`
   display: flex;
