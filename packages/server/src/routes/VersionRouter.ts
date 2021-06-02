@@ -1,3 +1,4 @@
+import { Resource, Review, Role, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -12,10 +13,6 @@ import {
 } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { bunny, getDatabase } from "../server";
-import { Role } from "../struct/Role";
-import { Resource } from "../types/Resource";
-import { Review } from "../types/Review";
-import { Version } from "../types/Version";
 
 const versionRouter = express.Router();
 

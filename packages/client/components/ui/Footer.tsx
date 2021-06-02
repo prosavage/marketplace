@@ -1,7 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
-
 function Footer() {
   return (
     <Wrapper>
@@ -34,6 +33,11 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`;
+
+const Icons = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const Code = styled.p`

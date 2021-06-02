@@ -3,7 +3,7 @@ import { body } from "express-validator";
 import { USERS_COLLECTION } from "../../constants";
 import { Authorize } from "../../middleware/Authenticate";
 import { getDatabase } from "../../server";
-import { User } from "../../types/User";
+import { User } from "@savagelabs/types";
 import { isValidBody } from "../../middleware/BodyValidate";
 
 const userSettings = express.Router();

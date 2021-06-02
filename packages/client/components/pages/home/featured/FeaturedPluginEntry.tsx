@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import {DirectoryResource} from "../../../../types/Resource";
+import {DirectoryResource} from "@savagelabs/types";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import AuthorIcon from "../../../ui/AuthorIcon";
 

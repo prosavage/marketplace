@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {ResourceType} from "../../../types/Resource";
+import {ResourceType} from "@savagelabs/types";
 import Categories from "./categories/Categories";
 import ResourceList from "./resourcelist/ResourceList";
 

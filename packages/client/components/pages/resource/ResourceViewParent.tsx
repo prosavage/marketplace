@@ -1,125 +1,186 @@
-import { useRouter } from "next/router";
-import React, { ReactFragment } from "react";
-import { ArrowLeft } from "react-feather";
-import { useRecoilValue } from "recoil";
-import styled, { css } from "styled-components";
-import { userState } from "../../../atoms/user";
+import {useRouter} from "next/router";
+import React, {ReactFragment, useEffect, useState} from "react";
+import {ArrowLeft} from "react-feather";
+import {useRecoilValue} from "recoil";
+import styled, {css} from "styled-components";
+import {userState} from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Category } from "../../../types/Category";
-import { Resource } from "../../../types/Resource";
-import { Role, User } from "../../../types/User";
-import { Version } from "../../../types/Version";
+import {Category, Resource, Role, Team, Version} from "@savagelabs/types";
 import Button from "../../ui/Button";
 import DiscordInfo from "./DiscordInfo";
 import PluginInfo from "./PluginInfo";
 import ResourceHeader from "./ResourceHeader";
 import ResourceRating from "./ResourceRating";
+import getAxios from "../../../util/AxiosInstance";
+import {teamState} from "../../../atoms/team";
 
 const resourceViews = [
-  { label: "overview", href: "", owner: false, staff: false },
-  { label: "versions", href: "versions", owner: false, staff: false },
-  { label: "update", href: "update", owner: true, staff: false },
-  { label: "icon", href: "icon", owner: true, staff: false },
-  { label: "edit", href: "edit", owner: true, staff: false },
-  { label: "admin", href: "admin", owner: false, staff: true}
+    {label: "overview", href: "", owner: false, staff: false},
+    {label: "versions", href: "versions", owner: false, staff: false},
+    {label: "update", href: "update", owner: true, staff: false},
+    {label: "icon", href: "icon", owner: true, staff: false},
+    {label: "edit", href: "edit", owner: true, staff: false},
+    {label: "admin", href: "admin", owner: false, staff: true},
 ];
 
 export default function ResourceId({
-  children,
-  resource,
-  author,
-  versions,
-  category,
-}: {
-  category: Category;
-  children: ReactFragment;
-  resource: Resource;
-  author: User;
-  versions: Version[];
+                                       resourceId,
+                                       content,
+                                       staffOnly = false
+                                   }: {
+    resourceId: string;
+    staffOnly?: boolean;
+    content: (resource: Resource, team: Team, versions: Version[], category: Category) => ReactFragment
 }) {
-  const router = useRouter();
+    const router = useRouter();
 
-  const user = useRecoilValue(userState);
+    const myTeams = useRecoilValue(teamState);
 
-  const viewerOwnsResource = () => {
-    // both can be undefined if loading, and return true, causing a flicker.
-    if (!resource || !user) return false;
-    if (user.role !== Role.USER) return true;
-    return resource?.owner === user?._id;
-  };
+    const user = useRecoilValue(userState);
 
-  const viewerIsStaff = () => {
-    if (!resource || !user) return false;
-    if (user.role !== Role.USER) return true;
-  }
+    // For general resource info.
+    const [resource, setResource] = useState<Resource>();
+    // For versions page and browser.
+    const [versions, setVersions] = useState<Version[]>([]);
+    // Author info for sidebar, and ownership purposes.
+    const [team, setTeam] = useState<Team>();
+    // Category for pushing back button.
+    const [category, setCategory] = useState<Category>();
 
-  const getFirstVersion = () => {
-    return versions[versions.length - 1];
-  };
 
-  const renderViewController = () => {
+    useEffect(() => {
+        getAxios()
+            .get(`/resources/${resourceId}`)
+            .then((res) => setResource(res.data.payload.resource));
+        getAxios()
+            .get(`/directory/versions/resource/${resourceId}/1`)
+            .then((res) => {
+                setVersions(res.data.payload.versions);
+            });
+    }, []);
+
+
+    useEffect(() => {
+        if (!resource) return;
+        let viewname = router.route.split("/[id]/")[1];
+        if (!viewname) {
+            viewname = ""
+        }
+
+        router.push(
+            router.route,
+            `/resources/${resource._id}.${resource.slug}/${viewname}`,
+            {shallow: true}
+        );
+
+        getAxios()
+            .get(`/team/${resource.owner}`)
+            .then((res) => setTeam(res.data.payload.team));
+
+        getAxios()
+            .get(`/category/${resource.category}`)
+            .then((res) => setCategory(res.data.payload.category))
+            .catch((err) => console.log(err.response.data));
+    }, [resource]);
+
+    useEffect(() => {
+        // only use on restricted pages.
+        if (!staffOnly) return;
+        // redirects if not admin...
+        // undefined means not logged in.
+        if (!user || !resource) return;
+
+        // gotta redirect.
+        if (user.role !== Role.USER) return;
+
+        router.push(
+            "/resources/[id]/",
+            `/resources/${resource._id}.${resource.slug}/`
+        );
+    }, [user, resource]);
+
+    const viewerOwnsResource = () => {
+        // both can be undefined if loading, and return true, causing a flicker.
+        if (!resource || !user) return false;
+        if (user.role !== Role.USER) return true;
+
+
+
+        return myTeams?.map(team => team._id).includes(resource.owner)
+    };
+
+    const viewerIsStaff = () => {
+        if (!resource || !user) return false;
+        if (user.role !== Role.USER) return true;
+    };
+
+    const getFirstVersion = () => {
+        return versions[versions.length - 1];
+    };
+
+    const renderViewController = () => {
+        return (
+            <ViewController>
+                {resourceViews
+                    .filter((entry) => !(!viewerOwnsResource() && entry.owner))
+                    .filter((entry) => !(!viewerIsStaff() && entry.staff))
+                    .map((entry) => (
+                        <ViewEntry
+                            key={entry.label}
+                            //   selected={view === viewEntry.toLowerCase()}
+                            selected={undefined}
+                            onClick={() =>
+                                router.push(`/resources/${resource._id}/${entry.href}`)
+                            }
+                        >
+                            {entry.label.toUpperCase()}
+                        </ViewEntry>
+                    ))}
+            </ViewController>
+        );
+    };
+
     return (
-      <ViewController>
-        {resourceViews
-          .filter((entry) => !(!viewerOwnsResource() && entry.owner))
-          .filter(entry => !(!viewerIsStaff() && entry.staff))
-          .map((entry) => (
-            <ViewEntry
-              key={entry.label}
-              //   selected={view === viewEntry.toLowerCase()}
-              selected={undefined}
-              onClick={() =>
-                router.push(`/resources/${resource._id}/${entry.href}`)
-              }
-            >
-              {entry.label.toUpperCase()}
-            </ViewEntry>
-          ))}
-      </ViewController>
+        <Wrapper>
+            <div>
+                <BackButton
+                    onClick={() => {
+                        router.push(`/directory/resources/${category.type}`);
+                    }}
+                >
+                    <BackArrow size={"15px"}/> <ButtonText>Return to plugins</ButtonText>
+                </BackButton>
+            </div>
+            <ResourceContentContainer>
+                <ResourceBody>
+                    <ResourceHeader
+                        resource={resource}
+                        version={versions[0]}
+                        onVersionPress={() => {
+                            router.push(`/resources/${resource._id}/versions`);
+                        }}
+                    />
+                    {renderViewController()}
+                    {content(resource, team, versions, category)}
+                    <ResourceRating resource={resource}/>
+                </ResourceBody>
+                <MetadataContainer>
+                    <PluginInfo
+                        team={team}
+                        resource={resource}
+                        firstVersion={getFirstVersion()}
+                    />
+                    <DiscordInfo discordServerId={undefined}/>
+                </MetadataContainer>
+            </ResourceContentContainer>
+        </Wrapper>
     );
-  };
-
-  return (
-    <Wrapper>
-      <div>
-        <BackButton
-          onClick={() => {
-            router.push(`/directory/resources/${category.type}`);
-          }}
-        >
-          <BackArrow size={"15px"} /> <ButtonText>Return to plugins</ButtonText>
-        </BackButton>
-      </div>
-      <ResourceContentContainer>
-        <ResourceBody>
-          <ResourceHeader
-            resource={resource}
-            version={versions[0]}
-            onVersionPress={() => {
-              router.push(`/resources/${resource._id}/versions`);
-            }}
-          />
-          {renderViewController()}
-          {children}
-          <ResourceRating resource={resource} />
-        </ResourceBody>
-        <MetadataContainer>
-          <PluginInfo
-            author={author}
-            resource={resource}
-            firstVersion={getFirstVersion()}
-          />
-          <DiscordInfo discordServerId={author?.discordServerId} />
-        </MetadataContainer>
-      </ResourceContentContainer>
-    </Wrapper>
-  );
 }
 
-export async function getServerSideProps({ params }) {
-  const id = params.id as string;
+export async function getServerSideProps({params}) {
+    const id = params.id as string;
 
-  return { props: { id } };
+    return {props: {id}};
 }
 
 const Wrapper = styled.div`
@@ -190,11 +251,10 @@ const ViewEntry = styled.p`
   cursor: pointer;
 
   ${(props: { selected: boolean | undefined }) =>
-    props.selected &&
-    css`
-      color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
-    `}
-
+          props.selected &&
+          css`
+            color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
+          `}
   &:hover {
     color: ${(props: PropsTheme) => props.theme.secondaryAccentColor};
   }

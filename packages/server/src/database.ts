@@ -8,9 +8,7 @@ import {
     VERSIONS_COLLECTION,
 } from "./constants";
 import {getDatabase, tokenMap} from "./server";
-import Download from "./types/Download";
-import {Resource} from "./types/Resource";
-import {Review} from "./types/Review";
+import {Resource, Download, Review} from "@savagelabs/types";
 
 const ensureIndexes = async () => {
     // indexes will only build if they do not exist.

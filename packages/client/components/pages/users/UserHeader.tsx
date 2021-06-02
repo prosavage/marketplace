@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {User, UserStats} from "../../../types/User";
+import {FUser, UserStats} from "@savagelabs/types";
 import useToast from "../../../util/hooks/useToast";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 
 export default function UserHeader(props: {
-    user: User | undefined;
+    user: FUser | undefined;
     stats: UserStats | undefined;
 }) {
 

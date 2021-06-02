@@ -6,8 +6,8 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
-import { Version } from "../../../types/Version";
+import { Resource } from "@savagelabs/types";
+import { Version } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import {
@@ -160,7 +160,7 @@ export default function ResourceUpdate({
           resource: resource?._id,
           author: user?._id,
           isDev: isDev,
-          fileName: file?.name
+          fileName: file?.name,
         }}
       />
     </Wrapper>

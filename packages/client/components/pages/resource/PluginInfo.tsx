@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {Resource} from "../../../types/Resource";
-import {Version} from "../../../types/Version";
+import {Resource, Team} from "@savagelabs/types";
+import {Version} from "@savagelabs/types";
 import renderReviewDroplets from "../../../util/Review";
 import {useRecoilValue} from "recoil";
 import {themeState} from "../../../atoms/theme";
 import ResourceWidget, {PluginInfoRow} from "./ResourceWidget";
 import timeago from "time-ago";
-import {User} from "../../../types/User";
 import Link from "next/link";
 
 export default function PluginInfo(props: {
-    author: User | undefined;
+    team: Team | undefined;
     resource: Resource | undefined;
     firstVersion: Version | undefined;
 }) {
@@ -22,8 +21,8 @@ export default function PluginInfo(props: {
         <ResourceWidget header={"PLUGIN INFO"}>
             <PluginInfoRow>
                 <p>Author:</p>{" "}
-                <Link href={`/users/[id]`} as={`/users/${props.author?._id}`}>
-                    <AuthorLink>{props.author?.username}</AuthorLink>
+                <Link href={`/users/[id]`} as={`/users/${props.team?._id}`}>
+                    <AuthorLink>{props.team?.name}</AuthorLink>
                 </Link>
             </PluginInfoRow>
             <PluginInfoRow>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ResourceType } from "../../../types/Resource";
+import { ResourceType } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import { validateResourceVersion } from "../../../util/Validation";
 import CategorySelect, { Option } from "../../ui/CategorySelect";

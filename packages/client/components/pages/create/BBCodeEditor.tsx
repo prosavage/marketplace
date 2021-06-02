@@ -125,7 +125,7 @@ const ThreadContainer = styled.div`
 `;
 
 const ThreadEditor = styled(Editor)`
-  overflow-y: allow;
+  overflow-y: visible;
   min-height: 150px;
   background: ${(props: PropsTheme) => props.theme.backgroundSecondary};
   color: ${(props: PropsTheme) => props.theme.color};

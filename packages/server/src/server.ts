@@ -20,7 +20,9 @@ import resourceRouter from "./routes/resources/ResourceRouter";
 import reviewRouter from "./routes/ReviewRouter";
 import versionRouter from "./routes/VersionRouter";
 import webhookRouter from "./routes/WebhookRouter";
-import { User } from "./types/User";
+import { User } from "@savagelabs/types";
+import teamRouter from "./routes/team/TeamRouter";
+import teamIconRouter from "./routes/team/TeamIconRouter";
 
 dotenv.config();
 
@@ -92,6 +94,8 @@ app.use("/checkout", checkoutRouter);
 app.use("/userwebhooks", webhookRouter);
 app.use("/account/icon", userIconRouter);
 app.use("/account/settings", userSettingsRouter);
+app.use("/team/icon", teamIconRouter);
+app.use("/team", teamRouter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });

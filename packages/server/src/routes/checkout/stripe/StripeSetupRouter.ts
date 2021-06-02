@@ -5,7 +5,7 @@ import {isValidBody} from "../../../middleware/BodyValidate";
 import {getDatabase} from "../../../server";
 import getStripeAPI from "./StripeAPI";
 import shortid from "shortid";
-import {Seller} from "../../../types/User";
+import {Seller} from "@savagelabs/types";
 import {body} from "express-validator";
 
 const stripeSetupRouter = express.Router();

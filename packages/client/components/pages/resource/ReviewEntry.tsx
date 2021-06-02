@@ -7,8 +7,8 @@ import timeago from "time-ago";
 import { themeState } from "../../../atoms/theme";
 import { userState } from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Review } from "../../../types/Review";
-import { User } from "../../../types/User";
+import { Review } from "@savagelabs/types";
+import { FUser } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import renderReviewDroplets from "../../../util/Review";
@@ -21,7 +21,7 @@ export default function ReviewEntry({
   review?: Review;
   onDelete: () => void;
 }) {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<FUser>();
   const theme = useRecoilValue(themeState);
   const toast = useToast();
 
@@ -29,7 +29,7 @@ export default function ReviewEntry({
 
   useEffect(() => {
     getAxios()
-      .get(`/directory/user/${review.author}`)
+      .get(`/directory/user/by-id/${review.author}`)
       .then((res) => {
         setUser(res.data.payload.user);
       });

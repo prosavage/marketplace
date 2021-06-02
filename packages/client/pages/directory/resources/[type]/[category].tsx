@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import ResourcesView from "../../../../components/pages/home/ResourcesView";
 import SubNavbar from "../../../../components/pages/home/SubNavbar";
-import {ResourceType} from "../../../../types/Resource";
+import {ResourceType} from "@savagelabs/types";
 
 export default function Resource(props: {
     type: ResourceType;

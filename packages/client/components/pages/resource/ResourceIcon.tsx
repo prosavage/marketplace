@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {Resource} from "../../../types/Resource";
+import {Resource} from "@savagelabs/types";
 import React, {useState} from "react";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";

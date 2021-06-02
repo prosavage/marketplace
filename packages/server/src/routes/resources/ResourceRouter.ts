@@ -1,3 +1,4 @@
+import { Category, Resource, Role } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -15,9 +16,6 @@ import {
 } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
-import { Role } from "../../struct/Role";
-import { Category } from "../../types/Category";
-import { Resource } from "../../types/Resource";
 import resourceIconRouter from "./ResourceIconRouter";
 
 const resourceRouter = express.Router();
@@ -135,7 +133,7 @@ resourceRouter.put(
       hasIcon: false,
       price: resource.price,
       thread: resource.thread,
-      owner: req.user!!._id,
+      owner: req.user!!.team,
       updated: resource.updated,
       type: category.type,
       downloads: 0,
