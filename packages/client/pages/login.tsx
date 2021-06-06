@@ -11,10 +11,14 @@ import getAxios, {buildAxios} from "../util/AxiosInstance";
 import {setToken} from "../util/TokenManager";
 import {validateEmail, validatePassword} from "../util/Validation";
 import Head from "next/head";
+import { teamState } from "../atoms/team";
+import { PersonalUser } from "@savagelabs/types";
 
 export default function Login() {
 
     const [user, setUser] = useRecoilState(userState);
+
+    const [teams, setTeams] = useRecoilState(teamState);
 
     const router = useRouter();
 
@@ -40,10 +44,24 @@ export default function Login() {
                 setToken(res.data.payload.token)
                 setUser(res.data.payload.user)
                 buildAxios()
-                router.push("/")
+                fetchTeam(res.data.payload.user)
             })
             .catch((err) => setErr(err.response.data.error));
     };
+
+    const fetchTeam = (user: PersonalUser) => {
+        getAxios().get("/directory/team/by-member/" + user._id).then(res => {
+          if (res.data.payload.team !== null) {
+            setTeams(res.data.payload.team)
+            console.log("fetched and set team atom.")
+          } else {
+            setTeams([])
+            console.log("not a team member.")
+          }
+          router.push("/")
+
+        })
+      }
 
     return (
         <>

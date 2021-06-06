@@ -12,6 +12,7 @@ import {
 import {
   atleastRole,
   Authorize,
+  FetchTeam,
   hasPermissionForResource,
 } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
@@ -42,6 +43,7 @@ resourceRouter.patch(
     body("name").isString().bail().isLength({ min: 4, max: 50 }),
     body("thread").isString(),
     Authorize,
+    FetchTeam,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
   ],
@@ -123,6 +125,12 @@ resourceRouter.put(
 
     const resourceId = shortid.generate();
 
+
+    if (!req.team.owned) {
+      res.failure("You do not own a team, and can only post resources as a team owner.");
+      return;
+    }
+
     const resourceToAdd: Resource = {
       _id: resourceId,
       name: resource.name,
@@ -132,8 +140,8 @@ resourceRouter.put(
       rating: 0,
       hasIcon: false,
       price: resource.price,
+      owner: req.team.owned._id,
       thread: resource.thread,
-      owner: req.user!!.team,
       updated: resource.updated,
       type: category.type,
       downloads: 0,

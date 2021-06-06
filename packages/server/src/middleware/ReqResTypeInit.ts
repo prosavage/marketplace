@@ -1,6 +1,14 @@
 import {NextFunction, Request, Response} from "express"
 
-const betterResponse = (_req: Request, res: Response, next: NextFunction) => {
+
+
+const injectReqResTypes = (req: Request, res: Response, next: NextFunction) => {
+    
+    req.team = {
+        owned: undefined,
+        memberOf: []
+    }
+
     res.success = (payload) => {
         res.json({success: true, payload})
     }
@@ -11,4 +19,7 @@ const betterResponse = (_req: Request, res: Response, next: NextFunction) => {
     next();
 }
 
-export default betterResponse;
+
+
+
+export default injectReqResTypes;

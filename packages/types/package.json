@@ -1,0 +1,10 @@
+{
+  "name": "@savagelabs/types",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.ts",
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}

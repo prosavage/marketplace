@@ -39,7 +39,14 @@ teamInviteRouter.put("/",
 
         if (team.members.includes(inviteeUser._id)) {
             res.failure("This member is already part of your team");
-            returnl
+            return;
+        }
+
+        const existingInvite = await getInvites().findOne({invitee: req.body.invitee, team: req.body.team});
+
+        if (existingInvite !== null) {
+            res.failure("This member is already invited to your team.")
+            return;
         }
 
         const invite: TeamInvite = {
@@ -49,8 +56,68 @@ teamInviteRouter.put("/",
         }
 
         await getInvites().insertOne(invite)
+
         res.success({invite})
-    })
+})
+
+teamInviteRouter.delete("/:id",
+    [param("id").custom(v => shortid.isValid(v)), isValidBody, Authorize],
+    async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const invite = await getInvites().findOne({_id: id});
+
+    if (invite === null) {
+        res.failure("invite does not exist.")
+        return
+    }
+
+    const team = await getTeams().findOne({_id: invite.team});
+
+    if (team == null) {
+        res.failure("this team does not exist.")
+        await deleteInvite(invite._id);
+        return;
+    }
+
+    if (team.owner !== req.user!._id) {
+        res.failure("You do not own this team; So you cannot delete this invite.")
+        return
+    }
+
+    await deleteInvite(invite._id);
+    res.success({invite})
+})
+
+teamInviteRouter.get("/deny/:id", [param("id").custom((v) => shortid.isValid(v)), isValidBody, Authorize], 
+async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const invite = await getDatabase()
+        .collection<TeamInvite>(INVITED_COLLECTION)
+        .findOne({_id: id});
+    if (invite === null) {
+        res.failure("invite does not exist.");
+        return;
+    }
+    if (invite.invitee !== req.user!!._id) {
+        res.failure("You cannot deny this invite.");
+        return;
+    }
+
+    const team = await getDatabase()
+        .collection<Team>(TEAMS_COLLECTION)
+        .findOne({_id: invite.team});
+
+    if (team === null) {
+        await deleteInvite(invite._id);
+        res.failure("team does not exist.");
+        return;
+    }
+
+    await deleteInvite(invite._id);
+
+    res.success({invite});
+})
 
 teamInviteRouter.get(
     "/accept/:id",
