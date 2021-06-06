@@ -1,3 +1,4 @@
+import { Team } from "../../types";
 import {User} from "../src/types/User";
 
 declare global {
@@ -7,6 +8,10 @@ declare global {
     namespace Express {
         interface Request {
             user?: User
+            team: {
+                owned?: Team
+                memberOf: Team[]
+            }
         }
 
         interface Response {

@@ -2,10 +2,15 @@ import express, {Request, Response} from "express";
 import {param} from "express-validator";
 
 import shortid from "shortid";
-import {CATEGORIES_COLLECTION, RESOURCES_COLLECTION, REVIEWS_COLLECTION, USERS_COLLECTION,} from "../../constants";
+import {
+    CATEGORIES_COLLECTION,
+    RESOURCES_COLLECTION,
+    REVIEWS_COLLECTION,
+    TEAMS_COLLECTION, USERS_COLLECTION,
+} from "../../constants";
 import {isValidBody} from "../../middleware/BodyValidate";
 import {getDatabase} from "../../server";
-import {ResourceType} from "../../types/Resource";
+import {ResourceType} from "@savagelabs/types";
 
 const directoryResourceRouter = express.Router();
 
@@ -102,9 +107,17 @@ directoryResourceRouter.get(
     ],
     async (req: Request, res: Response) => {
         const userId = req.params.user;
+
+        const user = await getDatabase().collection(USERS_COLLECTION).findOne({_id: userId});
+
+        if (user === null) {
+            res.failure("user not found.")
+            return;
+        }
+
         const page: number = Number.parseInt(req.params.page!!);
         const resources = await pageSearchResourcesWithFilter(
-            {owner: userId},
+            {owner: user.team},
             page
         );
         res.success({resources});
@@ -121,7 +134,7 @@ const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
             {$limit: 10},
             {
                 $lookup: {
-                    from: USERS_COLLECTION,
+                    from: TEAMS_COLLECTION,
                     localField: "owner",
                     foreignField: "_id",
                     as: "owner",
@@ -145,7 +158,7 @@ const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
             //     },
             //   },
             {$unwind: "$owner"},
-            {$unset: ["owner.email", "owner.role", "owner.password", "owner.purchases"]},
+            // {$unset: ["owner.email", "owner.role", "owner.password", "owner.purchases"]},
         ])
         .toArray();
 };

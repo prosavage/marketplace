@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { ResourceType } from "../../../../types/Resource";
+import { ResourceType } from "@savagelabs/types";
 import getAxios from "../../../../util/AxiosInstance";
 import CategoryEntry from "./CategoryEntry";
 

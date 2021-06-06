@@ -8,7 +8,7 @@
       "path": "packages/server"
     },
     {
-      "path": "packages/shared"
+      "path": "packages/types"
     }
   ]
 }

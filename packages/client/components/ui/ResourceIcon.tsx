@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { DirectoryResource, Resource } from "../../types/Resource";
+import { DirectoryResource, Resource } from "@savagelabs/types";
 import { getResourceIconURL } from "../../util/cdn";
 import useFallbackImageInSSR from "../../util/UseFallbackImageInSRR";
 

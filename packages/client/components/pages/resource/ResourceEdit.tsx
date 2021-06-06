@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Editor from "react-simple-code-editor";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
+import { Resource } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import {

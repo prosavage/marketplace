@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
-import { Resource } from "../types/Resource";
-import { User } from "../types/User";
+import { Resource } from "@savagelabs/types";
+import { User } from "@savagelabs/types";
 
 const staticLinks = [
   "",

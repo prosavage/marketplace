@@ -1,6 +1,6 @@
+import { Download, Resource, User, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-
 import shortid from "shortid";
 import {
   DOWNLOADS_COLLECTION,
@@ -10,10 +10,6 @@ import {
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
-import Download from "../../types/Download";
-import { Resource } from "../../types/Resource";
-import { User } from "../../types/User";
-import { Version } from "../../types/Version";
 
 const directoryVersionRouter = express.Router();
 

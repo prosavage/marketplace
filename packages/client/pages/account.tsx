@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { userState } from "../atoms/user";
 import DiscordIntegration from "../components/pages/account/DiscordIntegration";
 import ProfilePicture from "../components/pages/account/ProfilePicture";
+import { TeamInvites } from "../components/pages/account/TeamInvite";
 import Button from "../components/ui/Button";
 import getAxios from "../util/AxiosInstance";
 import useToast from "../util/hooks/useToast";
@@ -91,6 +92,11 @@ export default function Account(props) {
           <Row>
             <SecondaryButton onClick={logout}>LOG OUT</SecondaryButton>
           </Row>
+        </VSpace>
+        <VSpace>
+          <h1>Team Invites</h1>
+          <hr />
+          <TeamInvites />
         </VSpace>
         <VSpace>
           <h1>Payments</h1>

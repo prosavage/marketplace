@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import timeago from "time-ago";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { DirectoryPayment } from "../../../types/Resource";
+import { DirectoryPayment } from "@savagelabs/types";
 import AuthorIcon from "../../ui/AuthorIcon";
 
 export default function RecentPurchasesEntry(props: {

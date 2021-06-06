@@ -1,17 +1,18 @@
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Menu, Moon, Sun, X } from "react-feather";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import { teamState } from "../../atoms/team";
+import { themeState } from "../../atoms/theme";
+import { userState } from "../../atoms/user";
 import DarkTheme from "../../styles/theme/DarkTheme";
 import LightTheme from "../../styles/theme/LightTheme";
 import PropsTheme from "../../styles/theme/PropsTheme";
-import ActiveLink from "./../ActiveLink";
-import {Menu, Moon, Sun, X} from "react-feather";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {themeState} from "../../atoms/theme";
-import Button from "./Button";
-import {userState} from "../../atoms/user";
-import useStoredTheme from "../../util/hooks/useStoredTheme";
 import getAxios from "../../util/AxiosInstance";
-import Link from "next/link";
+import useStoredTheme from "../../util/hooks/useStoredTheme";
+import ActiveLink from "./../ActiveLink";
+import Button from "./Button";
 
 const links = [
     {
@@ -39,6 +40,8 @@ const links = [
 export default function Navbar(props) {
     const [theme, setTheme] = useRecoilState(themeState);
     const user = useRecoilValue(userState);
+
+    const team = useRecoilValue(teamState);
 
     const [storedTheme, setStoredTheme] = useStoredTheme();
 
@@ -89,6 +92,14 @@ export default function Navbar(props) {
             })
         }
 
+        if (team) {
+            linksToUse.push({
+                link: "/team",
+                text: "TEAM",
+                mobileOnly: false
+            })
+        }
+
         return linksToUse.map((entry) => {
             if (entry.mobileOnly && width > 500) return;
             return (
@@ -136,13 +147,13 @@ export default function Navbar(props) {
                     )}
 
                     <LinkWrapper
-                        style={{paddingRight: "1em", cursor: "pointer"}}
+                        style={{ paddingRight: "1em", cursor: "pointer" }}
                         onClick={() => {
                             setStoredTheme(theme === DarkTheme ? LightTheme : DarkTheme);
                             setTheme(theme === DarkTheme ? LightTheme : DarkTheme);
                         }}
                     >
-                        {theme === DarkTheme ? <Moon/> : <Sun/>}
+                        {theme === DarkTheme ? <Moon /> : <Sun />}
                     </LinkWrapper>
                     {!toggled && !isDesktop() && (
                         <Menu

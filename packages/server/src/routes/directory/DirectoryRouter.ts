@@ -1,26 +1,29 @@
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
-
 import shortid from "shortid";
 import {
-  CATEGORIES_COLLECTION,
-  RESOURCES_COLLECTION,
-  REVIEWS_COLLECTION,
-  USERS_COLLECTION,
+    CATEGORIES_COLLECTION,
+    RESOURCES_COLLECTION,
+    REVIEWS_COLLECTION, TEAMS_COLLECTION,
+    USERS_COLLECTION,
 } from "../../constants";
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
-import { Category } from "../../types/Category";
-import { Resource, ResourceType } from "../../types/Resource";
-import { User } from "../../types/User";
+import { Category, Resource, ResourceType, User } from "@savagelabs/types";
 import directoryResourceRouter from "./DirectoryResourceRouter";
+import directoryUserRouter from "./DirectoryUserRouter";
 import directoryVersionRouter from "./DirectoryVersionRouter";
+import directoryTeamRouter from "./DirectoryTeamRouter";
+import directoryTeamInvite from "./DirectoryTeamInvite";
 
 const directoryRouter = express.Router();
 
 directoryRouter.use("/resources", directoryResourceRouter);
 directoryRouter.use("/versions", directoryVersionRouter);
+directoryRouter.use("/user", directoryUserRouter);
+directoryRouter.use("/team", directoryTeamRouter);
+directoryRouter.use("/invite", directoryTeamInvite);
 
 directoryRouter.get(
   "/reviews/:resource",
@@ -57,7 +60,7 @@ directoryRouter.get("/featured", async (_req: Request, res: Response) => {
           { $match: { _id: resourceId } },
           {
             $lookup: {
-              from: USERS_COLLECTION,
+              from: TEAMS_COLLECTION,
               localField: "owner",
               foreignField: "_id",
               as: "owner",
@@ -85,16 +88,22 @@ directoryRouter.post(
   "/sitemap-info",
   [body("system-password").isString(), isValidBody],
   async (req: Request, res: Response) => {
-      const password = req.body["system-password"];
-      if (password !== process.env.SYSTEM_PASSWORD) {
-          res.failure("incorrect system password.")
-          return;
-      }
+    const password = req.body["system-password"];
+    if (password !== process.env.SYSTEM_PASSWORD) {
+      res.failure("incorrect system password.");
+      return;
+    }
 
-      const resources = await getDatabase().collection<Resource>(RESOURCES_COLLECTION).find().toArray();
-      const users = await getDatabase().collection<User>(USERS_COLLECTION).find().toArray();
+    const resources = await getDatabase()
+      .collection<Resource>(RESOURCES_COLLECTION)
+      .find()
+      .toArray();
+    const users = await getDatabase()
+      .collection<User>(USERS_COLLECTION)
+      .find()
+      .toArray();
 
-      res.success({users, resources})
+    res.success({ users, resources });
   }
 );
 
@@ -113,30 +122,6 @@ directoryRouter.get(
       .find({ type: pluginType })
       .toArray();
     res.success({ categories });
-  }
-);
-
-directoryRouter.get(
-  "/user/:id",
-  [param("id").custom((id) => shortid.isValid(id)), isValidBody],
-  async (req: Request, res: Response) => {
-    const user = await getDatabase()
-      .collection<User>(USERS_COLLECTION)
-      .findOne({ _id: req.params.id as string });
-
-    if (user === null) {
-      res.failure("user not found");
-      return;
-    }
-
-    res.success({
-      user: {
-        _id: user?._id,
-        username: user?.username,
-        discordServerId: user?.discordServerId,
-        hasIcon: user?.hasIcon,
-      },
-    });
   }
 );
 

@@ -3,7 +3,7 @@ import {body, param} from "express-validator";
 import shortid from "shortid";
 import {isValidBody} from "../middleware/BodyValidate";
 import {Authorize} from "../middleware/Authenticate";
-import Webhook from "../types/Webhook"
+import {Webhook} from "@savagelabs/types";
 import {WEBHOOKS_COLLECTION} from "../constants";
 import {getDatabase} from "../server";
 

@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { DirectoryResource, ResourceType } from "../../../../types/Resource";
-import { User } from "../../../../types/User";
+import { DirectoryResource, ResourceType } from "@savagelabs/types";
+import { FUser } from "@savagelabs/types";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
 
 function ResourceList(props: {
   type: ResourceType;
   category: string | undefined;
-  author: User | undefined;
+  author: FUser | undefined;
 }) {
   const [resources, setResources] = useState<DirectoryResource[]>([]);
   const [page, setPage] = useState(1);
