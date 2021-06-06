@@ -6,6 +6,7 @@ import PropsTheme from "../../../../styles/theme/PropsTheme";
 import {DirectoryResource} from "@savagelabs/types";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import AuthorIcon from "../../../ui/AuthorIcon";
+import TeamIcon from "../../../ui/TeamIcon";
 
 export default function FeaturedPluginEntry(props: { resource: DirectoryResource }) {
 
@@ -35,7 +36,7 @@ export default function FeaturedPluginEntry(props: { resource: DirectoryResource
                         <DescText>{props.resource.description}</DescText>
                     </TextWrapper>
                     <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
-                        <AuthorIcon size={"25px"} user={props.resource.owner}/>
+                        <TeamIcon size={"25px"} team={props.resource.owner}/>
                         <AuthorName>{author}</AuthorName>
                     </AuthorWrapper>
                 </RightWrapper>

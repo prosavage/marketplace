@@ -22,7 +22,7 @@ import {
 export const FetchTeam =
   async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
   ) => {
 
