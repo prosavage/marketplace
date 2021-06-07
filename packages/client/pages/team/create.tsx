@@ -36,12 +36,13 @@ const TeamCreate: React.FC = ({}) => {
     const user = useRecoilValue(userState);
 
     useEffect(() => {
+        if (!teams) return;
         if (teams.map(t => t.owner).includes(user._id)) {
             toast("You can only create a single team.");
             router.push("/team")
             return;
         }
-    }, [])
+    }, [teams])
 
 
     const inviteUser = (e) => {
