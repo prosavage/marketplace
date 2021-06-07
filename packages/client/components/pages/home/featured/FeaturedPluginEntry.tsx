@@ -7,16 +7,12 @@ import {DirectoryResource} from "@savagelabs/types";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import AuthorIcon from "../../../ui/AuthorIcon";
 import TeamIcon from "../../../ui/TeamIcon";
+import { teamState } from "../../../../atoms/team";
 
 export default function FeaturedPluginEntry(props: { resource: DirectoryResource }) {
 
     const router = useRouter();
 
-    const [author, setAuthor] = useState("ProSavage")
-
-    useEffect(() => {
-        setAuthor("ProSavage");
-    }, [])
 
     return (
         <Tilt
@@ -37,7 +33,7 @@ export default function FeaturedPluginEntry(props: { resource: DirectoryResource
                     </TextWrapper>
                     <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
                         <TeamIcon size={"25px"} team={props.resource.owner}/>
-                        <AuthorName>{author}</AuthorName>
+                        <AuthorName>{props.resource.owner.name}</AuthorName>
                     </AuthorWrapper>
                 </RightWrapper>
             </Wrapper>

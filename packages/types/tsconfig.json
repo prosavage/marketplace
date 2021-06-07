@@ -9,5 +9,10 @@
     "rootDir": "./src",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true
-  }
+  },
+  "references": [
+    {
+      "path": "../server"
+    }
+  ],
 }
