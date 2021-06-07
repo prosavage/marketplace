@@ -56,7 +56,7 @@ export default function Create() {
 
   useEffect(() => {
     if (!teams || !user) return;
-    if (teams.length === 0 || teams.map(t => t.owner).includes(user._id)) {
+    if (teams.length === 0 || !teams.map(t => t.owner).includes(user._id)) {
       router.push("/team/create")
       toast("Create a team first...")
       return
