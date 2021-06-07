@@ -12,6 +12,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {userState} from "../../../atoms/user";
 import useToast from "../../../util/hooks/useToast";
 import {handleAxiosErr} from "../../../util/ErrorParser";
+import DiscordIntegration from "./DiscordIntegration";
 
 interface TeamOverviewManagerProps {
     initTeam?: TeamWithUsers
@@ -27,9 +28,6 @@ export const TeamOverviewManager: React.FC<TeamOverviewManagerProps> = ({initTea
     const [team , setTeam] = useState<TeamWithUsers>(initTeam)
 
     const [icon, setIcon] = useState<File>();
-
-
-
 
     useEffect(() => {
         setInvited(invites)
@@ -138,6 +136,7 @@ export const TeamOverviewManager: React.FC<TeamOverviewManagerProps> = ({initTea
                 </IconColumn>
                 <TeamIcon style={{marginTop: "1em"}} size={"100px"} team={team} overrideSrc={fileToObjectURL()}/>
             </IconUpdateContainer>
+            <DiscordIntegration/>
         </GeneralControls>
         <InviteControls>
             <label>Invites</label>
@@ -187,6 +186,9 @@ const IconApplyContainer = styled.div`
 const GeneralControls = styled(FlexCol)`
   width: 60%;
   padding-right: 1em;
+  @media(max-width: 825px) {
+    width: 100%;
+  }
 `
 
 const InviteControls = styled(FlexCol)`

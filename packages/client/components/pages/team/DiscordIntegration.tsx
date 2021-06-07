@@ -18,7 +18,7 @@ export default function DiscordIntegration() {
   const setDiscordServer = () => {
     NProgress.start();
     getAxios()
-      .post("/account/settings/discord-server", {
+      .post("/team/settings/discord-server", {
         serverID,
       })
       .then((res) => {
@@ -54,7 +54,7 @@ export default function DiscordIntegration() {
           theme === DarkTheme ? "dark" : "light"
         }`}
         width="100%"
-        height="500"
+        height="350"
       />
     </Wrapper>
   );
@@ -64,6 +64,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 1em 0;
+  max-width: 400px;
 `;
 
 const ServerIDInput = styled.div`

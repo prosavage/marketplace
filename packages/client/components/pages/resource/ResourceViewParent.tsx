@@ -170,7 +170,7 @@ export default function ResourceId({
                         resource={resource}
                         firstVersion={getFirstVersion()}
                     />
-                    <DiscordInfo discordServerId={undefined}/>
+                    <DiscordInfo discordServerId={team?.discordServerId}/>
                 </MetadataContainer>
             </ResourceContentContainer>
         </Wrapper>

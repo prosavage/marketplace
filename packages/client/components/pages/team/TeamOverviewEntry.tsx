@@ -12,6 +12,8 @@ import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 import { FlexCol, FlexRow } from "../../ui/FlexRow";
 import { TeamOverviewManager } from "./TeamOverviewManager";
+import useToast from "../../../util/hooks/useToast";
+import { userState } from "../../../atoms/user";
 
 interface TeamOverviewEntryProps {
     team: Team
@@ -58,6 +60,18 @@ export const TeamOverviewEntry: React.FC<TeamOverviewEntryProps> = ({ team }) =>
         />
     }
 
+    const toast = useToast();
+
+    const me = useRecoilValue(userState);
+
+    const toggleManaged = () => {
+        if (team.owner !== me._id) {
+            toast("You cannot manage a team you do not own.")
+            return
+        }
+        setManaged(!managed)
+    }
+
     return (
         <Wrapper>
             <TopRow>
@@ -69,7 +83,7 @@ export const TeamOverviewEntry: React.FC<TeamOverviewEntryProps> = ({ team }) =>
                     )}
                     {invites.map(invite => userIdToIcon(invite.invitee._id, true))}
                 </IconsContainer>
-                <Button onClick={() => setManaged(!managed)}>
+                <Button onClick={toggleManaged}>
                     MANAGE
                 </Button>
                 </TopSubRow>
