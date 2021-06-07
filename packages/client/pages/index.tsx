@@ -1,9 +1,10 @@
+import { ResourceType } from "@savagelabs/types/src/Resource";
 import Head from "next/head";
 import styled from "styled-components";
 import FeaturedPlugins from "../components/pages/home/featured/FeaturedPlugins";
 import ResourcesView from "../components/pages/home/ResourcesView";
 import SubNavbar from "../components/pages/home/SubNavbar";
-import {ResourceType} from "@savagelabs/types";
+
 
 export default function Home() {
     return (

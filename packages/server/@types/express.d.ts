@@ -1,4 +1,4 @@
-import { Team } from "../../types";
+import { Team } from "@savagelabs/types/src";
 import {User} from "../src/types/User";
 
 declare global {

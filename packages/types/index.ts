@@ -1,33 +1,33 @@
-import { Category } from "./Category";
-import { Download } from "./Download";
+import { Category } from "./src/Category";
+import { Download } from "./src/Download";
 import {
   DirectoryPayment,
   Payment,
   PaymentStatus,
-} from "./Payment";
+} from "./src/Payment";
 import {
   DirectoryResource,
   Resource,
   ResourceType,
-} from "./Resource";
-import { Review } from "./Review";
-import { Role } from "./Role";
+} from "./src/Resource";
+import { Review } from "./src/Review";
+import { Role } from "./src/Role";
 import {
   Team,
   TeamInvite,
   TeamInviteWithTeam,
   TeamInviteWithUser,
   TeamWithUsers,
-} from "./Team";
+} from "./src/Team";
 import {
   FUser,
   PersonalUser,
   Seller,
   User,
   UserStats,
-} from "./User";
-import { Version } from "./Version";
-import { Webhook } from "./Webhook";
+} from "./src/User";
+import { Version } from "./src/Version";
+import { Webhook } from "./src/Webhook";
 
 export type {
   TeamInviteWithTeam,

@@ -1,4 +1,4 @@
-import {Team, TeamInvite} from "@savagelabs/types";
+import {Team, TeamInvite} from "@savagelabs/types/src/Team";
 import express, {Request, Response} from "express";
 import {body, param} from "express-validator";
 import shortid from "shortid";
