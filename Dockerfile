@@ -28,4 +28,4 @@ WORKDIR /usr/src/app/packages/server
 RUN yarn run build
 
 # # Start the server!
-CMD [ "yarn", "run", "docker-start" ]
+CMD [ "yarn", "run", "start" ]
