@@ -1,5 +1,7 @@
 import {
     DOWNLOADS_COLLECTION,
+    getInvites,
+    getTeams,
     PAYMENTS_COLLECTION,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION,
@@ -59,6 +61,12 @@ const ensureIndexes = async () => {
 
     // indexer for searching by user + version for downloads
     await getDatabase().collection<Download>(DOWNLOADS_COLLECTION).createIndex({user: 1, version: 1})
+
+
+    await getInvites().createIndex({invitee: 1})
+    
+    await getTeams().createIndex({owner: 1})
+    await getTeams().createIndex({members: 1})
 
 };
 

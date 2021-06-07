@@ -102,9 +102,12 @@ teamRouter.put(
                 invitee: member,
             };
         });
-        await getDatabase()
+        if (invites.length !== 0) {
+            await getDatabase()
             .collection<TeamInvite>(INVITED_COLLECTION)
             .insertMany(invites);
+        }
+        
         await getDatabase().collection<Team>(TEAMS_COLLECTION).insertOne(team);
 
         res.success({team});

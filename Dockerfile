@@ -11,6 +11,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # CRITICAL TO GET NODEJS MONOREPO PROJECT WORKING SMH.
+COPY packages/types/package*.json ./packages/types/
 COPY packages/server/package*.json ./packages/server/
 
 # install dependencies
@@ -27,4 +28,4 @@ WORKDIR /usr/src/app/packages/server
 RUN yarn run build
 
 # # Start the server!
-CMD [ "yarn", "run", "start" ]
+CMD [ "yarn", "run", "docker-start" ]
