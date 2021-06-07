@@ -31,7 +31,7 @@ export default function FeaturedPluginEntry(props: { resource: DirectoryResource
                         <h3>{props.resource.name}</h3>
                         <DescText>{props.resource.description}</DescText>
                     </TextWrapper>
-                    <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
+                    <AuthorWrapper onClick={() => router.push(`/team/${props.resource.owner._id}`)}>
                         <TeamIcon size={"25px"} team={props.resource.owner}/>
                         <AuthorName>{props.resource.owner.name}</AuthorName>
                     </AuthorWrapper>
