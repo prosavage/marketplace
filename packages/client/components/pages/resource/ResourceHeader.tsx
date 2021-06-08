@@ -93,7 +93,7 @@ export default function ResourceHeader(props: {
         <ContentContainer>
           <TextContainer>
             <HeaderContainer>
-              <h1>{props.resource?.name}</h1>
+              <ResourceHeaderText>{props.resource?.name}</ResourceHeaderText>
               <VersionText>v{props.version?.version}</VersionText>
             </HeaderContainer>
             <Description>{props.resource?.description}</Description>
@@ -105,6 +105,15 @@ export default function ResourceHeader(props: {
     </>
   );
 }
+
+
+const ResourceHeaderText = styled.h1`
+  word-wrap: break-word;
+  @media(max-width: 400px) {
+    font-size: 20px;
+    max-width: 250px;
+  }
+`
 
 const TitleContainer = styled.div`
   display: flex;
@@ -139,6 +148,7 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+
 
   @media (max-width: 550px) {
     align-items: flex-start;
