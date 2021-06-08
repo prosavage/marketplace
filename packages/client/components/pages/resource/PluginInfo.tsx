@@ -21,7 +21,7 @@ export default function PluginInfo(props: {
         <ResourceWidget header={"PLUGIN INFO"}>
             <PluginInfoRow>
                 <p>Author:</p>{" "}
-                <Link href={`/users/[id]`} as={`/users/${props.team?._id}`}>
+                <Link href={`/team/[id]`} as={`/team/${props.team?._id}`}>
                     <AuthorLink>{props.team?.name}</AuthorLink>
                 </Link>
             </PluginInfoRow>

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {FUser, UserStats} from "@savagelabs/types";
+import {FUser, Team, TeamWithUsers, UserStats} from "@savagelabs/types";
 import useToast from "../../../util/hooks/useToast";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
+import TeamIcon from "../../ui/TeamIcon";
 
-export default function UserHeader(props: {
-    user: FUser | undefined;
-    stats: UserStats | undefined;
+export default function TeamHeader(props: {
+    team: TeamWithUsers | undefined;
 }) {
 
     const toast = useToast();
@@ -15,15 +15,15 @@ export default function UserHeader(props: {
     return (
         <Wrapper>
             <ImgContainer>
-                <AuthorIcon user={props.user} size={"220px"}/>
+                <TeamIcon team={props.team} size={"220px"}/>
             </ImgContainer>
             <TextContainer>
                 <MetaContainer>
                     <MetaSubContainer>
-                        <Header>{props.user?.username}</Header>
+                        <ResourceHeaderText>{props.team?.name}</ResourceHeaderText>
                         <Date>Member since April 1, 2020</Date>
                     </MetaSubContainer>
-                    <StatsContainer>
+                    {/* <StatsContainer>
                         <Stat>
                             <h2>
                                 {props.stats?.resourceCount
@@ -48,7 +48,7 @@ export default function UserHeader(props: {
                             </h2>
                             <StatText>RATING</StatText>
                         </Stat>
-                    </StatsContainer>
+                    </StatsContainer> */}
                 </MetaContainer>
                 <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
             </TextContainer>
@@ -69,6 +69,13 @@ const Wrapper = styled.div`
   }
 `;
 
+const ResourceHeaderText = styled.h1`
+  word-wrap: break-word;
+  @media(max-width: 400px) {
+    /* font-size: 20px; */
+    max-width: 250px;
+  }
+`
 
 const Header = styled.h1`
   font-size: 44px;

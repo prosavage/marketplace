@@ -30,7 +30,7 @@ export default function UserById(props: { id: string }) {
         <ResourceList
           type={ResourceType.PLUGIN}
           category={undefined}
-          author={user}
+          team={user}
         />
       </ResourcesContainer>
     </Wrapper>

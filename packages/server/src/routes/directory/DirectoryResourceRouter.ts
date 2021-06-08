@@ -4,6 +4,7 @@ import {param} from "express-validator";
 import shortid from "shortid";
 import {
     CATEGORIES_COLLECTION,
+    getTeams,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION,
     TEAMS_COLLECTION, USERS_COLLECTION,
@@ -123,6 +124,39 @@ directoryResourceRouter.get(
         res.success({resources});
     }
 );
+
+directoryResourceRouter.get(
+    "/team/:team/:page",
+    [
+        param("team")
+            .custom(id => shortid.isValid(id))
+        ,
+        param("page")
+            .isInt()
+            .bail()
+            .toInt()
+            .custom((v) => v > 0)
+            .bail(),
+        isValidBody,
+    ],
+    async (req: Request, res: Response) => {
+        const teamId = req.params.team;
+
+        const team = await getTeams().findOne({_id: teamId});
+
+        if (team === null) {
+            res.failure("team not found.")
+            return;
+        }
+
+        const page: number = Number.parseInt(req.params.page!!);
+        const resources = await pageSearchResourcesWithFilter(
+            {owner: team._id},
+            page
+        );
+        res.success({resources});
+    }
+)
 
 const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
     return await getDatabase()

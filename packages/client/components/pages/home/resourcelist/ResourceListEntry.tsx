@@ -31,7 +31,7 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
               </div>) : null}
             </TitleRow>
             <Link
-              href={`/users/[id]`}
+              href={`/team/[id]`}
               as={`/team/${props.resource?.owner?._id}`}
             >
               <TeamLink>{props.resource?.owner?.name}</TeamLink>

@@ -11,7 +11,7 @@ export default function ResourcesView(props: { type: ResourceType, category: str
                 <Categories type={props.type} category={props.category}/>
             </CategoriesContainer>
             <ResourcesContainer>
-                <ResourceList type={props.type} category={props.category} author={undefined}/>
+                <ResourceList type={props.type} category={props.category} team={undefined}/>
             </ResourcesContainer>
         </Content>
     );

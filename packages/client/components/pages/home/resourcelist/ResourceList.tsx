@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { DirectoryResource, ResourceType } from "@savagelabs/types";
+import { DirectoryResource, ResourceType, Team, TeamWithUsers } from "@savagelabs/types";
 import { FUser } from "@savagelabs/types";
 import getAxios from "../../../../util/AxiosInstance";
 import ResourceListEntry from "./ResourceListEntry";
+import { handleAxiosErr } from "../../../../util/ErrorParser";
 
 function ResourceList(props: {
   type: ResourceType;
   category: string | undefined;
-  author: FUser | undefined;
+  team: Team | TeamWithUsers | undefined;
 }) {
   const [resources, setResources] = useState<DirectoryResource[]>([]);
   const [page, setPage] = useState(1);
@@ -36,17 +37,18 @@ function ResourceList(props: {
         page;
     }
 
-    if (props.author) {
-      url = "/directory/resources/author/" + props.author?._id + "/" + page;
+    if (props.team) {
+      url = "/directory/resources/team/" + props.team?._id + "/" + page;
     }
+
     setLoading(true);
     getAxios()
       .get(url)
       .then((res) => {
         setLoading(false);
         setResources(res.data.payload.resources);
-      });
-  }, [props.type, props.category, page, props.author]);
+      }).catch(err => handleAxiosErr(err));
+  }, [props.type, props.category, page, props.team]);
 
   const renderPageControls = () => {
     return (
