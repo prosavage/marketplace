@@ -5,6 +5,7 @@ import useToast from "../../../util/hooks/useToast";
 import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 import TeamIcon from "../../ui/TeamIcon";
+import React from "react";
 
 export default function TeamHeader(props: {
     team: TeamWithUsers | undefined;
@@ -23,32 +24,10 @@ export default function TeamHeader(props: {
                         <ResourceHeaderText>{props.team?.name}</ResourceHeaderText>
                         <Date>Member since April 1, 2020</Date>
                     </MetaSubContainer>
-                    {/* <StatsContainer>
-                        <Stat>
-                            <h2>
-                                {props.stats?.resourceCount
-                                    ? new Intl.NumberFormat().format(props.stats?.resourceCount)
-                                    : 0}
-                            </h2>
-                            <StatText>RESOURCES</StatText>
-                        </Stat>
-                        <Stat>
-                            <h2>
-                                {props.stats?.downloads
-                                    ? new Intl.NumberFormat().format(props.stats?.downloads)
-                                    : 0}
-                            </h2>
-                            <StatText>DOWNLOADS</StatText>
-                        </Stat>
-                        <Stat>
-                            <h2>
-                                {props.stats?.avgReviewScore
-                                    ? props.stats?.avgReviewScore.toFixed(3)
-                                    : 0}
-                            </h2>
-                            <StatText>RATING</StatText>
-                        </Stat>
-                    </StatsContainer> */}
+                    <MembersContainer>
+                        {props.team?.members.concat(props.team?.owner).reverse().map(member => <IconContainer><AuthorIcon size={"50px"} user={member}/></IconContainer>
+                          )}
+                    </MembersContainer>
                 </MetaContainer>
                 <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
             </TextContainer>
@@ -121,23 +100,24 @@ const MetaSubContainer = styled.div`
   }
 `;
 
-const StatsContainer = styled.div`
+const MembersContainer = styled.div`
   display: flex;
+  /* justify-content: center; */
   @media (max-width: 800px) {
-    flex-direction: column;
+    /* flex-direction: column; */
+    /* align-items: center; */
+    justify-content: center;
   }
 `;
 
-const Stat = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-right: 2em;
+const IconContainer = styled.div`
+  margin-right: -10px;
+  /* @media (max-width: 400px) { */
+    /* margin-right: 0; */
 
-  @media (max-width: 800px) {
-    text-align: center;
-    padding: 0.5em 0;
-  }
-`;
+  /* } */
+`
+
 
 const ReportButton = styled(Button)`
   padding: 17.5px 27.5px !important;
@@ -149,9 +129,6 @@ const ReportButton = styled(Button)`
   }
 `;
 
-const StatText = styled.p`
-  font-weight: 200;
-`;
 
 const Date = styled.p`
   font-weight: 200;
