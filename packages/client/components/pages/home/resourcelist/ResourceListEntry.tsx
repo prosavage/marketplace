@@ -48,6 +48,11 @@ function ResourceListEntry(props: { resource?: DirectoryResource }) {
               {new Intl.NumberFormat().format(props.resource?.reviewCount)}{" "}
               ratings
             </ReviewCount>
+            <MobilePriceBadge>
+            {props.resource?.price !== 0 ? (<div>
+                <p>{formatPrice(props.resource?.price)}</p>
+              </div>) : null}
+            </MobilePriceBadge>
           </Review>
           <DataEntryBottom>
             <DataEntry>
@@ -128,6 +133,8 @@ const TitleRow = styled.div`
   width: 100%;
   align-items: center;
   /* justify-content: space-between; */
+
+  
 `;
 
 const PriceBadge = styled.div`
@@ -140,7 +147,17 @@ const PriceBadge = styled.div`
   margin-left: 1em;
   border-color: ${(props: PropsTheme) => props.theme.accentColor};
   filter: drop-shadow(0px 3px 6px rgba(0, 178, 255, 0.25));
+
+  @media(max-width: 400px) {
+    display: none;
+  }
   `
+
+const MobilePriceBadge = styled.div`
+  @media(min-width: 400px) {
+    display: none;
+  }
+`  
 
 const ResourceStats = styled.div`
   display: flex;

@@ -32,7 +32,9 @@ export default function FeaturedPlugins() {
       <Header>
         <h2>Featured Resources</h2>
       </Header>
-      <ContentWrapper>{renderResources()}</ContentWrapper>
+      <ContentWrapper>
+        {renderResources()}
+        </ContentWrapper>
     </Wrapper>
   );
 }
