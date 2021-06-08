@@ -28,6 +28,7 @@ import {teamState} from "../atoms/team";
 import PropsTheme from "../styles/theme/PropsTheme";
 import {FlexCol} from "../components/ui/FlexRow";
 import {userState} from "../atoms/user";
+import { handleAxiosErr } from "../util/ErrorParser";
 
 export default function Create() {
   const [submitting, setSubmitting] = useState(false);
@@ -122,7 +123,10 @@ export default function Create() {
         NProgress.set(0.5);
         sendFile(version, resource);
       })
-      .catch((err) => console.log(err, err.response));
+      .catch((err) => {
+        handleAxiosErr(err)
+        NProgress.done();
+      });
   };
 
   const sendFile = (version: Version, resource: Resource) => {
@@ -140,7 +144,7 @@ export default function Create() {
       })
       .catch((err) => {
         NProgress.done();
-        toast(err.response.data.error);
+        handleAxiosErr(err)
       });
   };
 

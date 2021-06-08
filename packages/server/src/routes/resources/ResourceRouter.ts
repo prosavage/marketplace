@@ -105,8 +105,9 @@ resourceRouter.put(
       "version.description",
       "version.version",
     ]).isString(),
-    Authorize,
     isValidBody,
+    Authorize,
+    FetchTeam
   ],
   async (req: Request, res: Response) => {
     const resource = req.body;

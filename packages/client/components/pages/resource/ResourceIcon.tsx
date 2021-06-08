@@ -7,11 +7,11 @@ import Button from "../../ui/Button";
 import getAxios from "../../../util/AxiosInstance";
 import {useRouter} from "next/router";
 import useToast from "../../../util/hooks/useToast";
+import { handleAxiosErr } from "../../../util/ErrorParser";
+import nprogress from "nprogress"
 
 export default function ResourceIcon({resource}: { resource: Resource }) {
     const [file, setFile] = useState<File>();
-
-    const [err, setErr] = useState("");
 
     const router = useRouter();
 
@@ -20,34 +20,37 @@ export default function ResourceIcon({resource}: { resource: Resource }) {
     const sendIcon = () => {
         const formData = new FormData();
         formData.append("icon", file);
+        nprogress.start()
         getAxios()
             .put(`/resources/icon/${resource._id}`, formData, {
                 headers: {"content-type": "multipart/form-data"},
             })
             .then((res) => {
-                console.log(res.data);
                 router.push(`/resources/${resource._id}/`);
+                nprogress.done()
             })
-            .catch((err) => setErr(err.response.data.error));
+            .catch((err) => {
+                handleAxiosErr(err)
+                nprogress.done();
+            });
     };
 
     const deleteIcon = () => {
         getAxios()
             .delete(`/resources/icon/${resource._id}`)
             .then((res) => {
-                console.log(res.data);
                 toast("Icon deleted.");
+                nprogress.done()
             })
             .catch((err) => {
-                console.log(err.response.data);
-                toast(err.response.data.error);
+                handleAxiosErr(err)
+                nprogress.done()
             });
     };
 
     return (
         <Wrapper>
             <ContentContainer>
-                {err}
                 <label>NEW ICON FILE</label>
                 <Input
                     onChange={(e) => setFile(e.target.files[0])}
