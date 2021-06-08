@@ -6,7 +6,15 @@ const injectReqResTypes = (req: Request, res: Response, next: NextFunction) => {
     
     req.team = {
         owned: undefined,
-        memberOf: []
+        memberOf: [],
+        getAllTeams: () => {
+            const teams = req.team.memberOf;
+            if (req.team.owned) {
+                teams.push(req.team.owned)
+            }
+            return teams;
+        }
+        
     }
 
     res.success = (payload) => {

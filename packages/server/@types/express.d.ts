@@ -1,4 +1,4 @@
-import { Team } from "@savagelabs/types/src";
+import { Team } from "@savagelabs/types/src/Team";
 import {User} from "../src/types/User";
 
 declare global {
@@ -11,6 +11,7 @@ declare global {
             team: {
                 owned?: Team
                 memberOf: Team[]
+                getAllTeams: () => Team[]
             }
         }
 
