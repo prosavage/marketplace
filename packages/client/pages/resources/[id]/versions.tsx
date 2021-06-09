@@ -15,7 +15,7 @@ export default function ResourceId(props: { id: string }) {
             content={(resource) => <>
 
                 <Head>
-                    <title>{resource?.name}: Version List</title>
+                    <title>{resource?.name} - Version List</title>
                 </Head>
                 <ResourceVersions
                     resource={resource}

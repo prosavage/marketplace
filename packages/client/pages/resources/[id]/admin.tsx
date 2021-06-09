@@ -12,7 +12,7 @@ export default function ResourceId(props: { id: string }) {
             staffOnly={true}
             content={(resource) => (<>
                 <Head>
-                    <title>{resource?.name}: Admin UI</title>
+                    <title>{resource?.name} - Admin Panel</title>
                 </Head>
                 <ResourceAdmin resource={resource}/>
             </>)}

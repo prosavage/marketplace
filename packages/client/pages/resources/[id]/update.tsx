@@ -11,7 +11,7 @@ export default function ResourceId(props: { id: string }) {
             resourceId={props.id}
             content={(resource => <>
                 <Head>
-                    <title>{resource?.name}: Update</title>
+                    <title>{resource?.name} - Update</title>
                 </Head>
                 <ResourceUpdate resource={resource} onSubmit={() => {
                 }}/>

@@ -5,14 +5,12 @@ import ResourceViewParent from "./../../../components/pages/resource/ResourceVie
 
 export default function ResourceId(props: { id: string }) {
 
-
     return (
         <ResourceViewParent
             resourceId={props.id}
             content={(resource => <>
-
                 <Head>
-                    <title>{resource?.name}: Thread</title>
+                    <title>{resource?.name}</title>
                 </Head>
                 <ResourceThread resource={resource}/>
 

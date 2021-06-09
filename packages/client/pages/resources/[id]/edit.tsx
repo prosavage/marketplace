@@ -10,7 +10,7 @@ export default function ResourceId(props: { id: string }) {
             resourceId={props.id}
             content={((resource) => <>
                 <Head>
-                    <title>{resource?.name}: Edit Resource</title>
+                    <title>{resource?.name} - Edit Resource</title>
                 </Head>
                 <ResourceEdit resource={resource}/>
             </>)}

@@ -11,7 +11,7 @@ export default function ResourceId(props: { id: string }) {
             resourceId={props.id}
             content={resource => <>
                 <Head>
-                    <title>{resource?.name}: Edit Icon</title>
+                    <title>{resource?.name} - Edit Icon</title>
                 </Head>
                 <ResourceIcon resource={resource}/>
             </>}
