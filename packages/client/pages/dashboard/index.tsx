@@ -12,7 +12,7 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-          <title>Dashboard</title>
+          <title>Dashboard - Marketplace</title>
           <meta name="description" content="Dashboard" />
       </Head>
       <DashboardNavbar />
