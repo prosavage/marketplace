@@ -8,6 +8,7 @@ import { TeamOverviewEntry } from "../../components/pages/team/TeamOverviewEntry
 import { FlexCol } from "../../components/ui/FlexRow";
 import {LinkSpan} from "../../components/ui/LinkSpan";
 import getAxios from "../../util/AxiosInstance";
+import Head from "next/head";
 
 
 const TeamHome: React.FC = ({ }) => {
@@ -44,6 +45,10 @@ const TeamHome: React.FC = ({ }) => {
 
     return <Wrapper>
         {/* <TeamNavbar /> */}
+        <Head>
+            <title>Teams - Marketplace</title>
+            <meta name="description" content="Teams List" />
+        </Head>
         <TeamsList>
             <TeamListWrapper>
                 <h1>Teams</h1>

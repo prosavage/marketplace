@@ -15,6 +15,7 @@ import TeamIcon from "../../components/ui/TeamIcon";
 import {errorParser, handleAxiosErr} from "../../util/ErrorParser";
 import {useRouter} from "next/router";
 import {teamState} from "../../atoms/team";
+import Head from "next/head";
 
 const TeamCreate: React.FC = ({}) => {
     const me = useRecoilValue(userState);
@@ -131,6 +132,10 @@ const TeamCreate: React.FC = ({}) => {
 
     return (
         <Wrapper>
+            <Head>
+                <title>Create a Team - Marketplace</title>
+                <meta name="description" content="Create a Team" />
+            </Head>
             <ContentWrapper>
                 <h1>Create A Team</h1>
                 <ContentContainer>

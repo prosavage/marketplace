@@ -5,6 +5,7 @@ import ResourceList from "../../components/pages/home/resourcelist/ResourceList"
 import TeamHeader from "../../components/pages/team/TeamHeader";
 import getAxios from "../../util/AxiosInstance";
 import { handleAxiosErr } from "../../util/ErrorParser";
+import Head from "next/head";
 
 
 export default function TeamById(props: { id: string }) {
@@ -21,6 +22,10 @@ export default function TeamById(props: { id: string }) {
 
 
     return <Wrapper>
+        <Head>
+            <title>{team?.name} - Marketplace</title>
+            <meta name="description" content="Team Page" />
+        </Head>
         <TeamHeader team={team}/>
         <ResourcesContainer>
         <ResourceList
