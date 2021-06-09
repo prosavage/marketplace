@@ -32,11 +32,11 @@ export default function UserById(props: { id: string }) {
       <h1>Author Profile</h1>
       <UserHeader user={user} stats={stats} />
       <ResourcesContainer>
-        <ResourceList
+        {/* <ResourceList
           type={ResourceType.PLUGIN}
           category={undefined}
           team={user}
-        />
+        /> */}
       </ResourcesContainer>
     </Wrapper>
   );
