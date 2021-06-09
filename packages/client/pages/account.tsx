@@ -77,7 +77,7 @@ export default function Account(props) {
   return (
     <>
       <Head>
-        <title>User - Marketplace</title>
+        <title>Account - Marketplace</title>
         <meta name="description" content="Account Page" />
       </Head>
       <Wrapper>
