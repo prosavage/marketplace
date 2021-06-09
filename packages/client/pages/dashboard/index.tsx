@@ -6,10 +6,15 @@ import PayoutButton from "../../components/pages/dashboard/PayoutButton";
 import RecentPurchases from "../../components/pages/dashboard/RecentPurchases";
 import RecentSalesChart from "../../components/pages/dashboard/RecentSalesChart";
 import UserNameLink from "../../components/pages/dashboard/UserNameLink";
+import Head from "next/head";
 
 export default function Dashboard() {
   return (
     <>
+      <Head>
+          <title>Dashboard</title>
+          <meta name="description" content="Dashboard" />
+      </Head>
       <DashboardNavbar />
       <Wrapper>
         <Header>

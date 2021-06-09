@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
+import Head from "next/head";
 
 export default function Sales() {
     return <>
+        <Head>
+            <title>Sales - Dashboard</title>
+            <meta name="description" content="Webhooks Dashboard" />
+        </Head>
         <DashboardNavbar/>
         <Wrapper>
             <h1>Sales</h1>
