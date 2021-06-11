@@ -1,6 +1,7 @@
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 import styled from "styled-components";
+import Head from "next/head";
 
 export default function Cancel() {
 
@@ -13,6 +14,10 @@ export default function Cancel() {
 
     return (
         <Wrapper>
+          <Head>
+            <title>Purchase Successful - Marketplace</title>
+            <meta name="description" content="Dashboard" />
+          </Head>
             <ImageContainer>
                 <Splash src={"/marketplace/static/splash/checkout_success_splash.svg"}/>
             </ImageContainer>

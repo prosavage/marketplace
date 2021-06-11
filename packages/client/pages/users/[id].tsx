@@ -5,6 +5,7 @@ import UserHeader from "../../components/pages/users/UserHeader";
 import { ResourceType } from "@savagelabs/types";
 import { FUser, UserStats } from "@savagelabs/types";
 import getAxios from "../../util/AxiosInstance";
+import Head from "next/head";
 
 export default function UserById(props: { id: string }) {
   const [user, setUser] = useState<FUser>();
@@ -24,6 +25,10 @@ export default function UserById(props: { id: string }) {
 
   return (
     <Wrapper>
+      <Head>
+          <title>{user?.username} - Marketplace</title>
+          <meta name="description" content="Author Page" />
+      </Head>
       <h1>Author Profile</h1>
       <UserHeader user={user} stats={stats} />
       <ResourcesContainer>

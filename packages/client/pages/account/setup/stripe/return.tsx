@@ -2,12 +2,17 @@ import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Button from "../../../../components/ui/Button";
+import Head from "next/head";
 
 export default function Return() {
   const router = useRouter();
 
   return (
     <Wrapper>
+      <Head>
+          <title>Stripe Setup - Marketplace</title>
+          <meta name="description" content="Dashboard" />
+      </Head>
       <VSpace>
         <Splash
           height={"450px"}

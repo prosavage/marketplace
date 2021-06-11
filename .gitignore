@@ -3,7 +3,7 @@
 /packages/*/dist/
 /node_modules
 .vercel
-.DS_Store
+*.DS_Store
 packages/.DS_Store
 .idea/
 *.iml

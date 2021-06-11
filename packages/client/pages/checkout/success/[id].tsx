@@ -1,6 +1,7 @@
 import {useRouter} from "next/router";
 import styled from "styled-components";
 import getAxios from "../../../util/AxiosInstance";
+import Head from "next/head";
 
 export default function Success(props: { resource: null }) {
 
@@ -10,6 +11,10 @@ export default function Success(props: { resource: null }) {
 
     return (
         <Wrapper>
+          <Head>
+            <title>Purchase Successful - Marketplace</title>
+            <meta name="description" content="Dashboard" />
+          </Head>
             <ImageContainer>
                 <Splash src={"/marketplace/static/splash/checkout_success_splash.svg"}/>
             </ImageContainer>
