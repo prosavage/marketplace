@@ -1,5 +1,6 @@
 import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
+import { DefaultSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
@@ -90,10 +91,21 @@ function WrappedApp({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      <DefaultSeo 
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          site_name: 'Marketplace',
+          url: 'https://savagelabs.net/marketplace',
+          title: 'Marketplace',
+          description: 'Build by developers for developers'
+        }}
+        twitter={{
+          handle: 'Marketplace',
+          site: 'https://savagelabs.net/marketplace',
+          cardType: 'summary',
+        }}
+      />
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <NextNProgress
