@@ -95,7 +95,7 @@ function WrappedApp({ Component, pageProps }) {
         openGraph={{
           type: 'website',
           locale: 'en_US',
-          site_name: 'Marketplace',
+          site_name: 'SavageLabs',
           url: 'https://savagelabs.net/marketplace',
           title: 'Marketplace',
           description: 'Build by developers for developers'
