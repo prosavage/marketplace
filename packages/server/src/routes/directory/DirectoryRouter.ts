@@ -3,11 +3,12 @@ import { body, param } from "express-validator";
 import shortid from "shortid";
 import {
     CATEGORIES_COLLECTION,
+  getResources,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION, TEAMS_COLLECTION,
     USERS_COLLECTION,
 } from "../../constants";
-import { Authorize } from "../../middleware/Authenticate";
+import { Authorize, FetchTeam } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
 import { Category, Resource, ResourceType, User } from "@savagelabs/types";
@@ -126,13 +127,12 @@ directoryRouter.get(
 
 directoryRouter.get(
   "/my-resources",
-  [Authorize, isValidBody],
+  [Authorize, isValidBody, FetchTeam],
   async (req: Request, res: Response) => {
-    const user = req.user!!;
+    const teams = req.team.getAllTeams()
 
-    const myResources = await getDatabase()
-      .collection<Resource>(RESOURCES_COLLECTION)
-      .find({ owner: user._id })
+    const myResources = await getResources()
+      .find({ owner: {$in: teams.map(t => t._id)} })
       .toArray();
 
     res.success({ resources: myResources });

@@ -3,11 +3,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import getAxios from "../../../util/AxiosInstance";
-import {
-  validateResourceDescription,
-  validateResourceTitle,
-} from "../../../util/Validation";
+import { validateResourceDescription, validateResourceTitle } from "../../../util/Validation";
 import Input from "../../ui/Input";
+import { LinkSpan } from "../../ui/LinkSpan";
 export interface ResourceMetadata {
   title: string;
   price: number;
@@ -19,6 +17,7 @@ enum STRIPE_STATUS {
   ALLOWED,
   DENIED,
   ERROR,
+  NOT_FOUND,
 }
 
 export default function ResourceMetadataForm(props: {
@@ -46,6 +45,12 @@ export default function ResourceMetadataForm(props: {
         }
       })
       .catch((err) => {
+        if (err.response?.data?.error) {
+          if (err.response.data.error === "seller not found.") {
+            setStripe(STRIPE_STATUS.NOT_FOUND);
+            return;
+          }
+        }
         setStripe(STRIPE_STATUS.ERROR);
         console.log(err.response.data);
       });
@@ -67,10 +72,15 @@ export default function ResourceMetadataForm(props: {
             to enable.
           </p>
         );
-      case STRIPE_STATUS.ERROR:
+      case STRIPE_STATUS.NOT_FOUND:
         return (
-          <p>Something went wrong checking stripe status, please report.</p>
+          <p>
+            Stripe seller not found, you need to set it up to enable premium resources.{" "}
+            <LinkSpan href={"/account"}>Stripe Setup.</LinkSpan>
+          </p>
         );
+      case STRIPE_STATUS.ERROR:
+        return <p>Something went wrong checking stripe status, please report.</p>;
     }
   };
 

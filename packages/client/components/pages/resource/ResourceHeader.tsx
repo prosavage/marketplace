@@ -13,6 +13,7 @@ import useToast from "../../../util/hooks/useToast";
 import getBaseURL from "../../../util/urlUtil";
 import Button from "../../ui/Button";
 import ResourceIcon from "../../ui/ResourceIcon";
+import { handleAxiosErr } from "../../../util/ErrorParser";
 
 export default function ResourceHeader(props: {
   resource: Resource;
@@ -21,6 +22,7 @@ export default function ResourceHeader(props: {
 }) {
   const renderButtons = () => {
     let text;
+    console.log(user?.purchases?.includes(props.resource?._id), user?.purchases)
     if (
       props.resource?.price === 0 ||
       user?.purchases?.includes(props.resource?._id)
@@ -68,7 +70,7 @@ export default function ResourceHeader(props: {
             .redirectToCheckout({ sessionId: res.data.payload.session.id })
             .then((res) => console.log(res.error.message));
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => handleAxiosErr(err));
     }
   };
 

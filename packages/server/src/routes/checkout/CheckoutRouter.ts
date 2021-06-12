@@ -3,6 +3,8 @@ import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
 import {
+  getTeams,
+  getUsers,
   PAYMENTS_COLLECTION,
   RESOURCES_COLLECTION,
   SELLER_COLLECTION,
@@ -36,9 +38,23 @@ checkoutRouter.post(
       return;
     }
 
+    const team = await getTeams().findOne({_id: resource.owner});
+
+    if (team === null) {
+      res.failure("resource owner team was not found.")
+      return;
+    }
+
+    const ownerUser = await getUsers().findOne({_id: team.owner});
+    
+    if (ownerUser === null) {
+      res.failure("owner user was not found.")
+      return;
+    }
+
     const seller = await getDatabase()
       .collection<Seller>(SELLER_COLLECTION)
-      .findOne({ user: resource.owner });
+      .findOne({ user: ownerUser?._id });
 
     if (seller === null) {
       res.failure("This seller has not setup their payment details.");
