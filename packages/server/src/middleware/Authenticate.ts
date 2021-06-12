@@ -177,8 +177,10 @@ export function hasPermissionForResource(
       return;
     }
 
+    
+
     if (
-      req.user?.owned?._id !== resource.owner && !req.user.team.memberOf.map((t: Team) => t._id).includes(resource.owner)
+      req.team.owned?._id !== resource.owner && !req.team.memberOf.map((t: Team) => t._id).includes(resource.owner)
     ) {
       res.failure(
         "You do not have permission to access this resource."

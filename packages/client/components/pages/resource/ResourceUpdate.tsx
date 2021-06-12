@@ -18,6 +18,7 @@ import {
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import ResourceVersionEntry from "./ResourceVersionEntry";
+import { handleAxiosErr } from "../../../util/ErrorParser";
 
 export default function ResourceUpdate({
   resource,
@@ -68,7 +69,7 @@ export default function ResourceUpdate({
         isDev,
       })
       .then((res) => sendFile(res.data.payload.version))
-      .catch((err) => setErr(err.response.data.error));
+      .catch((err) => handleAxiosErr(err));
   };
 
   const sendFile = (version: Version) => {
@@ -85,7 +86,7 @@ export default function ResourceUpdate({
         toast("Successfully updated!");
         router.push(`/resources/${resource._id}/versions`);
       })
-      .catch((err) => setErr(err.response.data.error));
+      .catch((err) => handleAxiosErr(err));
   };
 
   return (

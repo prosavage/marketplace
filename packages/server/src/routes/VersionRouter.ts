@@ -1,4 +1,4 @@
-import { Resource, Review, Role, Version } from "@savagelabs/types";
+import { Resource, Review, Role, Team, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -9,6 +9,7 @@ import {
 } from "../constants";
 import {
   Authorize,
+  FetchTeam,
   hasPermissionForResource,
 } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
@@ -24,6 +25,7 @@ versionRouter.put(
     body(["isDev"]).isBoolean(),
     body("resource").custom((id) => shortid.isValid(id)),
     Authorize,
+    FetchTeam,
     hasPermissionForResource("resource", Role.ADMIN),
     isValidBody,
   ],
@@ -46,7 +48,7 @@ versionRouter.put(
       // gets diff in seconds, rounded down.
       const diff = Math.floor((now.getTime() - lastUpdated.getTime()) / 1000);
       const TEN_MIN = 60 * 10;
-      if (diff < TEN_MIN) {
+      if (diff < TEN_MIN && req.user!.role === Role.USER) {
         res.failure(
           "You updated the resource in the ten minutes, please wait."
         );
@@ -73,7 +75,7 @@ versionRouter.put(
 
 versionRouter.put(
   "/:id",
-  [param("id").custom((id) => shortid.isValid(id)), Authorize, isValidBody],
+  [param("id").custom((id) => shortid.isValid(id)), Authorize, FetchTeam, isValidBody],
   async (req: Request, res: Response) => {
     const id = req.params.id as string;
 
@@ -106,12 +108,15 @@ versionRouter.put(
       }
     }
 
-    if (req.user!!.role < Role.ADMIN && req.user!!._id !== resource.owner) {
-      res.failure(
-        "You do not have permission to access this resource or version."
-      );
-      return;
-    }
+    if (req.user!!.role !== Role.USER
+      &&
+        req.team.owned?._id !== resource.owner && !req.team.memberOf.map((t: Team) => t._id).includes(resource.owner)
+      ) {
+        res.failure(
+          "You do not have permission to access this resource."
+        );
+        return;
+      }
 
     if (!req.files || !req.files!!.resource) {
       res.failure("invalid body was sent.");
