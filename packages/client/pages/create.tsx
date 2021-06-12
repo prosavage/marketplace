@@ -125,6 +125,7 @@ export default function Create() {
       })
       .catch((err) => {
         handleAxiosErr(err)
+        setSubmitting(false)
         NProgress.done();
       });
   };
@@ -144,6 +145,7 @@ export default function Create() {
       })
       .catch((err) => {
         NProgress.done();
+        setSubmitting(false)
         handleAxiosErr(err)
       });
   };
