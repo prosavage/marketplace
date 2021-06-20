@@ -21,6 +21,7 @@ const resourceViews = [
     {label: "icon", href: "icon", owner: true, staff: false},
     {label: "edit", href: "edit", owner: true, staff: false},
     {label: "admin", href: "admin", owner: false, staff: true},
+    {label: "webhook", href: "webhook", owner: true, staff: false}
 ];
 
 export default function ResourceId({
@@ -243,6 +244,10 @@ const ViewController = styled.div`
   margin-top: 1em;
   border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
   border-radius: 4px;
+
+  @media(max-width: 600px) {
+      flex-wrap: wrap;
+  }
 `;
 
 const ViewEntry = styled.p`

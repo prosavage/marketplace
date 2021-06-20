@@ -2,122 +2,169 @@ import express, {Request, Response} from "express";
 import {body, param} from "express-validator";
 import shortid from "shortid";
 import {isValidBody} from "../middleware/BodyValidate";
-import {Authorize} from "../middleware/Authenticate";
-import {Webhook} from "@savagelabs/types";
-import {WEBHOOKS_COLLECTION} from "../constants";
+import {Authorize, hasPermissionForResource} from "../middleware/Authenticate";
+import {Role, Version, Webhook} from "@savagelabs/types";
+import {getResources, getWebhooks, WEBHOOKS_COLLECTION} from "../constants";
 import {getDatabase} from "../server";
+import {isShortId} from "../util";
+import {sendUpdate} from "../struct/WebhookUtil";
 
 const webhookRouter = express.Router();
 
-webhookRouter.get("/", [Authorize, isValidBody],
-	async (req: Request, res: Response) => {
-		const webhooks = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).find({user: req.user!!._id}).toArray()
+webhookRouter.get(
+    "/:resource",
+    [
+        param("resource").custom((v) => shortid.isValid(v)),
+        Authorize, hasPermissionForResource("resource", Role.MODERATOR),
+        isValidBody
+    ],
+    async (req: Request, res: Response) => {
+        const webhook = await getWebhooks().findOne({resource: req.params.resource});
 
-		res.success({webhooks})
-	})
+        if (webhook === null) {
+            res.failure("webhook not found");
+            return;
+        }
+
+        res.success({webhook});
+    }
+);
+
+webhookRouter.put(
+    "/",
+    [
+        body(["resource"]).custom(isShortId),
+        body("url").isURL(),
+        Authorize,
+        isValidBody,
+        hasPermissionForResource("resource", Role.MODERATOR),
+    ],
+    async (req: Request, res: Response) => {
+        const body = req.body;
+
+        const webhook: Webhook = {
+            _id: shortid.generate(),
+            url: body.url,
+            resource: body.resource,
+        };
+
+        await getWebhooks().insertOne(webhook);
+
+        res.success({webhook});
+    }
+);
+
+webhookRouter.delete(
+    "/:id",
+    [
+        param("id").custom((v) => shortid.isValid(v)),
+        body("resource").custom((v) => shortid.isValid(v)),
+        Authorize,
+        isValidBody,
+        hasPermissionForResource("resource", Role.MODERATOR),
+    ],
+    async (req: Request, res: Response) => {
+        const id = req.params.id;
+
+        const webhook = await getDatabase()
+            .collection<Webhook>(WEBHOOKS_COLLECTION)
+            .findOne({_id: id});
+
+        if (webhook === null) {
+            res.failure("webhook not found");
+            return;
+        }
+
+        await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).deleteOne({_id: id});
+
+        res.success({
+            result: {
+                deletedWebhook: id,
+            },
+        });
+    }
+);
+
+webhookRouter.get("/:resource/test",
+    [param("resource").custom((v) => shortid.isValid(v)),
+        isValidBody,
+        Authorize,
+        hasPermissionForResource("resource", Role.MODERATOR)
+    ],
+    async (req: Request, res: Response) => {
+        const webhook = await getWebhooks().findOne({resource: req.params.resource});
+        if (webhook === null) {
+            res.failure("webhook wasn't found, so it cannot be tested. Create one first.");
+            return;
+        }
+
+        const resource = await getResources().findOne({_id: req.params.resource});
+        if (resource === null) {
+            res.failure("this webhook's resource no longer exists. Deleting...");
+            await getWebhooks().deleteOne({_id: webhook._id});
+            return;
+        }
+
+        const dummyVer: Version = {
+            _id: "test-id",
+            title: "Test Update",
+            resource: req.params.resource!!,
+            author: req.user._id,
+            description: "A test update.",
+            fileName: "test-file.jar",
+            isDev: false,
+            version: "1.2",
+            timestamp: new Date()
+        }
+
+        await sendUpdate(dummyVer, resource, req.user);
+        res.success({});
+    }
+)
 
 
-webhookRouter.get("/:id", [param("id").custom(v => shortid.isValid(v)), Authorize, isValidBody],
-	async (req: Request, res: Response) => {
-		const id = req.params.id
+webhookRouter.patch(
+    "/:id",
+    [
+        body(["url"]).isString(),
+        param("resource").custom((v) => shortid.isValid(v)),
+        Authorize,
+        isValidBody,
+    ],
+    async (req: Request, res: Response) => {
+        const body = req.body;
+        const id = req.params.id;
 
-		const webhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
+        const webhook = await getDatabase()
+            .collection<Webhook>(WEBHOOKS_COLLECTION)
+            .findOne({_id: id, user: req.user!!._id});
 
-		if(webhook === null) {
-			res.failure("webhook not found")
-			return
-		}
+        if (webhook === null) {
+            res.failure("webhook not found");
+            return;
+        }
 
-		res.success({webhook})
-	})
+        await getDatabase()
+            .collection<Webhook>(WEBHOOKS_COLLECTION)
+            .updateOne(
+                {_id: id},
+                {
+                    $set: {
+                        url: body.url,
+                        events: body.events,
+                        name: body.name,
+                        secret: body.secret,
+                        active: body.active,
+                    },
+                }
+            );
 
+        const updatedWebhook = await getDatabase()
+            .collection<Webhook>(WEBHOOKS_COLLECTION)
+            .findOne({_id: id, user: req.user!!._id});
 
-webhookRouter.put("/", [
-		body(["url", "secret"]).isString(),
-		body("name", "description").isString().bail().isLength({min: 4, max: 35}),
-		body(["active"]).isBoolean(),
-		body("events").isArray(),
-		Authorize,
-		isValidBody],
-	async (req: Request, res: Response) => {
-		const body = req.body;
-
-		const webhook: Webhook = {
-			_id: shortid.generate(),
-			url: body.url,
-			events: body.events,
-			name: body.name,
-			secret: body.secret,
-			active: body.active,
-			user: req.user!!._id,
-			last_called: undefined,
-		};
-
-		await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).insertOne(webhook);
-
-		res.success({webhook})
-})
-
-
-webhookRouter.delete("/:id", [param("id").custom(v => shortid.isValid(v)), Authorize, isValidBody],
-	async (req: Request, res: Response) => {
-		const id = req.params.id
-
-		const webhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
-
-		if(webhook === null) {
-			res.failure("webhook not found")
-			return
-		}
-
-		await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).deleteOne({_id: id})
-
-		res.success({
-			result: {
-				deletedWebhook: id
-			}
-		})
-	})
-
-
-webhookRouter.patch("/:id", [
-		body(["url", "secret"]).isString(),
-		body("name", "description").isString().bail().isLength({min: 4, max: 35}),
-		body(["active"]).isBoolean(),
-		body("events").isArray(),
-		param("id").custom(v => shortid.isValid(v)),
-		Authorize,
-		isValidBody],
-	async (req: Request, res: Response) => {
-		const body = req.body;
-		const id = req.params.id
-
-		const webhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
-
-		if(webhook === null) {
-			res.failure("webhook not found")
-			return
-		}
-
-		await getDatabase()
-			.collection<Webhook>(WEBHOOKS_COLLECTION)
-			.updateOne(
-				{_id: id},
-				{
-					$set: {
-						url: body.url,
-						events: body.events,
-						name: body.name,
-						secret: body.secret,
-						active: body.active,
-					},
-				}
-			);
-
-		const updatedWebhook = await getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION).findOne({_id: id, user: req.user!!._id})
-
-		res.success({updatedWebhook})
-	})
-
+        res.success({updatedWebhook});
+    }
+);
 
 export default webhookRouter;

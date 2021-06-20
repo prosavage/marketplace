@@ -22,7 +22,6 @@ export default function ResourceHeader(props: {
 }) {
   const renderButtons = () => {
     let text;
-    console.log(user?.purchases?.includes(props.resource?._id), user?.purchases)
     if (
       props.resource?.price === 0 ||
       user?.purchases?.includes(props.resource?._id)

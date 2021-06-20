@@ -21,8 +21,7 @@ export default function ResourceId(props: { id: string }) {
                     resource={resource}
                     onVersionSelect={(version) =>
                         router.push({
-                            pathname: `/resources/[id]/version/[version-id]`,
-                            query: {id: resource._id, "version-id": version._id},
+                            pathname: `/resources/${resource._id}/version/${version._id}`,
                         })
                     }
                 />

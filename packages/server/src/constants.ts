@@ -11,6 +11,7 @@ import {
     User,
     Version
 } from "@savagelabs/types";
+import {Webhook} from "@savagelabs/types/src/Webhook";
 export const USERS_COLLECTION = "users";
 export const RESOURCES_COLLECTION = "resources";
 export const CATEGORIES_COLLECTION = "categories";
@@ -58,7 +59,7 @@ export const getPayments = () => {
 }
 
 export const getWebhooks = () => {
-    return getDatabase().collection<Review>(REVIEWS_COLLECTION);
+    return getDatabase().collection<Webhook>(WEBHOOKS_COLLECTION);
 }
 
 export const getDownloads = () => {

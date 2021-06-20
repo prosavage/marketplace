@@ -92,7 +92,7 @@ app.use("/directory", directoryRouter);
 app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
 app.use("/checkout", checkoutRouter);
-app.use("/userwebhooks", webhookRouter);
+app.use("/webhooks", webhookRouter);
 app.use("/account/icon", userIconRouter);
 app.use("/team/settings", teamSettingsRouter);
 app.use("/team/icon", teamIconRouter);

@@ -14,6 +14,10 @@ export const handleAxiosErr = (err: AxiosError) => {
     toast.error(err.response.data.error)
 }
 
+export const IsErrorMessage = (err: AxiosError, message: string) => {
+    return (err.response.data?.error === message)
+}
+
 
 export const errorParser = (errorMap: Error[]) => {
     return errorMap.map(error => `${error.param}: ${error.msg}`)

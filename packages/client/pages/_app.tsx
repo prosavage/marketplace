@@ -93,6 +93,7 @@ function WrappedApp({ Component, pageProps }) {
       <Head>
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <title>Marketplace</title>
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />

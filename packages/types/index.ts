@@ -27,7 +27,7 @@ import {
   UserStats,
 } from "./src/User";
 import { Version } from "./src/Version";
-import { Webhook } from "./src/Webhook";
+import { OldWebhook } from "./src/Webhook";
 
 export type {
   TeamInviteWithTeam,

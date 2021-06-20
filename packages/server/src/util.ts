@@ -1,8 +1,9 @@
 import { Resource, Team } from "@savagelabs/types";
+import {CustomValidator} from "express-validator";
+import shortid from "shortid";
 
 export const canUseResource = (resource: Resource, teams: Team[]) => {
     
-    console.log(resource.owner, teams.map(t => t?._id))
     for (const team of teams) {
         if (!team) continue;
 
@@ -12,3 +13,7 @@ export const canUseResource = (resource: Resource, teams: Team[]) => {
     }
     return false;
 }
+
+export const isShortId: CustomValidator = value => {
+    return shortid.isValid(value);
+};
