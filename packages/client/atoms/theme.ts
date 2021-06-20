@@ -1,8 +1,8 @@
 import {atom} from "recoil";
-import DarkTheme from "../styles/theme/DarkTheme";
 import ITheme from "../styles/theme/ITheme";
+import LightTheme from "../styles/theme/LightTheme";
 
 export const themeState = atom<ITheme>({
     key: "THEME",
-    default: DarkTheme
+    default: LightTheme
 })
