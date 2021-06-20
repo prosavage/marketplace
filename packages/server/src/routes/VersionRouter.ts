@@ -14,6 +14,7 @@ import {
 } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { bunny, getDatabase } from "../server";
+import {sendUpdate} from "../struct/WebhookUtil";
 
 const versionRouter = express.Router();
 
@@ -133,6 +134,8 @@ versionRouter.put(
     getDatabase()
       .collection(RESOURCES_COLLECTION)
       .updateOne({ _id: resource._id }, { $set: { updated: new Date() } });
+
+    sendUpdate(version, resource, req.user);
     res.success({ result: result.data });
   }
 );
