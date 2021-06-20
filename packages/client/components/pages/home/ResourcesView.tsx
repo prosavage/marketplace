@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {ResourceType} from "../../../types/Resource";
+import {ResourceType} from "@savagelabs/types";
 import Categories from "./categories/Categories";
 import ResourceList from "./resourcelist/ResourceList";
 
@@ -11,7 +11,7 @@ export default function ResourcesView(props: { type: ResourceType, category: str
                 <Categories type={props.type} category={props.category}/>
             </CategoriesContainer>
             <ResourcesContainer>
-                <ResourceList type={props.type} category={props.category} author={undefined}/>
+                <ResourceList type={props.type} category={props.category} team={undefined}/>
             </ResourcesContainer>
         </Content>
     );

@@ -1,0 +1,13 @@
+{
+  "name": "@savagelabs/types",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import PropsTheme from "../../styles/theme/PropsTheme";
 
 const Button = styled.button`
@@ -13,9 +13,21 @@ const Button = styled.button`
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.28);
 
   transition: 250ms ease-in-out;
+
+  
+
   &:hover {
     border: 1px solid ${(props: PropsTheme) => props.theme.accentColor};
   }
+
+
+  ${(props: {disabled?: boolean}) => props.disabled && css`
+    color: ${(props: PropsTheme) => props.theme.borderColor};
+
+    &:hover {
+    border: 1px solid ${(props: PropsTheme) => props.theme.borderColor};
+  }
+  `}
 `;
 
 export default Button;

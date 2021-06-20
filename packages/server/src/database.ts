@@ -1,5 +1,7 @@
 import {
     DOWNLOADS_COLLECTION,
+    getInvites,
+    getTeams,
     PAYMENTS_COLLECTION,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION,
@@ -8,9 +10,7 @@ import {
     VERSIONS_COLLECTION,
 } from "./constants";
 import {getDatabase, tokenMap} from "./server";
-import Download from "./types/Download";
-import {Resource} from "./types/Resource";
-import {Review} from "./types/Review";
+import {Resource, Download, Review} from "@savagelabs/types";
 
 const ensureIndexes = async () => {
     // indexes will only build if they do not exist.
@@ -61,6 +61,12 @@ const ensureIndexes = async () => {
 
     // indexer for searching by user + version for downloads
     await getDatabase().collection<Download>(DOWNLOADS_COLLECTION).createIndex({user: 1, version: 1})
+
+
+    await getInvites().createIndex({invitee: 1})
+    
+    await getTeams().createIndex({owner: 1})
+    await getTeams().createIndex({members: 1})
 
 };
 

@@ -3,11 +3,13 @@ import styled from "styled-components";
 import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
 
 export default function Webhooks() {
+
+    
+
+
     return <>
         <DashboardNavbar/>
-        <Wrapper>
-            <h1>Webhooks</h1>
-        </Wrapper>
+
     </>
 }
 
@@ -15,5 +17,5 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 1em 0;
+    padding: 1em;
 `

@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { themeState } from "../../../atoms/theme";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
+import { Resource } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import { formatNumber } from "../../../util/Format";
 import useToast from "../../../util/hooks/useToast";

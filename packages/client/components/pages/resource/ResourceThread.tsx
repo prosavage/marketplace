@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import {Resource} from "../../../types/Resource";
+import {Resource} from "@savagelabs/types";
 import parser from "./../../../util/parser/Parser";
 
 

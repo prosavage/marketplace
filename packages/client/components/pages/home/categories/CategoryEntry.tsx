@@ -1,8 +1,8 @@
 import Link from "next/link";
 import styled, {css} from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import {Category} from "../../../../types/Category";
-import {ResourceType} from "../../../../types/Resource";
+import {Category} from "@savagelabs/types";
+import {ResourceType} from "@savagelabs/types";
 
 function CategoryEntry(props: { type: ResourceType; category: Category, selected: boolean }) {
     return (

@@ -3,19 +3,16 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import {DirectoryResource} from "../../../../types/Resource";
+import {DirectoryResource} from "@savagelabs/types";
 import ResourceIcon from "../../../ui/ResourceIcon";
 import AuthorIcon from "../../../ui/AuthorIcon";
+import TeamIcon from "../../../ui/TeamIcon";
+import { teamState } from "../../../../atoms/team";
 
 export default function FeaturedPluginEntry(props: { resource: DirectoryResource }) {
 
     const router = useRouter();
 
-    const [author, setAuthor] = useState("ProSavage")
-
-    useEffect(() => {
-        setAuthor("ProSavage");
-    }, [])
 
     return (
         <Tilt
@@ -34,9 +31,9 @@ export default function FeaturedPluginEntry(props: { resource: DirectoryResource
                         <h3>{props.resource.name}</h3>
                         <DescText>{props.resource.description}</DescText>
                     </TextWrapper>
-                    <AuthorWrapper onClick={() => router.push(`/users/${props.resource.owner}`)}>
-                        <AuthorIcon size={"25px"} user={props.resource.owner}/>
-                        <AuthorName>{author}</AuthorName>
+                    <AuthorWrapper onClick={() => router.push(`/team/${props.resource.owner._id}`)}>
+                        <TeamIcon size={"25px"} team={props.resource.owner}/>
+                        <AuthorName>{props.resource.owner.name}</AuthorName>
                     </AuthorWrapper>
                 </RightWrapper>
             </Wrapper>

@@ -8,9 +8,8 @@ import mongodb from "mongodb";
 import morgan from "morgan";
 import { BunnyCDNStorage } from "./bunnycdn";
 import ensureIndexes, { readTokens } from "./database";
-import betterResponse from "./middleware/ResponseFunctions";
+import injectReqResTypes from "./middleware/ReqResTypeInit";
 import userIconRouter from "./routes/account/UserIconRouter";
-import userSettingsRouter from "./routes/account/UserSettingsRouter";
 import authRouter from "./routes/AuthRouter";
 import categoryRouter from "./routes/CategoryRouter";
 import checkoutRouter from "./routes/checkout/CheckoutRouter";
@@ -20,7 +19,11 @@ import resourceRouter from "./routes/resources/ResourceRouter";
 import reviewRouter from "./routes/ReviewRouter";
 import versionRouter from "./routes/VersionRouter";
 import webhookRouter from "./routes/WebhookRouter";
-import { User } from "./types/User";
+import { User } from "@savagelabs/types/index";
+import teamIconRouter from "./routes/team/TeamIconRouter";
+import teamSettingsRouter from "./routes/team/TeamSettingsRouter";
+import teamRouter from "./routes/team/TeamRouter";
+import teamInviteRouter from "./routes/team/TeamInviteRouter";
 
 dotenv.config();
 
@@ -72,7 +75,7 @@ app.use(Sentry.Handlers.tracingHandler());
 app.use(cors());
 app.use(fileUpload());
 app.use(morgan("tiny"));
-app.use(betterResponse);
+app.use(injectReqResTypes);
 
 // stripe webhook router needs to use body parser for signatures
 // the rest of the stuff just uses express.json()
@@ -89,9 +92,12 @@ app.use("/directory", directoryRouter);
 app.use("/version", versionRouter);
 app.use("/review", reviewRouter);
 app.use("/checkout", checkoutRouter);
-app.use("/userwebhooks", webhookRouter);
+app.use("/webhooks", webhookRouter);
 app.use("/account/icon", userIconRouter);
-app.use("/account/settings", userSettingsRouter);
+app.use("/team/settings", teamSettingsRouter);
+app.use("/team/icon", teamIconRouter);
+app.use("/team", teamRouter);
+app.use("/invite", teamInviteRouter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });

@@ -6,6 +6,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { RecoilRoot, useRecoilState } from "recoil";
 import styled, { ThemeProvider } from "styled-components";
+import { PersonalUser } from "../../types";
+import { teamState } from "../atoms/team";
 import { themeState } from "../atoms/theme";
 import { userState } from "../atoms/user";
 import Footer from "../components/ui/Footer";
@@ -26,18 +28,31 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export function reportWebVitals(metric: NextWebVitalsMetric) {}
+export function reportWebVitals(metric: NextWebVitalsMetric) { }
 
 function WrappedApp({ Component, pageProps }) {
   const [theme, setTheme] = useRecoilState(themeState);
   const [storedTheme, setStoredTheme] = useStoredTheme();
   const [user, setUser] = useRecoilState(userState);
+  const [team, setTeam] = useRecoilState(teamState);
 
   useEffect(() => {
     setTheme(storedTheme);
   }, [storedTheme]);
 
   const router = useRouter();
+
+  const fetchTeam = (user: PersonalUser) => {
+    getAxios().get("/directory/team/by-member/" + user._id).then(res => {
+      if (res.data.payload.team !== null) {
+        setTeam(res.data.payload.team)
+        console.log("fetched and set team atom.")
+      } else {
+        setTeam([])
+        console.log("not a team member.")
+      }
+    })
+  }
 
   useEffect(() => {
     if (user) {
@@ -58,6 +73,7 @@ function WrappedApp({ Component, pageProps }) {
         setUser(res.data.payload.user);
         buildAxios();
         console.log("successfully logged in using localstorage token.");
+        fetchTeam(res.data.payload.user)
       })
       .catch((err) => {
         if (err.response.data.errors) {
@@ -77,6 +93,7 @@ function WrappedApp({ Component, pageProps }) {
       <Head>
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <title>Marketplace</title>
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
@@ -86,12 +103,12 @@ function WrappedApp({ Component, pageProps }) {
           stopDelayMs={10}
           height={3}
         />
-          <PageContainer>
-            <Navbar />
-            <Component {...pageProps} />
-            <Footer />
-          </PageContainer>
-          <ToastContainer position={"bottom-right"} />
+        <PageContainer>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </PageContainer>
+        <ToastContainer position={"bottom-right"} />
       </ThemeProvider>
     </>
   );

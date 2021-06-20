@@ -5,7 +5,7 @@ import {isValidBody} from "../../../middleware/BodyValidate";
 import {getDatabase} from "../../../server";
 import getStripeAPI from "./StripeAPI";
 import shortid from "shortid";
-import {Seller} from "../../../types/User";
+import {Seller} from "@savagelabs/types";
 import {body} from "express-validator";
 
 const stripeSetupRouter = express.Router();
@@ -60,15 +60,14 @@ stripeSetupRouter.get(
     "/verify",
     [Authorize, isValidBody],
     async (req: Request, res: Response) => {
+        console.log(req.user!!._id)
         const seller = await getDatabase()
             .collection<Seller>(SELLER_COLLECTION)
             .findOne({user: req.user!!._id});
-
         if (seller === null) {
             res.failure("seller not found.");
             return;
         }
-
         const account = await getStripeAPI().accounts.retrieve(
             seller.stripe_account,
             undefined,

@@ -2,6 +2,7 @@
   "name": "marketplace",
   "private": true,
   "scripts": {
+    "build-docker": "docker build -t prosavage/marketplace-server:latest .",
     "docker": "docker build -t prosavage/marketplace-server:latest . && docker push prosavage/marketplace-server:latest"
   },
   "workspaces": [

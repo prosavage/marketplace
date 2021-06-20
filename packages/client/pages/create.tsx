@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
-import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import React, {useEffect, useState} from "react";
+import {useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
 import { themeState } from "../atoms/theme";
 import BBCodeEditor from "../components/pages/create/BBCodeEditor";
@@ -13,8 +13,8 @@ import ResourceMetadataForm, {
 import Button from "../components/ui/Button";
 import { Option } from "../components/ui/CategorySelect";
 import Input from "../components/ui/Input";
-import { Resource } from "../types/Resource";
-import { Version } from "../types/Version";
+import { Resource } from "@savagelabs/types";
+import { Version } from "@savagelabs/types";
 import getAxios from "../util/AxiosInstance";
 import DefaultThread from "../util/DefaultThread";
 import useToast from "../util/hooks/useToast";
@@ -24,15 +24,20 @@ import {
   validateResourceTitle,
   validateResourceVersion,
 } from "../util/Validation";
+import {teamState} from "../atoms/team";
+import PropsTheme from "../styles/theme/PropsTheme";
+import {FlexCol} from "../components/ui/FlexRow";
+import {userState} from "../atoms/user";
+import { handleAxiosErr } from "../util/ErrorParser";
 
 export default function Create() {
-  const [theme, setTheme] = useRecoilState(themeState);
-
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
 
   const [category, setCategory] = useState<Option>();
+
+  // const [select, setSelect] = useState<string | undefined>();
 
   const [resourceMetadata, setResourceMetadata] = useState<ResourceMetadata>({
     title: "",
@@ -45,6 +50,21 @@ export default function Create() {
   const [file, setFile] = useState<File>();
 
   const toast = useToast();
+
+  const teams = useRecoilValue(teamState);
+
+  const user = useRecoilValue(userState);
+
+  useEffect(() => {
+    if (!teams || !user) return;
+    if (teams.length === 0 || !teams.map(t => t.owner).includes(user._id)) {
+      router.push("/team/create")
+      toast("Create a team first...")
+      return
+    }
+    // setSelect(teams[0]!!._id)
+  }, [])
+
 
   const validateInput = () => {
     if (!validateResourceTitle(resourceMetadata.title)) {
@@ -103,7 +123,11 @@ export default function Create() {
         NProgress.set(0.5);
         sendFile(version, resource);
       })
-      .catch((err) => console.log(err, err.response));
+      .catch((err) => {
+        handleAxiosErr(err)
+        setSubmitting(false)
+        NProgress.done();
+      });
   };
 
   const sendFile = (version: Version, resource: Resource) => {
@@ -121,7 +145,8 @@ export default function Create() {
       })
       .catch((err) => {
         NProgress.done();
-        toast(err.response.data.error);
+        setSubmitting(false)
+        handleAxiosErr(err)
       });
   };
 
@@ -156,6 +181,23 @@ export default function Create() {
             />
           </InputContainer>
         </PaddedHContainer>
+        {/*<PaddedHContainer>*/}
+        {/* <FlexCol>*/}
+        {/*   <label>Resource Team</label>*/}
+        {/*   <Select*/}
+        {/*       name={"resource"}*/}
+        {/*       value={select}*/}
+        {/*       onChange={(e) => setSelect(e.target.value)}*/}
+        {/*   >*/}
+        {/*     {teams?.map((team) => (*/}
+        {/*         <option key={team._id} value={team._id}>*/}
+        {/*           {team.name}*/}
+        {/*         </option>*/}
+        {/*     ))}*/}
+        {/*   </Select>*/}
+        {/* </FlexCol>*/}
+
+        {/*</PaddedHContainer>*/}
         <PaddedHContainer>
           <Button
             style={{ margin: "1em 0" }}
@@ -184,6 +226,19 @@ const Wrapper = styled.form`
   flex-direction: column;
   width: 100%;
   padding: 1em 0;
+`;
+
+const Select = styled.select`
+  padding: 10px 0;
+  margin: .5em 0;
+  border-radius: 5px;
+  border-color: ${(props: PropsTheme) => props.theme.accentColor};
+  background: transparent;
+  color: ${(props: PropsTheme) => props.theme.color};
+
+  option {
+    color: black;
+  }
 `;
 
 const HContainer = styled.div`

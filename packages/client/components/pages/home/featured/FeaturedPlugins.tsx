@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
-import { DirectoryResource } from "../../../../types/Resource";
+import { DirectoryResource } from "@savagelabs/types";
 import getAxios from "../../../../util/AxiosInstance";
 import FeaturedPluginEntry from "./FeaturedPluginEntry";
 
@@ -32,7 +32,9 @@ export default function FeaturedPlugins() {
       <Header>
         <h2>Featured Resources</h2>
       </Header>
-      <ContentWrapper>{renderResources()}</ContentWrapper>
+      <ContentWrapper>
+        {renderResources()}
+        </ContentWrapper>
     </Wrapper>
   );
 }

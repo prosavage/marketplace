@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../atoms/user";
-import DiscordIntegration from "../components/pages/account/DiscordIntegration";
+import DiscordIntegration from "../components/pages/team/DiscordIntegration";
 import ProfilePicture from "../components/pages/account/ProfilePicture";
+import { TeamInvites } from "../components/pages/account/TeamInvite";
 import Button from "../components/ui/Button";
 import getAxios from "../util/AxiosInstance";
 import useToast from "../util/hooks/useToast";
@@ -93,6 +94,11 @@ export default function Account(props) {
           </Row>
         </VSpace>
         <VSpace>
+          <h1>Team Invites</h1>
+          <hr />
+          <TeamInvites />
+        </VSpace>
+        <VSpace>
           <h1>Payments</h1>
           <hr />
         </VSpace>
@@ -102,11 +108,6 @@ export default function Account(props) {
             <Button onClick={connectStripe}>Connect Stripe</Button>
           </Row>
           <Row>{getStripeIntegration()}</Row>
-        </VSpace>
-        <VSpace>
-          <h1>Integration</h1>
-          <hr />
-          <DiscordIntegration />
         </VSpace>
       </Wrapper>
     </>

@@ -1,3 +1,4 @@
+import { Category, Resource, Role } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -11,13 +12,11 @@ import {
 import {
   atleastRole,
   Authorize,
+  FetchTeam,
   hasPermissionForResource,
 } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { getDatabase } from "../../server";
-import { Role } from "../../struct/Role";
-import { Category } from "../../types/Category";
-import { Resource } from "../../types/Resource";
 import resourceIconRouter from "./ResourceIconRouter";
 
 const resourceRouter = express.Router();
@@ -44,6 +43,7 @@ resourceRouter.patch(
     body("name").isString().bail().isLength({ min: 4, max: 50 }),
     body("thread").isString(),
     Authorize,
+    FetchTeam,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
   ],
@@ -105,8 +105,9 @@ resourceRouter.put(
       "version.description",
       "version.version",
     ]).isString(),
-    Authorize,
     isValidBody,
+    Authorize,
+    FetchTeam
   ],
   async (req: Request, res: Response) => {
     const resource = req.body;
@@ -125,6 +126,12 @@ resourceRouter.put(
 
     const resourceId = shortid.generate();
 
+
+    if (!req.team.owned) {
+      res.failure("You do not own a team, and can only post resources as a team owner.");
+      return;
+    }
+
     const resourceToAdd: Resource = {
       _id: resourceId,
       name: resource.name,
@@ -134,8 +141,8 @@ resourceRouter.put(
       rating: 0,
       hasIcon: false,
       price: resource.price,
+      owner: req.team.owned._id,
       thread: resource.thread,
-      owner: req.user!!._id,
       updated: resource.updated,
       type: category.type,
       downloads: 0,

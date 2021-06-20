@@ -1,3 +1,4 @@
+import { Team } from "@savagelabs/types/src/Team";
 import {User} from "../src/types/User";
 
 declare global {
@@ -7,6 +8,11 @@ declare global {
     namespace Express {
         interface Request {
             user?: User
+            team: {
+                owned?: Team
+                memberOf: Team[]
+                getAllTeams: () => Team[]
+            }
         }
 
         interface Response {

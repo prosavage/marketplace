@@ -1,19 +1,16 @@
+import { Download, Resource, User, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
-
 import shortid from "shortid";
 import {
   DOWNLOADS_COLLECTION,
   RESOURCES_COLLECTION,
   VERSIONS_COLLECTION,
 } from "../../constants";
-import { Authorize } from "../../middleware/Authenticate";
+import { Authorize, FetchTeam } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
-import Download from "../../types/Download";
-import { Resource } from "../../types/Resource";
-import { User } from "../../types/User";
-import { Version } from "../../types/Version";
+import { canUseResource } from "../../util";
 
 const directoryVersionRouter = express.Router();
 
@@ -43,8 +40,9 @@ directoryVersionRouter.get(
   "/download/:version",
   [
     param("version").custom((id) => shortid.isValid(id)),
-    Authorize,
     isValidBody,
+    Authorize,
+    FetchTeam
   ],
   async (req: Request, res: Response) => {
     const versionId = req.params.version as string;
@@ -66,8 +64,10 @@ directoryVersionRouter.get(
       res.failure("resource not found.");
       return;
     }
-
-    if (resource.price !== 0 && !req.user!!.purchases.includes(resource?._id)) {
+    console.log(req.team, canUseResource(resource, req.team.getAllTeams()))
+    if (resource.price !== 0 
+      && !req.user!!.purchases.includes(resource?._id) 
+      && !canUseResource(resource, req.team.getAllTeams())) {
       res.failure("You do not own this resource.");
       return;
     }

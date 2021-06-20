@@ -1,8 +1,7 @@
 import Axios, {AxiosInstance} from "axios";
 import {UploadedFile} from "express-fileupload";
 
-import {Resource} from "../types/Resource";
-import {Version} from "../types/Version";
+import {Resource, Version} from "@savagelabs/types";
 
 
 export class BunnyCDNStorage {
@@ -36,6 +35,11 @@ export class BunnyCDNStorage {
         return `users/${userId}`
     }
 
+    getTeamPath = (teamId: string) => {
+        return `team/${teamId}`
+    }
+
+
     getResourceIconById = (resourceId: string) => {
         return this.getFile(this.getResourcePath(resourceId), "icon.png")
     }
@@ -60,12 +64,24 @@ export class BunnyCDNStorage {
         return this.getFile(this.getUserPath(resourceId), "icon.png")
     }
 
+    getTeamIconById = (resourceId: string) => {
+        return this.getFile(this.getTeamPath(resourceId), "icon.png")
+    }
+
     putUserIconById = (resourceId: string, file: any) => {
         return this.putFile(this.getUserPath(resourceId), "icon.png", file);
     }
 
+    putTeamIconById = (resourceId: string, file: any) => {
+        return this.putFile(this.getTeamPath(resourceId), "icon.png", file);
+    }
+
     deleteUserIconById = (resourceId: string) => {
         return this.deleteFile(this.getUserPath(resourceId), "icon.png")
+    }
+
+    deleteTeamIconById = (resourceId: string) => {
+        return this.deleteFile(this.getTeamPath(resourceId), "icon.png")
     }
 
     getUserIconByResource = (resource: Resource) => {

@@ -1,3 +1,4 @@
+import { Role, User } from "@savagelabs/types";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import express, { Request, Response } from "express";
@@ -7,8 +8,6 @@ import { TOKENS_COLLECTION, USERS_COLLECTION } from "../constants";
 import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase, tokenMap } from "../server";
-import { Role } from "../struct/Role";
-import { User } from "../types/User";
 
 const authRouter = express.Router();
 
@@ -36,7 +35,6 @@ authRouter.post(
       user: {
         _id: user._id,
         username: user.username,
-        discordServerId: user.discordServerId,
         hasIcon: user.hasIcon,
       },
     });
@@ -83,7 +81,6 @@ authRouter.post(
   async (req: Request, res: Response) => {
     const user: User = req.body;
     user.role = Role.USER;
-    user.discordServerId = undefined;
     user._id = shortid.generate();
     user.purchases = [];
 
@@ -112,7 +109,6 @@ authRouter.post(
       user: {
         _id: user._id,
         username: user.username,
-        discordServerId: user.discordServerId,
         hasIcon: user.hasIcon,
         purchases: user.purchases,
         role: user.role,

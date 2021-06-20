@@ -6,13 +6,14 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "../../../types/Resource";
-import { Version } from "../../../types/Version";
+import { Resource } from "@savagelabs/types";
+import { Version } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import getBaseURL from "../../../util/urlUtil";
 import Button from "../../ui/Button";
 import ResourceIcon from "../../ui/ResourceIcon";
+import { handleAxiosErr } from "../../../util/ErrorParser";
 
 export default function ResourceHeader(props: {
   resource: Resource;
@@ -68,7 +69,7 @@ export default function ResourceHeader(props: {
             .redirectToCheckout({ sessionId: res.data.payload.session.id })
             .then((res) => console.log(res.error.message));
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => handleAxiosErr(err));
     }
   };
 
@@ -93,7 +94,7 @@ export default function ResourceHeader(props: {
         <ContentContainer>
           <TextContainer>
             <HeaderContainer>
-              <h1>{props.resource?.name}</h1>
+              <ResourceHeaderText>{props.resource?.name}</ResourceHeaderText>
               <VersionText>v{props.version?.version}</VersionText>
             </HeaderContainer>
             <Description>{props.resource?.description}</Description>
@@ -105,6 +106,15 @@ export default function ResourceHeader(props: {
     </>
   );
 }
+
+
+const ResourceHeaderText = styled.h1`
+  word-wrap: break-word;
+  @media(max-width: 400px) {
+    font-size: 20px;
+    max-width: 250px;
+  }
+`
 
 const TitleContainer = styled.div`
   display: flex;
@@ -139,6 +149,7 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+
 
   @media (max-width: 550px) {
     align-items: flex-start;
