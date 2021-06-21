@@ -177,8 +177,6 @@ export function hasPermissionForResource(
       return;
     }
 
-    
-
     if (
       req.team.owned?._id !== resource.owner && !req.team.memberOf.map((t: Team) => t._id).includes(resource.owner)
     ) {

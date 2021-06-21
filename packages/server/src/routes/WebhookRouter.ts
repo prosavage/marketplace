@@ -2,7 +2,7 @@ import express, {Request, Response} from "express";
 import {body, param} from "express-validator";
 import shortid from "shortid";
 import {isValidBody} from "../middleware/BodyValidate";
-import {Authorize, hasPermissionForResource} from "../middleware/Authenticate";
+import {Authorize, FetchTeam, hasPermissionForResource} from "../middleware/Authenticate";
 import {Role, Version, Webhook} from "@savagelabs/types";
 import {getResources, getWebhooks, WEBHOOKS_COLLECTION} from "../constants";
 import {getDatabase} from "../server";
@@ -15,7 +15,9 @@ webhookRouter.get(
     "/:resource",
     [
         param("resource").custom((v) => shortid.isValid(v)),
-        Authorize, hasPermissionForResource("resource", Role.MODERATOR),
+        Authorize, 
+        FetchTeam,
+        hasPermissionForResource("resource", Role.MODERATOR),
         isValidBody
     ],
     async (req: Request, res: Response) => {
@@ -37,6 +39,7 @@ webhookRouter.put(
         body("url").isURL(),
         Authorize,
         isValidBody,
+        FetchTeam,
         hasPermissionForResource("resource", Role.MODERATOR),
     ],
     async (req: Request, res: Response) => {
@@ -61,6 +64,7 @@ webhookRouter.delete(
         body("resource").custom((v) => shortid.isValid(v)),
         Authorize,
         isValidBody,
+        FetchTeam,
         hasPermissionForResource("resource", Role.MODERATOR),
     ],
     async (req: Request, res: Response) => {
@@ -89,6 +93,7 @@ webhookRouter.get("/:resource/test",
     [param("resource").custom((v) => shortid.isValid(v)),
         isValidBody,
         Authorize,
+        FetchTeam,
         hasPermissionForResource("resource", Role.MODERATOR)
     ],
     async (req: Request, res: Response) => {
@@ -123,48 +128,5 @@ webhookRouter.get("/:resource/test",
 )
 
 
-webhookRouter.patch(
-    "/:id",
-    [
-        body(["url"]).isString(),
-        param("resource").custom((v) => shortid.isValid(v)),
-        Authorize,
-        isValidBody,
-    ],
-    async (req: Request, res: Response) => {
-        const body = req.body;
-        const id = req.params.id;
-
-        const webhook = await getDatabase()
-            .collection<Webhook>(WEBHOOKS_COLLECTION)
-            .findOne({_id: id, user: req.user!!._id});
-
-        if (webhook === null) {
-            res.failure("webhook not found");
-            return;
-        }
-
-        await getDatabase()
-            .collection<Webhook>(WEBHOOKS_COLLECTION)
-            .updateOne(
-                {_id: id},
-                {
-                    $set: {
-                        url: body.url,
-                        events: body.events,
-                        name: body.name,
-                        secret: body.secret,
-                        active: body.active,
-                    },
-                }
-            );
-
-        const updatedWebhook = await getDatabase()
-            .collection<Webhook>(WEBHOOKS_COLLECTION)
-            .findOne({_id: id, user: req.user!!._id});
-
-        res.success({updatedWebhook});
-    }
-);
 
 export default webhookRouter;
