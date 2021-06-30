@@ -1,7 +1,6 @@
 import {
   Resource,
   Role,
-  Team,
 } from "@savagelabs/types";
 import {
   NextFunction,
