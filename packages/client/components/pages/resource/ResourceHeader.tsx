@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../../atoms/user";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import { Resource } from "@savagelabs/types";
+import { Resource, Team } from "@savagelabs/types";
 import { Version } from "@savagelabs/types";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
@@ -14,6 +14,7 @@ import getBaseURL from "../../../util/urlUtil";
 import Button from "../../ui/Button";
 import ResourceIcon from "../../ui/ResourceIcon";
 import { handleAxiosErr } from "../../../util/ErrorParser";
+import { teamState } from "../../../atoms/team";
 
 export default function ResourceHeader(props: {
   resource: Resource;
@@ -24,7 +25,8 @@ export default function ResourceHeader(props: {
     let text;
     if (
       props.resource?.price === 0 ||
-      user?.purchases?.includes(props.resource?._id)
+      user?.purchases?.includes(props.resource?._id) ||
+      canUseResource(props.resource, teams)
     ) {
       text = "Download";
     } else {
@@ -48,6 +50,8 @@ export default function ResourceHeader(props: {
   const router = useRouter();
 
   const user = useRecoilValue(userState);
+
+  const teams = useRecoilValue(teamState)
 
   const onDownload = async () => {
     if (
@@ -106,6 +110,19 @@ export default function ResourceHeader(props: {
     </>
   );
 }
+
+export const canUseResource = (resource: Resource, teams: Team[]) => {
+    
+  for (const team of teams) {
+      if (!team) continue;
+
+      if (resource.owner === team._id) {
+          return true;
+      }
+  }
+  return false;
+}
+
 
 
 const ResourceHeaderText = styled.h1`
