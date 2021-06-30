@@ -111,8 +111,8 @@ export default function ResourceHeader(props: {
   );
 }
 
-export const canUseResource = (resource: Resource | undefined, teams: Team[]) => {
-  if (!resource) return false;
+export const canUseResource = (resource: Resource | undefined, teams: Team[] | undefined) => {
+  if (!resource || !teams) return false;
   for (const team of teams) {
       if (!team) continue;
 
