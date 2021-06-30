@@ -8,9 +8,10 @@ import {
   VERSIONS_COLLECTION,
 } from "../constants";
 import { updateResourceRating } from "../database";
-import { Authorize } from "../middleware/Authenticate";
+import { Authorize, FetchTeam } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase } from "../server";
+import { canUseResource } from "../util";
 
 const reviewRouter = express.Router();
 
@@ -22,6 +23,7 @@ reviewRouter.put(
     body(["resource"]).custom((id) => shortid.isValid(id)),
     Authorize,
     isValidBody,
+    FetchTeam
   ],
   async (req: Request, res: Response) => {
     const body = req.body;
@@ -57,7 +59,8 @@ reviewRouter.put(
       .collection(RESOURCES_COLLECTION)
       .findOne({ _id: body.resource });
 
-    if (resource.owner === req.user?._id) {
+
+    if (canUseResource(resource, req.team.getAllTeams())) {
       res.failure("You cannot review your own resource!");
       return;
     }
