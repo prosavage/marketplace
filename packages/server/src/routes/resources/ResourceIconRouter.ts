@@ -5,6 +5,7 @@ import shortid from "shortid";
 import { RESOURCES_COLLECTION } from "../../constants";
 import {
   Authorize,
+  FetchTeam,
   hasPermissionForResource,
 } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
@@ -30,6 +31,7 @@ resourceIconRouter.put(
   [
     param("id").custom((id) => shortid.isValid(id)),
     Authorize,
+    FetchTeam,
     hasPermissionForResource("id", Role.ADMIN),
     isValidBody,
   ],

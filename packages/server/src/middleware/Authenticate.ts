@@ -17,6 +17,7 @@ import {
   getDatabase,
   tokenMap,
 } from "../server";
+import { canUseResource } from "../util";
 
 
 export const FetchTeam =
@@ -177,8 +178,9 @@ export function hasPermissionForResource(
       return;
     }
 
+    console.log(req.team)
     if (
-      req.team.owned?._id !== resource.owner && !req.team.memberOf.map((t: Team) => t._id).includes(resource.owner)
+      !canUseResource(resource, req.team.getAllTeams())
     ) {
       res.failure(
         "You do not have permission to access this resource."
