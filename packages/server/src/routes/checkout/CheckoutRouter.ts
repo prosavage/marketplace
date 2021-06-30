@@ -101,13 +101,16 @@ checkoutRouter.post(
       success_url: `${req.body.baseurl}/checkout/success`,
       cancel_url: `${req.body.baseurl}/checkout/cancel`,
     });
+
+
+
     const payment: Payment = {
       _id: shortid.generate(),
       timestamp: new Date(),
       amount: price,
       user: req.user!!._id,
       payment_intent: session.payment_intent!!.toString(),
-      recipient: resource.owner,
+      recipient: ownerUser._id,
       resource: resource._id,
       status: PaymentStatus.STARTED,
     };
