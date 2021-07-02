@@ -53,6 +53,13 @@ resourceIconRouter.put(
       return;
     }
 
+    const FIVE_HUNDRED_KB = 500000
+
+    if (icon.size >= FIVE_HUNDRED_KB) {
+      res.failure("Profile picture is too large, max limit is 500kb.")
+      return;
+    }
+
     const dbId = req.params.id as string;
 
     let getRes;

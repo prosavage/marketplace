@@ -239,7 +239,7 @@ const LinkWrapper = styled.div`
 
 const LinksWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   width: 100%;
   padding: 0 15px;

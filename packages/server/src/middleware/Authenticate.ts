@@ -9,6 +9,7 @@ import {
 } from "express";
 import {
   getTeams,
+  getUsers,
   RESOURCES_COLLECTION,
   USERS_COLLECTION,
 } from "../constants";
@@ -89,6 +90,36 @@ export const Authorize =
     req.user = user;
     next();
   };
+
+
+  export const AuthenticateWithBypass = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    
+      const token = req.headers.authorization;
+    if (!token) {
+      next();
+      return;
+    }
+    const userId = tokenMap.get(token);
+    if (!userId) {
+      res.failure("Invalid token.");
+      return;
+    }
+
+    const user = await getUsers().findOne({_id: userId,});
+    if (!user) {
+      res.failure("User was not found.");
+      return;
+    }
+
+
+    req.user = user;
+
+    next();
+  }
 
 export function atleastRole(
   role: Role
@@ -177,7 +208,6 @@ export function hasPermissionForResource(
       return;
     }
 
-    console.log(req.team)
     if (
       !canUseResource(resource, req.team.getAllTeams())
     ) {

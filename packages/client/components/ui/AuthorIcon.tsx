@@ -10,6 +10,7 @@ export default function AuthorIcon(props: {
     size: string;
     style?: CSSProperties;
     onClick?: () => void;
+    overrideSrc?: string;
 }) {
     const router = useRouter();
     // https://marketplace-savagelabs.b-cdn.net/resources/5fe543e4617b45c9499e40d1/icon.png
@@ -30,11 +31,19 @@ export default function AuthorIcon(props: {
         return props.user?.hasIcon || props.overrideUserId
     }
 
+    const getFileURL = () => {
+        if (props.overrideSrc) {
+          return props.overrideSrc
+        }
+    
+        return hasIcon() ? getAuthorIconURL(getUserID()) : fallback
+      }
+
     return (
         <img
             onClick={props.onClick}
             style={{borderRadius: "50%", ...props.style}}
-            src={hasIcon() ? getAuthorIconURL(getUserID()) : fallback}
+            src={getFileURL()}
             alt=""
             width={props.size}
             height={props.size}

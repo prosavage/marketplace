@@ -13,6 +13,7 @@ import {userState} from "../../../atoms/user";
 import useToast from "../../../util/hooks/useToast";
 import {handleAxiosErr} from "../../../util/ErrorParser";
 import DiscordIntegration from "./DiscordIntegration";
+import { fileToObjectURL } from "../../../util/urlUtil";
 
 interface TeamOverviewManagerProps {
     initTeam?: TeamWithUsers
@@ -37,12 +38,7 @@ export const TeamOverviewManager: React.FC<TeamOverviewManagerProps> = ({initTea
 
     const toast = useToast()
 
-    const fileToObjectURL = () => {
-        if (!icon) {
-            return undefined
-        }
-        return URL.createObjectURL(icon)
-    }
+   
 
     const applyIcon = () => {
         if (!icon) {
@@ -134,7 +130,7 @@ export const TeamOverviewManager: React.FC<TeamOverviewManagerProps> = ({initTea
                         <Button onClick={applyIcon}>APPLY</Button>
                     </IconApplyContainer>
                 </IconColumn>
-                <TeamIcon style={{marginTop: "1em"}} size={"100px"} team={team} overrideSrc={fileToObjectURL()}/>
+                <TeamIcon style={{marginTop: "1em"}} size={"100px"} team={team} overrideSrc={fileToObjectURL(icon)}/>
             </IconUpdateContainer>
             <DiscordIntegration/>
         </GeneralControls>
@@ -238,3 +234,5 @@ const IconColumn = styled(FlexCol)`
   /* justify-content: space-between; */
   padding-right: 1em;
 `
+
+

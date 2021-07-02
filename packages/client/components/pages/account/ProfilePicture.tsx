@@ -6,7 +6,10 @@ import styled from "styled-components";
 import { userState } from "../../../atoms/user";
 import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
+import { fileToObjectURL } from "../../../util/urlUtil";
+import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
+import { FlexRow } from "../../ui/FlexRow";
 import Input from "../../ui/Input";
 
 export default function ProfilePicture() {
@@ -65,8 +68,11 @@ export default function ProfilePicture() {
           accept={".png"}
           invalid={!file}
         />
-        <Button onClick={sendIcon}>Update</Button>
-        <Button onClick={deleteIcon}>Delete</Button>
+        <AuthorIcon style={{marginTop: "1em"}} size={"100px"} user={user} overrideSrc={fileToObjectURL(file)}/>
+        <Controls>
+          <Button onClick={sendIcon}>Update</Button>
+          <Button style={{marginLeft: "1em"}} onClick={deleteIcon}>Delete</Button>
+        </Controls>
       </Wrapper>
     </Container>
   );
@@ -74,10 +80,15 @@ export default function ProfilePicture() {
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   justify-content: space-between;
+  max-width: 450px;
 `;
+
+const Controls = styled(FlexRow)`
+  padding: 1em 0;
+`
 
 const Container = styled.div`
   display: flex;

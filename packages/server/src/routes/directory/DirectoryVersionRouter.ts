@@ -1,13 +1,14 @@
 import { Download, Resource, User, Version } from "@savagelabs/types";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { param } from "express-validator";
 import shortid from "shortid";
 import {
   DOWNLOADS_COLLECTION,
+  getVersions,
   RESOURCES_COLLECTION,
   VERSIONS_COLLECTION,
 } from "../../constants";
-import { Authorize, FetchTeam } from "../../middleware/Authenticate";
+import { AuthenticateWithBypass, Authorize, FetchTeam } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
 import { canUseResource } from "../../util";
@@ -41,15 +42,12 @@ directoryVersionRouter.get(
   [
     param("version").custom((id) => shortid.isValid(id)),
     isValidBody,
-    Authorize,
-    FetchTeam
+    AuthenticateWithBypass,
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const versionId = req.params.version as string;
 
-    const version = await getDatabase()
-      .collection<Version>(VERSIONS_COLLECTION)
-      .findOne({ _id: versionId });
+    const version = await getVersions().findOne({ _id: versionId });
 
     if (!version) {
       res.failure("version not found.");
@@ -64,13 +62,21 @@ directoryVersionRouter.get(
       res.failure("resource not found.");
       return;
     }
-    console.log(req.team, canUseResource(resource, req.team.getAllTeams()))
-    if (resource.price !== 0 
-      && !req.user!!.purchases.includes(resource?._id) 
+
+    if (resource.price !== 0 ) {
+      await Authorize(req, res, next);
+      await FetchTeam(req, res, next);
+      if (!req.user) {
+        res.failure("You must be logged in to download premium resources.");
+        return;
+      }
+      if (!req.user!!.purchases.includes(resource?._id) 
       && !canUseResource(resource, req.team.getAllTeams())) {
-      res.failure("You do not own this resource.");
-      return;
+        res.failure("You do not own this resource.");
+        return;
+      }
     }
+    
 
     try {
       const file = await bunny.getVersionFile(resource, version);

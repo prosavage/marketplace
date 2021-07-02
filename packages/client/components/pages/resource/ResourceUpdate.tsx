@@ -19,6 +19,7 @@ import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import ResourceVersionEntry from "./ResourceVersionEntry";
 import { handleAxiosErr } from "../../../util/ErrorParser";
+import Nprogress from "nprogress";
 
 export default function ResourceUpdate({
   resource,
@@ -60,6 +61,8 @@ export default function ResourceUpdate({
       return;
     }
 
+    Nprogress.start();
+
     getAxios()
       .put("/version", {
         title,
@@ -68,8 +71,14 @@ export default function ResourceUpdate({
         resource: resource?._id,
         isDev,
       })
-      .then((res) => sendFile(res.data.payload.version))
-      .catch((err) => handleAxiosErr(err));
+      .then((res) => {
+        sendFile(res.data.payload.version);
+        Nprogress.done();
+      })
+      .catch((err) => {
+        handleAxiosErr(err);
+        Nprogress.done();
+      });
   };
 
   const sendFile = (version: Version) => {

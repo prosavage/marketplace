@@ -79,10 +79,15 @@ authRouter.post(
     isValidBody,
   ],
   async (req: Request, res: Response) => {
-    const user: User = req.body;
-    user.role = Role.USER;
-    user._id = shortid.generate();
-    user.purchases = [];
+    const user: User  = {
+      _id: shortid.generate(),
+      role: Role.USER,
+      purchases: [],
+      email: req.body.email,
+      hasIcon: false,
+      username: req.body.username,
+      password: req.body.password
+    }
 
     let usersWithEmail = await getDatabase()
       .collection(USERS_COLLECTION)

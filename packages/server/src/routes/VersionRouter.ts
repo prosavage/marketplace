@@ -126,7 +126,24 @@ versionRouter.put(
 
     const file = req.files!!.resource as any;
 
-    const result = await bunny.putVersionFile(resource, version, file.data);
+    const FIVE_MB = 5000000
+
+    console.log(file.size, "bytes")
+
+    if (file.size >= FIVE_MB) {
+
+      res.failure("File size is too large, limited to 5 MB.");
+      return;
+    }
+
+    let result;
+    try {
+      result = await bunny.putVersionFile(resource, version, file.data);
+    } catch (err) {
+      console.log(err)
+      res.failure("Something went wrong uploading the file...")
+      return;
+    }
     getDatabase()
       .collection(VERSIONS_COLLECTION)
       .updateOne({ _id: version._id }, { $set: { fileName: file.name } });

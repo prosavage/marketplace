@@ -22,6 +22,8 @@ export default function Login() {
 
     const router = useRouter();
 
+    const [submitting, setSubmitting] = useState(false)
+
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,20 +35,22 @@ export default function Login() {
             setErr("invalid email or password.")
             return;
         }
-
-
+        setErr("")
         getAxios()
             .post("/auth/login", {
                 email: email,
                 password,
             })
             .then((res) => {
+                setSubmitting(false)
                 setToken(res.data.payload.token)
                 setUser(res.data.payload.user)
                 buildAxios()
                 fetchTeam(res.data.payload.user)
             })
-            .catch((err) => setErr(err.response.data.error));
+            .catch((err) => {
+              setErr(err.response.data.error)
+            });
     };
 
     const fetchTeam = (user: PersonalUser) => {
