@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { AccountViewParent } from "../../components/pages/account/account-view-parent/AccountViewParent";
-import ProfilePicture from "../../components/pages/account/ProfilePicture";
+import { AccountViewParent } from "../../components/views/account/account-view-parent/AccountViewParent";
+import ProfilePicture from "../../components/views/account/ProfilePicture";
 import NProgress from "nprogress";
 import getAxios from "../../util/AxiosInstance";
 import getBaseURL from "../../util/urlUtil";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import ResourceList from "../../components/pages/home/resourcelist/ResourceList";
-import UserHeader from "../../components/pages/users/UserHeader";
+import ResourceList from "../../components/views/home/resourcelist/ResourceList";
+import UserHeader from "../../components/views/users/UserHeader";
 import { ResourceType } from "@savagelabs/types";
 import { FUser, UserStats } from "@savagelabs/types";
 import getAxios from "../../util/AxiosInstance";

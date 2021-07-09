@@ -1,3 +1,4 @@
+import { ReleaseChannel } from "./ReleaseChannel";
 import { Resource } from "./Resource";
 import { User } from "./User";
 
@@ -11,4 +12,5 @@ export interface Version {
   resource: Resource["_id"];
   author: User["_id"];
   isDev: boolean;
+  releaseChannel: ReleaseChannel["_id"];
 }

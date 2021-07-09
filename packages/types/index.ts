@@ -5,6 +5,7 @@ import {
   Payment,
   PaymentStatus,
 } from "./src/Payment";
+import { ReleaseChannel } from "./src/ReleaseChannel";
 import {
   DirectoryResource,
   Resource,
@@ -49,6 +50,7 @@ export type {
   UserStats,
   TeamInviteWithUser,
   TeamWithUsers,
+  ReleaseChannel
 };
 export {
   Role,

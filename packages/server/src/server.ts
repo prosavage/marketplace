@@ -24,6 +24,7 @@ import teamIconRouter from "./routes/team/TeamIconRouter";
 import teamSettingsRouter from "./routes/team/TeamSettingsRouter";
 import teamRouter from "./routes/team/TeamRouter";
 import teamInviteRouter from "./routes/team/TeamInviteRouter";
+import releaseChannelRouter from "./routes/ReleaseChannelRouter";
 
 dotenv.config();
 
@@ -98,6 +99,7 @@ app.use("/team/settings", teamSettingsRouter);
 app.use("/team/icon", teamIconRouter);
 app.use("/team", teamRouter);
 app.use("/invite", teamInviteRouter);
+app.use("/releasechannel", releaseChannelRouter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.success({ hello: "there!" });

@@ -1,7 +1,7 @@
 import {Version} from "@savagelabs/types";
 import React, {useEffect, useState} from "react";
-import ResourceVersionEntry from "../../../../components/pages/resource/ResourceVersionEntry";
-import ResourceViewParent from "../../../../components/pages/resource/ResourceViewParent";
+import ResourceVersionEntry from "../../../../components/views/resource/ResourceVersionEntry";
+import ResourceViewParent from "../../../../components/views/resource/ResourceViewParent";
 import getAxios from "../../../../util/AxiosInstance";
 
 export default function ResourceId(props: { id: string; versionId: string }) {

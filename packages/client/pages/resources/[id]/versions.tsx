@@ -1,8 +1,8 @@
 import Head from "next/head";
 import {useRouter} from "next/router";
 import React from "react";
-import ResourceVersions from "../../../components/pages/resource/ResourceVersions";
-import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
+import ResourceVersions from "../../../components/views/resource/ResourceVersions";
+import ResourceViewParent from "../../../components/views/resource/ResourceViewParent";
 
 export default function ResourceId(props: { id: string }) {
 

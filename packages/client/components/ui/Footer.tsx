@@ -19,12 +19,10 @@ export default Footer;
 
 const Wrapper = styled.div`
   width: 100vw;
-  z-index: 1;
-  position: fixed;
   bottom: 0;
-
+  position: fixed;
   padding: 5px;
-
+  flex-shrink:0;
   /* Want a line instead of shadow in dark mode. */
   background: ${(props: PropsTheme) => props.theme.backgroundPrimary};
   border-top: 1px solid ${(props: PropsTheme) => props.theme.borderColor};

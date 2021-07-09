@@ -5,11 +5,11 @@ import React, {useEffect, useState} from "react";
 import {useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
 import { themeState } from "../atoms/theme";
-import BBCodeEditor from "../components/pages/create/BBCodeEditor";
-import ResourceExtraMetadata from "../components/pages/create/ResourceExtraMetadata";
+import BBCodeEditor from "../components/views/create/BBCodeEditor";
+import ResourceExtraMetadata from "../components/views/create/ResourceExtraMetadata";
 import ResourceMetadataForm, {
   ResourceMetadata,
-} from "../components/pages/create/ResourceMetadata";
+} from "../components/views/create/ResourceMetadata";
 import Button from "../components/ui/Button";
 import { Option } from "../components/ui/CategorySelect";
 import Input from "../components/ui/Input";

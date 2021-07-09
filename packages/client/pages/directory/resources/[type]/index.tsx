@@ -1,8 +1,8 @@
 import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
-import ResourcesView from "../../../../components/pages/home/ResourcesView";
-import SubNavbar from "../../../../components/pages/home/SubNavbar";
+import ResourcesView from "../../../../components/views/home/ResourcesView";
+import SubNavbar from "../../../../components/views/home/SubNavbar";
 import {ResourceType} from "@savagelabs/types";
 
 export default function Resources(props: { type: ResourceType }) {

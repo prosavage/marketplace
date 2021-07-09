@@ -6,12 +6,15 @@ import AuthorIcon from "../../ui/AuthorIcon";
 import Button from "../../ui/Button";
 import TeamIcon from "../../ui/TeamIcon";
 import React from "react";
+import { useRouter } from "next/router";
 
 export default function TeamHeader(props: {
     team: TeamWithUsers | undefined;
 }) {
 
     const toast = useToast();
+
+    const router = useRouter();
 
     return (
         <Wrapper>
@@ -25,7 +28,10 @@ export default function TeamHeader(props: {
                         <Date>Member since April 1, 2020</Date>
                     </MetaSubContainer>
                     <MembersContainer>
-                        {props.team?.members.concat(props.team?.owner).reverse().map(member => <IconContainer><AuthorIcon size={"50px"} user={member}/></IconContainer>
+                        {props.team?.members.concat(props.team?.owner).reverse().map(member => 
+                        <IconContainer onClick={() => router.push("/users/" + member._id)}>
+                          <AuthorIcon size={"50px"} user={member}/>
+                        </IconContainer>
                           )}
                     </MembersContainer>
                 </MetaContainer>
@@ -112,10 +118,9 @@ const MembersContainer = styled.div`
 
 const IconContainer = styled.div`
   margin-right: -10px;
-  /* @media (max-width: 400px) { */
-    /* margin-right: 0; */
-
-  /* } */
+  :hover {
+    cursor: pointer;
+  }
 `
 
 

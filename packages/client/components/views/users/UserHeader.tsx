@@ -23,7 +23,7 @@ export default function UserHeader(props: {
                         <Header>{props.user?.username}</Header>
                         <Date>Member since April 1, 2020</Date>
                     </MetaSubContainer>
-                    <StatsContainer>
+                    {/* <StatsContainer>
                         <Stat>
                             <h2>
                                 {props.stats?.resourceCount
@@ -48,7 +48,7 @@ export default function UserHeader(props: {
                             </h2>
                             <StatText>RATING</StatText>
                         </Stat>
-                    </StatsContainer>
+                    </StatsContainer> */}
                 </MetaContainer>
                 <ReportButton onClick={() => toast("Coming soon!")}>Report</ReportButton>
             </TextContainer>

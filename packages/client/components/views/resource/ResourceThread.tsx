@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import {Resource} from "@savagelabs/types";
-import parser from "./../../../util/parser/Parser";
+import parser from "../../../util/parser/Parser";
 
 
 export default function ResourceThread(props: {

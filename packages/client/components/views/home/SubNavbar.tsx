@@ -2,7 +2,7 @@ import styled, {css} from "styled-components";
 import {useEffect, useState} from "react";
 import {Menu, X} from "react-feather";
 import {useRecoilValue} from "recoil";
-import ActiveLink from "./../../ActiveLink";
+import ActiveLink from "../../ActiveLink";
 import PropsTheme from "../../../styles/theme/PropsTheme";
 import {useRouter} from "next/router";
 import Button from "../../ui/Button";

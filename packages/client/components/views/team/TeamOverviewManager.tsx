@@ -6,7 +6,7 @@ import AuthorIcon from "../../ui/AuthorIcon";
 import {FlexCol, FlexRow} from "../../ui/FlexRow";
 import Input from "../../ui/Input";
 import TeamIcon from "../../ui/TeamIcon";
-import Button from "./../../ui/Button";
+import Button from "../../ui/Button";
 import nprogress from "nprogress"
 import {useRecoilState, useRecoilValue} from "recoil";
 import {userState} from "../../../atoms/user";

@@ -13,7 +13,7 @@ import { userState } from "../atoms/user";
 import Footer from "../components/ui/Footer";
 import NextNProgress from "../components/ui/NextNProgress";
 import GlobalStyle from "../styles/GlobalStyle";
-import getAxios, { buildAxios } from "../util/AxiosInstance";
+import getAxios, { axiosFetcher, buildAxios } from "../util/AxiosInstance";
 import useStoredTheme from "../util/hooks/useStoredTheme";
 import getToken, { setToken } from "../util/TokenManager";
 import Navbar from "./../components/ui/Navbar";
@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Wrapper>
       <RecoilRoot>
-        <WrappedApp Component={Component} pageProps={pageProps} />
+          <WrappedApp Component={Component} pageProps={pageProps} />
       </RecoilRoot>
     </Wrapper>
   );
@@ -107,6 +107,7 @@ function WrappedApp({ Component, pageProps }) {
           <Navbar />
           <Component {...pageProps} />
           <Footer />
+
         </PageContainer>
         <ToastContainer position={"bottom-right"} />
       </ThemeProvider>
@@ -120,6 +121,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   max-width: 1280px;
+  min-height: 100vh;
 `;
 
 const Wrapper = styled.div`

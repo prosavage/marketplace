@@ -43,7 +43,9 @@ function Categories(props: {
       <Header>
         <TextBox>Categories</TextBox>
       </Header>
-      <Content>{renderCategories()}</Content>
+      <Content>
+        {renderCategories()}
+      </Content>
     </Wrapper>
   );
 }
@@ -71,4 +73,10 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin: 1em;
+
+  @media(max-width: 1150px) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 `;

@@ -1,8 +1,8 @@
 import Head from "next/head";
 import React from "react";
-import ResourceEdit from "../../../components/pages/resource/ResourceEdit";
-import { ResourceWebhook } from "../../../components/pages/resource/ResourceWebhook";
-import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
+import ResourceEdit from "../../../components/views/resource/ResourceEdit";
+import { ResourceWebhook } from "../../../components/views/resource/ResourceWebhook";
+import ResourceViewParent from "../../../components/views/resource/ResourceViewParent";
 
 export default function ResourceId(props: { id: string }) {
 

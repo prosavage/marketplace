@@ -1,8 +1,8 @@
 import { ResourceType, TeamWithUsers } from "@savagelabs/types";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ResourceList from "../../components/pages/home/resourcelist/ResourceList";
-import TeamHeader from "../../components/pages/team/TeamHeader";
+import ResourceList from "../../components/views/home/resourcelist/ResourceList";
+import TeamHeader from "../../components/views/team/TeamHeader";
 import getAxios from "../../util/AxiosInstance";
 import { handleAxiosErr } from "../../util/ErrorParser";
 

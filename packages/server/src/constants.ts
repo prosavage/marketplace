@@ -3,6 +3,7 @@ import {
     Category,
     Download,
     Payment,
+    ReleaseChannel,
     Resource,
     Review,
     Seller,
@@ -24,6 +25,7 @@ export const WEBHOOKS_COLLECTION = "webhooks";
 export const DOWNLOADS_COLLECTION = "downloads";
 export const INVITED_COLLECTION = "invites"
 export const TEAMS_COLLECTION = "teams"
+export const RELEASE_CHANNEL_COLLECTION = "release-channels"
 
 
 export const getUsers = () => {
@@ -74,3 +76,6 @@ export const getTeams = () => {
     return getDatabase().collection<Team>(TEAMS_COLLECTION);
 }
 
+export const getReleaseChannels = () => {
+    return getDatabase().collection<ReleaseChannel>(RELEASE_CHANNEL_COLLECTION)
+}

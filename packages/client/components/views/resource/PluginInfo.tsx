@@ -48,6 +48,8 @@ export default function PluginInfo(props: {
 const DropletsContainer = styled.div`
   display: flex;
   align-items: center;
+
+  
 `;
 
 const AuthorLink = styled.p`

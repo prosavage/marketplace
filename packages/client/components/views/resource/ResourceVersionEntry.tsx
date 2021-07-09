@@ -9,7 +9,7 @@ import getAxios from "../../../util/AxiosInstance";
 import useToast from "../../../util/hooks/useToast";
 import Button from "../../ui/Button";
 import FadeDiv from "../../ui/FadeDiv";
-import parser from "./../../../util/parser/Parser";
+import parser from "../../../util/parser/Parser";
 
 export default function ResourceVersionEntry({
   resource,

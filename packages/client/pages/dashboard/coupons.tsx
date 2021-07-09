@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
+import DashboardNavbar from "../../components/views/dashboard/DashboardNavbar";
 
 export default function Coupons() {
     return <>

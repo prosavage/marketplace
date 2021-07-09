@@ -10,6 +10,7 @@ import useToast from "../../../util/hooks/useToast";
 import Button from "../../ui/Button";
 import { FlexCol, FlexRow } from "../../ui/FlexRow";
 import Input from "../../ui/Input";
+import { Modal } from "../../ui/Modal";
 
 interface ResourceWebhookProps {
   resource: Resource;
@@ -17,6 +18,8 @@ interface ResourceWebhookProps {
 
 export const ResourceWebhook: React.FC<ResourceWebhookProps> = ({ resource }) => {
   const [webhook, setWebhook] = useState<Webhook | undefined>();
+
+  const [showModal, setShownModal] = useState(false);
 
   const [url, setURL] = useState("");
 
@@ -103,8 +106,16 @@ export const ResourceWebhook: React.FC<ResourceWebhookProps> = ({ resource }) =>
         .catch(err => handleAxiosErr(err))
   }
 
+
   return (
     <Wrapper>
+      <Modal title={"Notification Confirmation"} show={showModal} onClose={() => setShownModal(false)}>
+        <p>Are you sure you want to send a test notification?</p>
+        <ModalButtonWrapper>
+          <Button>Send it!</Button>
+          <Button style={{marginLeft: "1em"}}>Cancel</Button>
+        </ModalButtonWrapper>
+      </Modal>
       <h2>Webhook Management</h2>
       <p>You can utilize webhooks to show update notifications automatically on discord.</p>
       <WrapperContent>
@@ -118,7 +129,10 @@ export const ResourceWebhook: React.FC<ResourceWebhookProps> = ({ resource }) =>
           <WHButton disabled={!didWebhookURLChange()} onClick={() => deleteHook(true)}>
             Submit
           </WHButton>
-          <WHButton disabled={webhook === undefined} onClick={() => sendTest()}>Send Test</WHButton>
+          <WHButton disabled={webhook === undefined} onClick={() => {
+            setShownModal(true)
+            // console.log("Showing???");
+          }}>Send Test</WHButton>
           <WHButton disabled={webhook === undefined} onClick={() => deleteHook(false)}>
             Reset / Delete
           </WHButton>
@@ -136,6 +150,10 @@ const Wrapper = styled.div`
   border-radius: 4px;
   margin: 1em 0;
 `;
+
+const ModalButtonWrapper = styled(FlexRow)`
+  margin: 1em 0;
+`
 
 const WrapperContent = styled(FlexCol)`
   align-items: flex-start;

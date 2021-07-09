@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styled from "styled-components";
-import Dropdown from "../components/pages/faq/faqDropdown"
+import Dropdown from "../components/views/faq/faqDropdown"
 
 const faqs = [
     {

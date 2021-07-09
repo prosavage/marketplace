@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import AmountBalance from "../../components/pages/dashboard/AmountBalance";
-import DashboardNavbar from "../../components/pages/dashboard/DashboardNavbar";
-import PayoutButton from "../../components/pages/dashboard/PayoutButton";
-import RecentPurchases from "../../components/pages/dashboard/RecentPurchases";
-import RecentSalesChart from "../../components/pages/dashboard/RecentSalesChart";
-import UserNameLink from "../../components/pages/dashboard/UserNameLink";
+import AmountBalance from "../../components/views/dashboard/AmountBalance";
+import DashboardNavbar from "../../components/views/dashboard/DashboardNavbar";
+import PayoutButton from "../../components/views/dashboard/PayoutButton";
+import RecentPurchases from "../../components/views/dashboard/RecentPurchases";
+import RecentSalesChart from "../../components/views/dashboard/RecentSalesChart";
+import UserNameLink from "../../components/views/dashboard/UserNameLink";
 
 export default function Dashboard() {
   return (

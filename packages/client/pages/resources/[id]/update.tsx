@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
-import ResourceUpdate from "../../../components/pages/resource/ResourceUpdate";
-import ResourceViewParent from "./../../../components/pages/resource/ResourceViewParent";
+import ResourceUpdate from "../../../components/views/resource/ResourceUpdate";
+import ResourceViewParent from "../../../components/views/resource/ResourceViewParent";
 
 export default function ResourceId(props: { id: string }) {
 

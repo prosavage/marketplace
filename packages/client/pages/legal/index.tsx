@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styled from "styled-components";
-import LegalNavbar from "../../components/pages/legal/LegalNavbar"
+import LegalNavbar from "../../components/views/legal/LegalNavbar"
 
 export default function Legal() {
     return (

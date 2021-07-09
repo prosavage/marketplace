@@ -4,7 +4,7 @@ import { Maximize2, Minimize2 } from "react-feather";
 import Editor from "react-simple-code-editor";
 import styled from "styled-components";
 import PropsTheme from "../../../styles/theme/PropsTheme";
-import parser from "./../../../util/parser/Parser";
+import parser from "../../../util/parser/Parser";
 
 enum MaximizedState {
   NONE = "NONE",

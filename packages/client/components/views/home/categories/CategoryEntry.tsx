@@ -21,9 +21,9 @@ export default CategoryEntry;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
   cursor: pointer;
   transition: 250ms ease-in-out;
+  flex-wrap: wrap;
 
   ${(props: { selected: boolean }) => props.selected && css`
     color: ${(props: PropsTheme) => props.theme.accentColor};
@@ -32,6 +32,13 @@ const Wrapper = styled.div`
   &:hover {
     color: ${(props: PropsTheme) => props.theme.accentColor};
   }
+
+
+  @media(min-width: 1150px) {
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+ 
 `;
 
 const Text = styled.p`

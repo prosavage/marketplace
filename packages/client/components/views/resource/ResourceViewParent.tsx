@@ -189,6 +189,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 2em;
+
+  }
 `;
 
 const BackButton = styled(Button)`
@@ -221,6 +223,7 @@ const ResourceContentContainer = styled.div`
 
   @media (max-width: 1000px) {
     flex-direction: column;
+
   }
 `;
 
@@ -228,13 +231,19 @@ const ResourceBody = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 70%;
+
+  
 `;
 
 const MetadataContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 30%;
-  margin: 0 1em;
+  /* margin: 0 1em; */
+
+  @media(min-width: 1000px) {
+      margin: 0 1em;
+  }
 `;
 
 const ViewController = styled.div`
