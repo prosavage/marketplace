@@ -3,6 +3,8 @@ import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
 import {
+  getResources,
+  getVersions,
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
   VERSIONS_COLLECTION,
@@ -24,7 +26,8 @@ versionRouter.put(
     body(["title", "version"]).isString().bail().isLength({ min: 2, max: 30 }),
     body(["description"]).isString().bail().isLength({ min: 4 }),
     body(["isDev"]).isBoolean(),
-    body(["resource", "releaseChannel"]).custom((id) => shortid.isValid(id)),
+    // body(["resource", "releaseChannel"]).custom((id) => shortid.isValid(id)),
+    body(["resource"]).custom((id) => shortid.isValid(id)),
     Authorize,
     FetchTeam,
     hasPermissionForResource("resource", Role.ADMIN),
@@ -67,10 +70,10 @@ versionRouter.put(
       resource: body.resource,
       author: req.user!!._id,
       isDev: body.isDev,
-      releaseChannel: body.releaseChannel
+      releaseChannel: ""
     };
 
-    await getDatabase().collection(VERSIONS_COLLECTION).insertOne(version);
+    await getVersions().insertOne(version);
     res.success({ version });
   }
 );
@@ -81,16 +84,14 @@ versionRouter.put(
   async (req: Request, res: Response) => {
     const id = req.params.id as string;
 
-    const version = await getDatabase()
-      .collection<Version>(VERSIONS_COLLECTION)
+    const version = await getVersions()
       .findOne({ _id: id });
     if (!version) {
       res.failure("version not found.");
       return;
     }
 
-    const resource = await getDatabase()
-      .collection<Resource>(RESOURCES_COLLECTION)
+    const resource = await getResources()
       .findOne({ _id: version.resource });
     if (!resource) {
       res.failure("resource not found");
@@ -145,12 +146,10 @@ versionRouter.put(
       res.failure("Something went wrong uploading the file...")
       return;
     }
-    getDatabase()
-      .collection(VERSIONS_COLLECTION)
+    getVersions()
       .updateOne({ _id: version._id }, { $set: { fileName: file.name } });
     // update timestamp for the resource. ( this will bump the resource on our listing. )
-    getDatabase()
-      .collection(RESOURCES_COLLECTION)
+    getResources()
       .updateOne({ _id: resource._id }, { $set: { updated: new Date() } });
 
     sendUpdate(version, resource, req.user);

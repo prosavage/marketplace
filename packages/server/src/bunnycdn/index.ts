@@ -11,12 +11,17 @@ export class BunnyCDNStorage {
     constructor() {
         this.bunnyAxios = Axios.create({
             baseURL: "https://storage.bunnycdn.com/marketplace/",
-            headers: {AccessKey: process.env.BUNNY_STORAGE_API_KEY}
+            headers: {AccessKey: process.env.BUNNY_STORAGE_API_KEY},
+            maxContentLength: Infinity
         });
     }
 
+    STORAGE_ZONE = "marketplace"
+
     getFile = (path: string, file: string) => {
-        return this.bunnyAxios.get(path + "/" + file)
+        return this.bunnyAxios.get(path + "/" + file, {
+            responseType: "arraybuffer"
+        })
     }
 
     putFile = async (path: string, name: string, file: UploadedFile) => {
@@ -97,10 +102,10 @@ export class BunnyCDNStorage {
     }
 
     getVersionFileName = (resource: Resource, version: Version) => {
-        return `${resource.name}-${version.version}-${version._id}`
+        return `${resource.name}-${version.version}-${version._id}.jar`
     }
 
-    putVersionFile = (resource: Resource, version: Version, file: UploadedFile) => {
+    putVersionFile = (resource: Resource, version: Version, file: any) => {
         return this.putFile(this.getVersionPath(resource._id, version._id), this.getVersionFileName(resource, version), file)
     }
 

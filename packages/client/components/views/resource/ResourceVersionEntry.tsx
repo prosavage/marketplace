@@ -24,13 +24,13 @@ export default function ResourceVersionEntry({
 
   const download = () => {
     getAxios()
-      .get(`directory/versions/download/${version._id}`)
+      .get(`directory/versions/download/${version._id}`, {responseType: "arraybuffer"})
       .then((res) => {
         FileDownload(
           res.data,
           version.fileName
-            ? version.fileName
-            : `${resource.name}-${version.version}.jar`
+            ? version.fileName + ".zip"
+            : `${resource.name}-${version.version}.zip`
         );
       })
       .catch((err) => {

@@ -80,7 +80,9 @@ directoryVersionRouter.get(
 
     try {
       const file = await bunny.getVersionFile(resource, version);
-      res.send(file.data);
+
+      console.log(file.data)
+      res.send(file.data)
       bumpDownloadCounter(req.user!!, resource, version);
     } catch (err) {
       res.failure(err.response.data.Message);
