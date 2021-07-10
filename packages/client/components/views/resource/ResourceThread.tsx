@@ -21,6 +21,8 @@ const Wrapper = styled.div`
     max-width: 100%;
   }
 
+  word-break: break-all;
+
   * > img {
     max-width: 100%;
   }

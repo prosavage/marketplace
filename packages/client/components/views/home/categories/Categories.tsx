@@ -73,6 +73,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin: 1em;
+  flex-wrap: wrap;
 
   @media(max-width: 1150px) {
     flex-direction: row;

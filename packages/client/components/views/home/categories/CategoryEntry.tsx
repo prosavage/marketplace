@@ -43,4 +43,5 @@ const Wrapper = styled.div`
 
 const Text = styled.p`
   margin-left: 0.5em;
+  white-space: nowrap;
 `;
