@@ -1,5 +1,4 @@
 import { Resource, Role } from "@savagelabs/types";
-import { AxiosError } from "axios";
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
 import shortid from "shortid";
