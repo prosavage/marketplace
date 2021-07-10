@@ -14,7 +14,7 @@ export default function ResourceIcon(props: {
   const fallbackImageProps = useFallbackImageInSSR(fallback);
   return (
     <img
-      onClick={() => router.push(`/resources/icon/${props.resource._id}`)}
+      onClick={() => router.push(`/resources/${props.resource._id}`)}
       src={
         props.resource?.hasIcon
           ? getResourceIconURL(props.resource._id)
