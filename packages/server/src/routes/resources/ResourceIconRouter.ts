@@ -1,4 +1,5 @@
 import { Resource, Role } from "@savagelabs/types";
+import { AxiosError } from "axios";
 import express, { Request, Response } from "express";
 import { param } from "express-validator";
 import shortid from "shortid";
@@ -74,11 +75,17 @@ resourceIconRouter.put(
       await bunny.deleteResourceIconById(dbId);
       replaced = true;
     }
-    const result = await bunny.putResourceIconById(dbId, icon.data);
-    await getDatabase()
+    try {
+       const result = await bunny.putResourceIconById(dbId, icon.data);
+       await getDatabase()
       .collection(RESOURCES_COLLECTION)
       .updateOne({ _id: req.params.id }, { $set: { hasIcon: true } });
     res.success({ result: result.data, replaced });
+    } catch(err) {
+      console.log(err)
+      res.failure("something went wrong..." + err.message)
+    }
+    
   }
 );
 

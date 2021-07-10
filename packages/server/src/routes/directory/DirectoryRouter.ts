@@ -50,6 +50,7 @@ directoryRouter.get("/featured", async (_req: Request, res: Response) => {
   const featuredResource: string[] = [
     "l72MC9B8X",
     "g_M72m3FS",
+    "44DJUJtkQ"
   ];
 
   const resources = await Promise.all(
