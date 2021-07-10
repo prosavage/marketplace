@@ -5,9 +5,7 @@ import Tilt from 'react-parallax-tilt';
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import {DirectoryResource} from "@savagelabs/types";
 import ResourceIcon from "../../../ui/ResourceIcon";
-import AuthorIcon from "../../../ui/AuthorIcon";
 import TeamIcon from "../../../ui/TeamIcon";
-import { teamState } from "../../../../atoms/team";
 
 export default function FeaturedPluginEntry(props: { resource: DirectoryResource }) {
 
