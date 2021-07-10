@@ -13,6 +13,8 @@ import {validateEmail, validatePassword} from "../util/Validation";
 import Head from "next/head";
 import { teamState } from "../atoms/team";
 import { PersonalUser } from "@savagelabs/types";
+import { useEffect } from "react";
+import useToast from "../util/hooks/useToast";
 
 export default function Login() {
 
@@ -22,7 +24,15 @@ export default function Login() {
 
     const router = useRouter();
 
-    const [submitting, setSubmitting] = useState(false)
+    const [submitting, setSubmitting] = useState(false);
+
+    const toast = useToast();
+
+    useEffect(() => {
+        if (!user) return;
+        toast("You are already logged in!")
+        router.push("/")
+    }, [user])
 
 
     const [email, setEmail] = useState("");

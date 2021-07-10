@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Check, X} from "react-feather";
 import {useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ import {setToken} from "../util/TokenManager";
 import {userState} from "../atoms/user";
 import {useRouter} from "next/router";
 import Head from "next/head";
+import useToast from "../util/hooks/useToast";
 
 export default function Signup(props) {
     const theme = useRecoilValue(themeState);
@@ -27,12 +28,19 @@ export default function Signup(props) {
     const [user, setUser] = useRecoilState(userState);
 
     const router = useRouter();
+    const toast = useToast();
 
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [err, setErr] = useState("");
+
+    useEffect(() => {
+        if (!user) return;
+        toast("You are already logged in!")
+        router.push("/")
+    }, [user])
 
     const renderStatus = (state: boolean) => {
         return state ? <Check color={theme.accentColor}/> : <X color={"red"}/>;

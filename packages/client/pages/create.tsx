@@ -225,7 +225,7 @@ const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 1em 0;
+  padding: 1em;
 `;
 
 const Select = styled.select`
