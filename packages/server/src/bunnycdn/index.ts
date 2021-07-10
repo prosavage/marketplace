@@ -102,7 +102,7 @@ export class BunnyCDNStorage {
     }
 
     getVersionFileName = (resource: Resource, version: Version) => {
-        return `${resource.name}-${version.version}-${version._id}.jar`
+        return `${resource.name}-${version.version}-${version._id}`
     }
 
     putVersionFile = (resource: Resource, version: Version, file: any) => {

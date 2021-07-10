@@ -1,11 +1,10 @@
-import { Resource, Review, Role, Team, Version } from "@savagelabs/types";
+import { Review, Role, Team, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
 import {
   getResources,
   getVersions,
-  RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
   VERSIONS_COLLECTION,
 } from "../constants";

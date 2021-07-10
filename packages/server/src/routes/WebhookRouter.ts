@@ -119,7 +119,8 @@ webhookRouter.get("/:resource/test",
             fileName: "test-file.jar",
             isDev: false,
             version: "1.2",
-            timestamp: new Date()
+            timestamp: new Date(),
+            releaseChannel: "some channel"
         }
 
         await sendUpdate(dummyVer, resource, req.user);

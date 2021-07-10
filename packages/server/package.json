@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "set \"NODE_ENV=production\" && yarn build && node dist/server.js",
+    "start": "set \"NODE_ENV=production\" && yarn build && node dist/server/src/server.js",
     "dev": "set \"NODE_ENV=development\" && ts-node-dev --respawn --transpile-only --poll --no-notify --exit-child src/server.ts"
   },
   "devDependencies": {

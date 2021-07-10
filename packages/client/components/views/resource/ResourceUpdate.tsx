@@ -171,6 +171,7 @@ export default function ResourceUpdate({
           author: user?._id,
           isDev: isDev,
           fileName: file?.name,
+          releaseChannel: ""
         }}
       />
     </Wrapper>
