@@ -13,7 +13,7 @@ import { userState } from "../atoms/user";
 import Footer from "../components/ui/Footer";
 import NextNProgress from "../components/ui/NextNProgress";
 import GlobalStyle from "../styles/GlobalStyle";
-import getAxios, { axiosFetcher, buildAxios } from "../util/AxiosInstance";
+import getAxios, { buildAxios } from "../util/AxiosInstance";
 import useStoredTheme from "../util/hooks/useStoredTheme";
 import getToken, { setToken } from "../util/TokenManager";
 import Navbar from "./../components/ui/Navbar";
