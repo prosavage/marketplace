@@ -8,6 +8,13 @@ echo "exporting data from current database."
 ./data-export.sh reviews
 ./data-export.sh sellers
 ./data-export.sh payments
+./data-export.sh teams
+./data-export.sh webhooks
+./data-export.sh invites
+./data-export.sh downloads
+./data-export.sh release-channels
+./data-export.sh tokens
+
 
 echo "sending sample-data to server."
 echo "SSH PASSWORD REQUIRED:"
