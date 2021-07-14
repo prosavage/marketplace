@@ -1,4 +1,4 @@
-import { Category, Resource, Role } from "@savagelabs/types";
+import { Category, Resource, Role, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -105,6 +105,8 @@ resourceRouter.put(
       "version.description",
       "version.version",
     ]).isString(),
+    body("releasechannel.name").isString().bail().isLength({min: 4, max: 20}),
+    body("releasechannel.description").isString().bail().isLength({max: 60}),
     isValidBody,
     Authorize,
     FetchTeam
@@ -150,6 +152,17 @@ resourceRouter.put(
     };
 
     await database.collection(RESOURCES_COLLECTION).insertOne(resourceToAdd);
+
+
+    const versionToAdd: Version = {
+      _id: shortid.generate(),
+      title: resource.version.title,
+      description: resource.version.description,
+      version: resource.version.version,
+      timestamp: new Date(),
+      resource: resourceId,
+      releaseChannel: req.
+    }
 
     resource.version.resource = resourceId;
     resource.version._id = shortid.generate();

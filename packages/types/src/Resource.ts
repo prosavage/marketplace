@@ -4,7 +4,7 @@ import {Team} from "./Team";
 
 export enum ResourceType {
   PLUGIN = "plugin",
-  MOD = "mod",
+  BUILDS = "builds",
   SOFTWARE = "software",
 }
 

@@ -14,8 +14,8 @@ const links = [
         text: "Plugins",
     },
     {
-        link: "/directory/resources/mod",
-        text: "Mods",
+        link: "/directory/resources/builds",
+        text: "Builds / Maps",
     },
     {
         link: "/directory/resources/software",

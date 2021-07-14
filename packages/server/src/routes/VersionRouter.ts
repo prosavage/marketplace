@@ -25,8 +25,7 @@ versionRouter.put(
     body(["title", "version"]).isString().bail().isLength({ min: 2, max: 30 }),
     body(["description"]).isString().bail().isLength({ min: 4 }),
     body(["isDev"]).isBoolean(),
-    // body(["resource", "releaseChannel"]).custom((id) => shortid.isValid(id)),
-    body(["resource"]).custom((id) => shortid.isValid(id)),
+    body(["resource, releasechannel"]).custom((id) => shortid.isValid(id)),
     Authorize,
     FetchTeam,
     hasPermissionForResource("resource", Role.ADMIN),
@@ -69,7 +68,7 @@ versionRouter.put(
       resource: body.resource,
       author: req.user!!._id,
       isDev: body.isDev,
-      releaseChannel: ""
+      releaseChannel: body.releaseChannel
     };
 
     await getVersions().insertOne(version);

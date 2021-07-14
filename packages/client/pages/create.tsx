@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
-import React, {useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { themeState } from "../atoms/theme";
 import BBCodeEditor from "../components/views/create/BBCodeEditor";
@@ -13,7 +13,7 @@ import ResourceMetadataForm, {
 import Button from "../components/ui/Button";
 import { Option } from "../components/ui/CategorySelect";
 import Input from "../components/ui/Input";
-import { Resource } from "@savagelabs/types";
+import { ReleaseChannel, Resource } from "@savagelabs/types";
 import { Version } from "@savagelabs/types";
 import getAxios from "../util/AxiosInstance";
 import DefaultThread from "../util/DefaultThread";
@@ -24,10 +24,10 @@ import {
   validateResourceTitle,
   validateResourceVersion,
 } from "../util/Validation";
-import {teamState} from "../atoms/team";
+import { teamState } from "../atoms/team";
 import PropsTheme from "../styles/theme/PropsTheme";
-import {FlexCol} from "../components/ui/FlexRow";
-import {userState} from "../atoms/user";
+import { FlexCol } from "../components/ui/FlexRow";
+import { userState } from "../atoms/user";
 import { handleAxiosErr } from "../util/ErrorParser";
 
 export default function Create() {
@@ -39,6 +39,10 @@ export default function Create() {
 
   // const [select, setSelect] = useState<string | undefined>();
 
+  const [releaseChannel, setReleaseChannel] = useState({
+    name: "",
+    description: "",
+  });
   const [resourceMetadata, setResourceMetadata] = useState<ResourceMetadata>({
     title: "",
     description: "",
@@ -57,14 +61,13 @@ export default function Create() {
 
   useEffect(() => {
     if (!teams || !user) return;
-    if (teams.length === 0 || !teams.map(t => t.owner).includes(user._id)) {
-      router.push("/team/create")
-      toast("Create a team first...")
-      return
+    if (teams.length === 0 || !teams.map((t) => t.owner).includes(user._id)) {
+      router.push("/team/create");
+      toast("Create a team first...");
+      return;
     }
     // setSelect(teams[0]!!._id)
-  }, [])
-
+  }, []);
 
   const validateInput = () => {
     if (!validateResourceTitle(resourceMetadata.title)) {
@@ -115,6 +118,10 @@ export default function Create() {
           description: resourceMetadata.description,
           version: version,
         },
+        releaseChannel: {
+          name: releaseChannel.name,
+          description: releaseChannel.description,
+        },         
       })
       .then((res) => {
         const resource = res.data.payload.resource;
@@ -124,8 +131,8 @@ export default function Create() {
         sendFile(version, resource);
       })
       .catch((err) => {
-        handleAxiosErr(err)
-        setSubmitting(false)
+        handleAxiosErr(err);
+        setSubmitting(false);
         NProgress.done();
       });
   };
@@ -145,8 +152,8 @@ export default function Create() {
       })
       .catch((err) => {
         NProgress.done();
-        setSubmitting(false)
-        handleAxiosErr(err)
+        setSubmitting(false);
+        handleAxiosErr(err);
       });
   };
 
@@ -198,6 +205,34 @@ export default function Create() {
         {/* </FlexCol>*/}
 
         {/*</PaddedHContainer>*/}
+
+        <PaddedHContainer>
+          <FlexCol>
+            <p>Release Channels:</p>
+            <p>
+              Release channels allow you to categorize your resource updates and label them so your
+              users know what they are downloading.
+            </p>
+            <p>You must create one to finish creating the resource.</p>
+            <InputContainer>
+              <label>Channel Name</label>
+              <Input
+                value={releaseChannel.name}
+                onChange={(e) => setReleaseChannel({ ...releaseChannel, name: e.target.value })}
+                placeholder={"stable"}
+              />
+            </InputContainer>
+            <InputContainer>
+              <label>Channel Description</label>
+              <Input 
+                value={releaseChannel.description}
+                onChange={(e) => setReleaseChannel({ ...releaseChannel, description: e.target.value })}
+                placeholder={"Stable releases that are production ready!"}
+              />
+            </InputContainer>
+          </FlexCol>
+        </PaddedHContainer>
+
         <PaddedHContainer>
           <Button
             style={{ margin: "1em 0" }}
@@ -211,10 +246,7 @@ export default function Create() {
           </Button>
         </PaddedHContainer>
         <HContainer>
-          <BBCodeEditor
-            content={thread}
-            onChange={(newThread) => setThread(newThread)}
-          />
+          <BBCodeEditor content={thread} onChange={(newThread) => setThread(newThread)} />
         </HContainer>
       </Wrapper>
     </>
@@ -230,7 +262,7 @@ const Wrapper = styled.form`
 
 const Select = styled.select`
   padding: 10px 0;
-  margin: .5em 0;
+  margin: 0.5em 0;
   border-radius: 5px;
   border-color: ${(props: PropsTheme) => props.theme.accentColor};
   background: transparent;
