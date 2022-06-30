@@ -19,7 +19,7 @@
     "rword": "^3.2.0",
     "shortid": "^2.2.16",
     "slugify": "^1.5.2",
-    "stripe": "^8.148.0",
+    "stripe": "^9.11.0",
     "ts-node-dev": "^1.1.6"
   },
   "scripts": {
