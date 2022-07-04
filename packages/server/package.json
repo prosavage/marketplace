@@ -34,7 +34,7 @@
     "@types/express-fileupload": "^1.1.6",
     "@types/mongodb": "^3.6.12",
     "@types/morgan": "^1.9.2",
-    "@types/node": "^15.0.2",
+    "@types/node": "^18.0.1",
     "@types/shortid": "^0.0.29",
     "@savagelabs/types": "1.0.0",
     "typescript": "^4.2.4"
