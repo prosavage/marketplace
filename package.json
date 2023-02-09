@@ -2,6 +2,7 @@
   "name": "marketplace",
   "private": true,
   "scripts": {
+    "dev": "cd packages/client && yarn dev & cd packages/server yarn dev",
     "build-docker": "docker build -t prosavage/marketplace-server:latest .",
     "docker": "docker build -t prosavage/marketplace-server:latest . && docker push prosavage/marketplace-server:latest"
   },
