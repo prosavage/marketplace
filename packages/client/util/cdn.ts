@@ -1,4 +1,4 @@
-export const cdnBaseURL = "https://marketplace-savagelabs.b-cdn.net";
+export const cdnBaseURL = "https://marketplace-demo.b-cdn.net";
 
 export const getAuthorIconURL = (authorId: string) => {
   return `${cdnBaseURL}/users/${authorId}/icon.png`;

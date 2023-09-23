@@ -10,7 +10,7 @@ export class BunnyCDNStorage {
 
     constructor() {
         this.bunnyAxios = Axios.create({
-            baseURL: "https://storage.bunnycdn.com/marketplace/",
+            baseURL: "https://la.storage.bunnycdn.com/marketplace-demo/",
             headers: {AccessKey: process.env.BUNNY_STORAGE_API_KEY},
             maxContentLength: Infinity
         });

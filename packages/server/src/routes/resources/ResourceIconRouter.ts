@@ -77,10 +77,10 @@ resourceIconRouter.put(
     try {
        const result = await bunny.putResourceIconById(dbId, icon.data);
        await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .updateOne({ _id: req.params.id }, { $set: { hasIcon: true } });
     res.success({ result: result.data, replaced });
-    } catch(err) {
+    } catch(err: any) {
       console.log(err)
       res.failure("something went wrong..." + err.message)
     }
@@ -100,11 +100,11 @@ resourceIconRouter.get(
     let result;
     try {
       result = (await bunny.getResourceIconById(req.params.id as string)).data;
-    } catch (err) {
+    } catch (err: any) {
       result = err.message;
     }
     await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .updateOne({ _id: req.params.id }, { $set: { hasIcon: false } });
     res.send(result);
   }
@@ -140,7 +140,7 @@ resourceIconRouter.delete(
           { $set: { hasIcon: false } }
         );
       res.success({ data: result.data });
-    } catch (err) {
+    } catch (err: any) {
       res.failure(err.response.data.Message);
     }
   }

@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import fileUpload from "express-fileupload";
-import mongodb from "mongodb";
+import mongodb, {MongoClient} from "mongodb";
 import morgan from "morgan";
 import { BunnyCDNStorage } from "./bunnycdn";
 import ensureIndexes, { readTokens } from "./database";
@@ -28,9 +28,8 @@ import releaseChannelRouter from "./routes/ReleaseChannelRouter";
 
 dotenv.config();
 
-const mongoClient = new mongodb.MongoClient(
-  process.env.MONGODB_URL || "mongodb://localhost:27017",
-  { useUnifiedTopology: true }
+const mongoClient = new MongoClient(
+  process.env.MONGODB_URL || "mongodb://127.0.0.1:27017",
 );
 export const getDatabase = () => {
   return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
@@ -46,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
   tokenMap.clear();
   console.log("RUNNING IN PRODUCTION MODE, CLEARED DEV TOKENS.");
 } else {
-  console.log("RUNNING IN DEVELOPEMNT MODE.");
+  console.log("RUNNING IN DEVELOPMENT MODE.");
 }
 
 export const bunny = new BunnyCDNStorage();
@@ -109,13 +108,23 @@ app.use(Sentry.Handlers.errorHandler());
 
 console.log("starting...");
 console.log("attemping database connection...");
-mongoClient.connect(async () => {
+
+
+const run = async () => {
+  await mongoClient.connect().catch((err) => {
+    console.log("failed to connect to database.");
+    console.log(err);
+    process.exit(1);
+  })
+
   console.log("connected to database.");
   await ensureIndexes();
   await readTokens();
   
-  app.listen(5000, () => console.log("started marketplace backend."));
-});
+  app.listen(5001, () => console.log("started marketplace backend."));
+}
+
+run()
 
 // generates payments
 // const resources = ["CVE0kzSpW", "eUyVEKcjm", "CSMVL75iD"]

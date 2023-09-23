@@ -84,7 +84,7 @@ directoryVersionRouter.get(
       console.log(file.data)
       res.send(file.data)
       bumpDownloadCounter(req.user!!, resource, version);
-    } catch (err) {
+    } catch (err: any) {
       res.failure(err.response.data.Message);
     }
   }

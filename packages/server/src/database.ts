@@ -13,6 +13,7 @@ import {getDatabase, tokenMap} from "./server";
 import {Resource, Download, Review} from "@savagelabs/types";
 
 const ensureIndexes = async () => {
+    console.log("ensuring indexes")
     // indexes will only build if they do not exist.
     // for page based searching with no filters...
     await getDatabase()
@@ -121,7 +122,7 @@ export const updateResourceRating = async (resourceId: Resource["_id"]) => {
             : 0;
     const avg = Math.round(sum / calculatedReviews.length);
     await getDatabase()
-        .collection(RESOURCES_COLLECTION)
+        .collection<Resource>(RESOURCES_COLLECTION)
         .updateOne({_id: resourceId}, {$set: {rating: avg}});
 };
 

@@ -103,7 +103,7 @@ versionRouter.put(
         res.failure("already uploaded.");
         return;
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status !== 404) {
         res.failure("something went wrong" + err.response.statusText);
         return;
@@ -162,8 +162,13 @@ versionRouter.get(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const version = await getDatabase()
-      .collection(VERSIONS_COLLECTION)
+      .collection<Version>(VERSIONS_COLLECTION)
       .findOne({ _id: id });
+
+    if (!version) {
+      res.failure("version not found.");
+      return;
+    }
     res.success(version);
   }
 );

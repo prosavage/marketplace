@@ -1,5 +1,4 @@
 import axios, {AxiosInstance} from "axios";
-import { handleAxiosErr } from "./ErrorParser";
 import getToken from "./TokenManager";
 
 let axiosInstance: AxiosInstance;

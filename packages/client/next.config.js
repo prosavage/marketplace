@@ -1,8 +1,6 @@
-// handles pulling types from the other package.
-const withTranspiledModules = require("next-transpile-modules")(["@savagelabs/types"])
-
-module.exports = withTranspiledModules({
+module.exports = {
     basePath: "/marketplace",
     assetPrefix: "/marketplace",
-    trailingSlash: false
-})
+    trailingSlash: false,
+    transpilePackages: ["@savagelabs/types"]
+}

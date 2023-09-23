@@ -6,6 +6,7 @@ import { USERS_COLLECTION } from "../../constants";
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
+import { User } from "@savagelabs/types";
 
 const userIconRouter = express.Router();
 
@@ -73,7 +74,7 @@ userIconRouter.put(
     const result = await bunny.putUserIconById(dbId, icon.data);
     console.log("setting to true.");
     await getDatabase()
-      .collection(USERS_COLLECTION)
+      .collection<User>(USERS_COLLECTION)
       .updateOne({ _id: req.params.id }, { $set: { hasIcon: true } });
     res.success({ result: result.data, replaced });
   }
@@ -90,11 +91,11 @@ userIconRouter.get(
     let result;
     try {
       result = (await bunny.getUserIconById(req.params.id as string)).data;
-    } catch (err) {
+    } catch (err: any) {
       result = err.message;
     }
     await getDatabase()
-      .collection(USERS_COLLECTION)
+      .collection<User>(USERS_COLLECTION)
       .updateOne({ _id: req.params.id }, { $set: { hasIcon: false } });
     res.send(result);
   }

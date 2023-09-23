@@ -6,6 +6,7 @@ import {TEAMS_COLLECTION, USERS_COLLECTION} from "../../constants";
 import { Authorize } from "../../middleware/Authenticate";
 import { isValidBody } from "../../middleware/BodyValidate";
 import { bunny, getDatabase } from "../../server";
+import { Team, User } from "@savagelabs/types";
 
 const teamIconRouter = express.Router();
 
@@ -27,7 +28,7 @@ teamIconRouter.put(
     [param("id").custom((id) => shortid.isValid(id)), Authorize, isValidBody],
     async (req: Request, res: Response) => {
 
-        const team = await getDatabase().collection(TEAMS_COLLECTION).findOne({_id: req.params.id});
+        const team = await getDatabase().collection<Team>(TEAMS_COLLECTION).findOne({_id: req.params.id});
         if (team === null) {
             res.failure("team not found.")
             return;
@@ -70,7 +71,7 @@ teamIconRouter.put(
         }
         const result = await bunny.putTeamIconById(dbId, icon.data);
         await getDatabase()
-            .collection(USERS_COLLECTION)
+            .collection<User>(USERS_COLLECTION)
             .updateOne({ _id: req.params.id }, { $set: { hasIcon: true } });
         res.success({ result: result.data, replaced });
     }
@@ -80,7 +81,7 @@ teamIconRouter.get(
     "/:id",
     [param("id").custom((id) => shortid.isValid(id)), Authorize, isValidBody],
     async (req: Request, res: Response) => {
-        const team = await getDatabase().collection(TEAMS_COLLECTION).findOne({_id: req.params.id});
+        const team = await getDatabase().collection<Team>(TEAMS_COLLECTION).findOne({_id: req.params.id});
         if (team === null) {
             res.failure("team not found.")
             return;
@@ -92,11 +93,11 @@ teamIconRouter.get(
         let result;
         try {
             result = (await bunny.getTeamIconById(req.params.id as string)).data;
-        } catch (err) {
+        } catch (err: any) {
             result = err.message;
         }
         await getDatabase()
-            .collection(TEAMS_COLLECTION)
+            .collection<Team>(TEAMS_COLLECTION)
             .updateOne({ _id: req.params.id }, { $set: { hasIcon: false } });
         res.send(result);
     }
@@ -106,7 +107,7 @@ teamIconRouter.delete(
     "/:id",
     [param("id").custom((id) => shortid.isValid(id)), Authorize, isValidBody],
     async (req: Request, res: Response) => {
-        const team = await getDatabase().collection(TEAMS_COLLECTION).findOne({_id: req.params.id});
+        const team = await getDatabase().collection<Team>(TEAMS_COLLECTION).findOne({_id: req.params.id});
         if (team === null) {
             res.failure("team not found.")
             return;

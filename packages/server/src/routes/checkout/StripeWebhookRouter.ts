@@ -22,7 +22,7 @@ stripeWebhookRouter.post(
         sig!!,
         process.env.STRIPE_WEBHOOK_SECRET!!
       );
-    } catch (err) {
+    } catch (err: any) {
       // On error, log and return the error message
       console.log(`Error message: ${err.message}`);
       res.failure(`Webhook Error: ${err.message}`);
@@ -56,9 +56,14 @@ stripeWebhookRouter.post(
       }
 
       const recipient = await getDatabase()
-        .collection(USERS_COLLECTION)
+        .collection<User>(USERS_COLLECTION)
         .findOne({ _id: payment.recipient });
       console.log(recipient, payment.resource);
+      if (recipient === null) {
+        console.log("recipient not found.");
+        res.failure(`recipient not found.`);
+        return;
+      }
       // just in case...
       if (!recipient.purchases.includes(payment.resource)) {
         await getDatabase()
