@@ -31,7 +31,7 @@ export default function ResourceId({
                                    }: {
     resourceId: string;
     staffOnly?: boolean;
-    content: (resource: Resource, team: Team, versions: Version[], category: Category) => ReactFragment
+    content: (resource: Resource, team: Team, versions: Version[], category: Category) => React.ReactNode
 }) {
     const router = useRouter();
 

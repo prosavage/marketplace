@@ -121,7 +121,7 @@ const run = async () => {
   await ensureIndexes();
   await readTokens();
   
-  app.listen(5001, () => console.log("started marketplace backend."));
+  app.listen(5000, () => console.log("started marketplace backend."));
 }
 
 run()

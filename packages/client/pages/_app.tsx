@@ -1,4 +1,3 @@
-import { NextWebVitalsMetric } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -17,6 +16,7 @@ import getAxios, { buildAxios } from "../util/AxiosInstance";
 import useStoredTheme from "../util/hooks/useStoredTheme";
 import getToken, { setToken } from "../util/TokenManager";
 import Navbar from "./../components/ui/Navbar";
+import { NextWebVitalsMetric } from "next/app";
 
 function MyApp({ Component, pageProps }) {
   return (
