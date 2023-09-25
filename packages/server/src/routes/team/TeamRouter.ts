@@ -6,6 +6,7 @@ import {INVITED_COLLECTION, TEAMS_COLLECTION, USERS_COLLECTION,} from "../../con
 import {Authorize} from "../../middleware/Authenticate";
 import {isValidBody} from "../../middleware/BodyValidate";
 import {getDatabase} from "../../server";
+import { User } from "@savagelabs/types";
 
 const teamRouter = express.Router();
 
@@ -29,7 +30,7 @@ teamRouter.delete(
         const team = await getDatabase()
             .collection<Team>(TEAMS_COLLECTION)
             .deleteOne({_id: id});
-        res.success({result: team.result});
+        res.success({result: team.acknowledged});
     }
 );
 
@@ -74,7 +75,7 @@ teamRouter.put(
                 }
 
                 const user = await getDatabase()
-                    .collection(USERS_COLLECTION)
+                    .collection<User>(USERS_COLLECTION)
                     .findOne({_id: member});
                 return user !== null;
             })

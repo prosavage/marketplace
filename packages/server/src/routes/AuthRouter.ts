@@ -1,10 +1,10 @@
-import { Role, User } from "@savagelabs/types";
+import { PersonalUser, Role, User } from "@savagelabs/types";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import shortid from "shortid";
-import { TOKENS_COLLECTION, USERS_COLLECTION } from "../constants";
+import { TOKENS_COLLECTION, USERS_COLLECTION, getUsers } from "../constants";
 import { Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
 import { getDatabase, tokenMap } from "../server";
@@ -17,8 +17,7 @@ authRouter.post(
   async (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
-    let user: User | null = await getDatabase()
-      .collection(USERS_COLLECTION)
+    let user: User | null = await getUsers()
       .findOne({ email });
     if (!user) {
       res.failure("Invalid email or password.");
@@ -107,7 +106,7 @@ authRouter.post(
     }
     // hash the password, so its not plaintext.
     user.password = bcrypt.hashSync(user.password, 10);
-    await getDatabase().collection(USERS_COLLECTION).insertOne(user);
+    await getUsers().insertOne(user);
     const token = await generateToken(user);
     res.success({
       token: token,
@@ -143,23 +142,24 @@ authRouter.post(
       res.failure("token is invalid");
       return;
     }
-    const user = await getDatabase()
-      .collection(USERS_COLLECTION)
+    const user = await getUsers()
       .findOne({ _id: userId });
     if (!user || user === null) {
       res.failure("user is invalid");
       return;
     }
 
+    const puser: PersonalUser = {
+      _id: user._id,
+      username: user.username,
+      hasIcon: user.hasIcon,
+      purchases: user.purchases,
+      role: user.role,
+      discordServerId: undefined
+    }
+
     res.success({
-      user: {
-        _id: user._id,
-        username: user.username,
-        discordServerId: user.discordServerId,
-        hasIcon: user.hasIcon,
-        purchases: user.purchases,
-        role: user.role,
-      },
+      user: puser,
     });
   }
 );

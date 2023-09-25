@@ -1,5 +1,5 @@
-import express, {Request, Response} from "express";
-import {param} from "express-validator";
+import express, { Request, Response } from "express";
+import { param } from "express-validator";
 
 import shortid from "shortid";
 import {
@@ -7,11 +7,11 @@ import {
     getTeams,
     RESOURCES_COLLECTION,
     REVIEWS_COLLECTION,
-    TEAMS_COLLECTION, USERS_COLLECTION,
+    TEAMS_COLLECTION,
 } from "../../constants";
-import {isValidBody} from "../../middleware/BodyValidate";
-import {getDatabase} from "../../server";
-import {ResourceType} from "@savagelabs/types";
+import { isValidBody } from "../../middleware/BodyValidate";
+import { getDatabase } from "../../server";
+import { ResourceType } from "@savagelabs/types";
 
 const directoryResourceRouter = express.Router();
 
@@ -29,7 +29,7 @@ directoryResourceRouter.get(
     async (req: Request, res: Response) => {
         const page: number = Number.parseInt(req.params.page!!);
         const resources = await pageSearchResourcesWithFilter({}, page);
-        res.success({resources});
+        res.success({ resources });
     }
 );
 
@@ -50,7 +50,7 @@ directoryResourceRouter.get(
         const categoryName = req.params.category;
         const categoryFromDb = await getDatabase()
             .collection(CATEGORIES_COLLECTION)
-            .findOne({name: categoryName, type: req.params.type});
+            .findOne({ name: categoryName, type: req.params.type });
         const page: number = Number.parseInt(req.params.page!!);
         if (page <= 0) {
             res.failure("negative page");
@@ -58,10 +58,10 @@ directoryResourceRouter.get(
         }
         let filter = {};
         if (categoryFromDb != null) {
-            filter = {category: categoryFromDb._id};
+            filter = { category: categoryFromDb._id };
         }
         const resources = await pageSearchResourcesWithFilter(filter, page);
-        res.success({category: categoryFromDb, resources});
+        res.success({ category: categoryFromDb, resources });
     }
 );
 
@@ -85,43 +85,10 @@ directoryResourceRouter.get(
         }
         let filter = {};
         const type = req.params.type as ResourceType;
-        if (type) filter = {type};
+        if (type) filter = { type };
         const resources = await pageSearchResourcesWithFilter(filter, page);
 
-        res.success({type, resources});
-    }
-);
-
-directoryResourceRouter.get(
-    "/author/:user/:page",
-    [
-        param("user")
-            .custom(id => shortid.isValid(id))
-        ,
-        param("page")
-            .isInt()
-            .bail()
-            .toInt()
-            .custom((v) => v > 0)
-            .bail(),
-        isValidBody,
-    ],
-    async (req: Request, res: Response) => {
-        const userId = req.params.user;
-
-        const user = await getDatabase().collection(USERS_COLLECTION).findOne({_id: userId});
-
-        if (user === null) {
-            res.failure("user not found.")
-            return;
-        }
-
-        const page: number = Number.parseInt(req.params.page!!);
-        const resources = await pageSearchResourcesWithFilter(
-            {owner: user.team},
-            page
-        );
-        res.success({resources});
+        res.success({ type, resources });
     }
 );
 
@@ -142,7 +109,7 @@ directoryResourceRouter.get(
     async (req: Request, res: Response) => {
         const teamId = req.params.team;
 
-        const team = await getTeams().findOne({_id: teamId});
+        const team = await getTeams().findOne({ _id: teamId });
 
         if (team === null) {
             res.failure("team not found.")
@@ -151,10 +118,10 @@ directoryResourceRouter.get(
 
         const page: number = Number.parseInt(req.params.page!!);
         const resources = await pageSearchResourcesWithFilter(
-            {owner: team._id},
+            { owner: team._id },
             page
         );
-        res.success({resources});
+        res.success({ resources });
     }
 )
 
@@ -162,10 +129,10 @@ const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
     return await getDatabase()
         .collection(RESOURCES_COLLECTION)
         .aggregate([
-            {$match: filter},
-            {$sort: {updated: -1}},
-            {$skip: (page - 1) * 10},
-            {$limit: 10},
+            { $match: filter },
+            { $sort: { updated: -1 } },
+            { $skip: (page - 1) * 10 },
+            { $limit: 10 },
             {
                 $lookup: {
                     from: TEAMS_COLLECTION,
@@ -191,7 +158,7 @@ const pageSearchResourcesWithFilter = async (filter: object, page: number) => {
             //       as: "author",
             //     },
             //   },
-            {$unwind: "$owner"},
+            { $unwind: "$owner" },
             // {$unset: ["owner.email", "owner.role", "owner.password", "owner.purchases"]},
         ])
         .toArray();

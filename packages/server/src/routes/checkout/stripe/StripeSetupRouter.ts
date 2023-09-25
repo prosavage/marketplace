@@ -1,5 +1,5 @@
 import express, {Request, Response} from "express";
-import {SELLER_COLLECTION} from "../../../constants";
+import {SELLER_COLLECTION, getSeller} from "../../../constants";
 import {Authorize} from "../../../middleware/Authenticate";
 import {isValidBody} from "../../../middleware/BodyValidate";
 import {getDatabase} from "../../../server";
@@ -32,7 +32,7 @@ stripeSetupRouter.post(
 
         if (seller === null) {
             console.log("creating seller document");
-            await getDatabase().collection(SELLER_COLLECTION).insertOne({
+            await getSeller().insertOne({
                 _id: shortid.generate(),
                 user: req.user!!._id,
                 stripe_account: accountId,

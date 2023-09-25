@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { userState } from "../../atoms/user";
 import { AccountViewParent } from "../../components/views/account/account-view-parent/AccountViewParent";
 import ProfilePicture from "../../components/views/account/ProfilePicture";
@@ -28,7 +27,6 @@ export default function Profile() {
             <div>
             <SecondaryButton onClick={logout}>LOG OUT</SecondaryButton>
             </div>
-
         </>}
         />
     );

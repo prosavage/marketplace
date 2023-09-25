@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import fileUpload from "express-fileupload";
-import mongodb, {MongoClient} from "mongodb";
+import {MongoClient} from "mongodb";
 import morgan from "morgan";
 import { BunnyCDNStorage } from "./bunnycdn";
 import ensureIndexes, { readTokens } from "./database";

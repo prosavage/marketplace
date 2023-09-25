@@ -4,9 +4,8 @@ import { Info, Users, DollarSign } from "react-feather";
 import styled from "styled-components";
 import PropsTheme from "../../../../styles/theme/PropsTheme";
 import { FlexCol, FlexRow } from "../../../ui/FlexRow";
-import { Box } from "../../../ui/layout/Box";
 interface AccountViewParentProps {
-    content: () => ReactFragment
+    content: () => React.ReactNode
 }
 
 const links = [

@@ -2,10 +2,9 @@ import { ResourceType, Role } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
-import { CATEGORIES_COLLECTION } from "../constants";
+import {  getCategories } from "../constants";
 import { atleastRole, Authorize } from "../middleware/Authenticate";
 import { isValidBody } from "../middleware/BodyValidate";
-import { getDatabase } from "../server";
 
 const categoryRouter = express.Router();
 
@@ -28,7 +27,7 @@ categoryRouter.put(
       name: req.body.name,
       type: req.body.type,
     };
-    await getDatabase().collection(CATEGORIES_COLLECTION).insertOne(category);
+    await getCategories().insertOne(category);
     res.success({ category });
   }
 );
@@ -37,8 +36,7 @@ categoryRouter.get(
   "/:id",
   [param("id").isString(), isValidBody],
   async (req: Request, res: Response) => {
-    const category = await getDatabase()
-      .collection(CATEGORIES_COLLECTION)
+    const category = await getCategories()
       .findOne({ _id: req.params.id });
 
     res.success({ category });

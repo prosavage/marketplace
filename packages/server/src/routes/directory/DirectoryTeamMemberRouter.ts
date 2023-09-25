@@ -25,8 +25,8 @@ directoryTeamMemberRouter.post("/kick",
         return;
     }
 
-    const writeOp = await getTeams().updateOne({ _id: team._id }, { $pull: { members: member } });
-    res.success({result: writeOp.result});
+    const writeOp = await getTeams().findOneAndUpdate({ _id: team._id }, { $pull: { members: member } });
+    res.success({result: writeOp});
 })
 
 

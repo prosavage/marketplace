@@ -6,6 +6,8 @@ import {
   RESOURCES_COLLECTION,
   REVIEWS_COLLECTION,
   VERSIONS_COLLECTION,
+  getResources,
+  getReviews,
 } from "../constants";
 import { updateResourceRating } from "../database";
 import { Authorize, FetchTeam } from "../middleware/Authenticate";
@@ -55,12 +57,11 @@ reviewRouter.put(
       return;
     }
 
-    const resource = await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+    const resource = await getResources()
       .findOne({ _id: body.resource });
 
 
-    if (canUseResource(resource, req.team.getAllTeams())) {
+    if (resource !== null && canUseResource(resource, req.team.getAllTeams())) {
       res.failure("You cannot review your own resource!");
       return;
     }
@@ -74,7 +75,7 @@ reviewRouter.put(
       version: latestVersion._id,
       resource: body.resource,
     };
-    await getDatabase().collection(REVIEWS_COLLECTION).insertOne(review);
+    await getReviews().insertOne(review);
     await getDatabase()
       .collection(RESOURCES_COLLECTION)
       .updateOne({ _id: body.resource }, { $inc: { reviewCount: 1 } });
@@ -89,8 +90,7 @@ reviewRouter.get(
   [param("id").custom((id) => shortid.isValid(id)), isValidBody],
   async (req: Request, res: Response) => {
     const id = req.params.id;
-    const reviews = await getDatabase()
-      .collection(REVIEWS_COLLECTION)
+    const reviews = await getReviews()
       .find({ _id: id })
       .toArray();
     res.success(reviews);
@@ -115,20 +115,19 @@ reviewRouter.delete(
       }
     }
 
-    const result = await getDatabase()
-      .collection(REVIEWS_COLLECTION)
+    const result = await getReviews()
       .findOneAndDelete({ _id: reviewId });
 
+    
     // update resource rating - ignore await for this as it's just a background task.
     // Only update resource ratings if the findOneAndDelete finds a review.
-    if (result.value) {
-      await getDatabase()
-        .collection(RESOURCES_COLLECTION)
+    if (result !== null && result.resource) {
+      await getResources()
         .updateOne(
-          { _id: result.value!!.resource },
+          { _id: result.resource },
           { $inc: { reviewCount: -1 } }
         );
-      updateResourceRating(result.value!!.resource);
+      updateResourceRating(result.resource);
     }
     res.success({ result });
   }

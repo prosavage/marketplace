@@ -1,4 +1,4 @@
-import { Category, Resource, Role } from "@savagelabs/types";
+import { Category, Resource, Role, Version } from "@savagelabs/types";
 import express, { Request, Response } from "express";
 import { body, param } from "express-validator";
 import shortid from "shortid";
@@ -29,7 +29,7 @@ resourceRouter.get(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const resource = await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .findOne({ _id: id });
     res.success({ resource });
   }
@@ -50,7 +50,7 @@ resourceRouter.patch(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const resource = await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .findOne({ _id: id });
 
     if (!resource) {
@@ -74,7 +74,7 @@ resourceRouter.patch(
     }
 
     const transaction = await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .updateOne(
         { _id: id },
         {
@@ -88,7 +88,7 @@ resourceRouter.patch(
         }
       );
 
-    res.success({ result: transaction.result });
+    res.success({ result: transaction });
   }
 );
 
@@ -149,15 +149,15 @@ resourceRouter.put(
       reviewCount: 0,
     };
 
-    await database.collection(RESOURCES_COLLECTION).insertOne(resourceToAdd);
+    await database.collection<Resource>(RESOURCES_COLLECTION).insertOne(resourceToAdd);
 
     resource.version.resource = resourceId;
     resource.version._id = shortid.generate();
-    const result = await database
-      .collection(VERSIONS_COLLECTION)
+    await database
+      .collection<Version>(VERSIONS_COLLECTION)
       .insertOne(resource.version);
 
-    res.success({ resource: resourceToAdd, version: result.ops[0] });
+    res.success({ resource: resourceToAdd, version: resource.version });
   }
 );
 
@@ -172,7 +172,7 @@ resourceRouter.delete(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const result = await getDatabase()
-      .collection(RESOURCES_COLLECTION)
+      .collection<Resource>(RESOURCES_COLLECTION)
       .deleteOne({ _id: id });
     const reviews = await getDatabase()
       .collection(REVIEWS_COLLECTION)

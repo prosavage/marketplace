@@ -11,7 +11,6 @@ import {
   getTeams,
   getUsers,
   RESOURCES_COLLECTION,
-  USERS_COLLECTION,
 } from "../constants";
 import {
   getDatabase,
@@ -33,19 +32,18 @@ export const FetchTeam =
 
     const userID = req.user._id;
 
-    const ownedTeam = await getTeams().findOne({owner: userID})
+    const ownedTeam = await getTeams().findOne({ owner: userID })
 
     if (ownedTeam !== null) {
-      req.team.owned = ownedTeam; 
+      req.team.owned = ownedTeam;
     }
 
-    const memberOf = await getTeams().find({members: {$in: [userID]}}).toArray()
+    const memberOf = await getTeams().find({ members: { $in: [userID] } }).toArray()
 
     req.team.memberOf = memberOf;
 
     next();
   };
-
 
 export const Authorize =
   async (
@@ -72,10 +70,7 @@ export const Authorize =
     }
 
     const user =
-      await getDatabase()
-        .collection(
-          USERS_COLLECTION
-        )
+      await getUsers()
         .findOne({
           _id: userId,
         });
@@ -92,34 +87,34 @@ export const Authorize =
   };
 
 
-  export const AuthenticateWithBypass = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    
-      const token = req.headers.authorization;
-    if (!token) {
-      next();
-      return;
-    }
-    const userId = tokenMap.get(token);
-    if (!userId) {
-      res.failure("Invalid token.");
-      return;
-    }
+export const AuthenticateWithBypass = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
 
-    const user = await getUsers().findOne({_id: userId,});
-    if (!user) {
-      res.failure("User was not found.");
-      return;
-    }
-
-
-    req.user = user;
-
+  const token = req.headers.authorization;
+  if (!token) {
     next();
+    return;
   }
+  const userId = tokenMap.get(token);
+  if (!userId) {
+    res.failure("Invalid token.");
+    return;
+  }
+
+  const user = await getUsers().findOne({ _id: userId, });
+  if (!user) {
+    res.failure("User was not found.");
+    return;
+  }
+
+
+  req.user = user;
+
+  next();
+}
 
 export function atleastRole(
   role: Role
@@ -160,12 +155,12 @@ export function hasPermissionForResource(
   ) {
     let resourceId =
       req.body[
-        pathToResourceId
+      pathToResourceId
       ];
     if (!resourceId) {
       resourceId =
         req.params[
-          pathToResourceId
+        pathToResourceId
         ];
     }
     if (!resourceId) {
