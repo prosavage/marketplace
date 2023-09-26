@@ -10,13 +10,7 @@ echo "exporting data from current database."
 ./data-export.sh payments
 
 echo "sending sample-data to server."
-echo "SSH PASSWORD REQUIRED:"
 scp -r sample-data/ demo-server:~/marketplace-demo
-
-echo "using ssh tunnel to export data to mongodb data container."
-# -f is fork into background.
-# sleep 30 while next cmd runs.
-ssh -f demo-server sleep 60
 
 ./mongodb-import.sh users
 ./mongodb-import.sh resources

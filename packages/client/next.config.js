@@ -1,6 +1,6 @@
 module.exports = {
-    basePath: "/marketplace",
-    assetPrefix: "/marketplace",
+    basePath: "/",
+    assetPrefix: "/",
     trailingSlash: false,
     transpilePackages: ["@savagelabs/types"]
 }

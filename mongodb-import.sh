@@ -2,7 +2,7 @@
 
 collection=$1
 
-mongoimport --collection $collection --db marketplace --file /sample-data/$collection.json --port 27018
+ssh demo-server mongoimport --collection $collection --db marketplace --file /root/marketplace-demo/sample-data/$collection.json --port 27018
 # mongoimport --collection resources --db marketplace --file /sample-data/resources.json
 # mongoimport --collection versions --db marketplace --file /sample-data/versions.json
 # mongoimport --collection categories --db marketplace --file /sample-data/categories.json
