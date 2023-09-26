@@ -29,7 +29,7 @@ import releaseChannelRouter from "./routes/ReleaseChannelRouter";
 dotenv.config();
 
 const mongoClient = new MongoClient(
-  process.env.MONGODB_URL || "mongodb://127.0.0.1:27017",
+  process.env.MONGODB_URL || "mongodb://127.0.0.1:27018",
 );
 export const getDatabase = () => {
   return mongoClient.db(process.env.MONGODB_DB_NAME || "marketplace");
@@ -121,7 +121,7 @@ const run = async () => {
   await ensureIndexes();
   await readTokens();
   
-  app.listen(5000, () => console.log("started marketplace backend."));
+  app.listen(5001, () => console.log("started marketplace backend."));
 }
 
 run()

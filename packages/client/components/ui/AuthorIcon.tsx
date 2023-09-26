@@ -15,7 +15,7 @@ export default function AuthorIcon(props: {
     const router = useRouter();
     // https://marketplace-savagelabs.b-cdn.net/resources/5fe543e4617b45c9499e40d1/icon.png
     // const fallback = "https://marketplace-savagelabs.b-cdn.net/defaults/default-user.svg"
-    const fallback = `/marketplace/static/defaults/default-user.svg`;
+    const fallback = `/static/defaults/default-user.svg`;
     const fallbackImageProps = useFallbackImageInSSR(fallback);
 
 
